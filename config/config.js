@@ -1,0 +1,7 @@
+export const config = {
+  IOS_CODEPUSH_DEPLOYMENT: `ivJGj6IEIWlZuD44kMasj1xJlv0tvBre047H_`,
+  ANDROID_CODEPUSH_DEPLOYMENT: `kKmHy-mqmSyMDYxdXDW-br2EY-RsOXT2LkOQ9`,
+  ENVIRONMENT: ``,
+  WEBSITE_URL: "https://backend.meshapp.ai/api/v1/",
+  IMAGE_URL: `https://backend.meshapp.ai/`
+};

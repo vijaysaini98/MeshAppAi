@@ -1,0 +1,77 @@
+//Stacks are defined here
+export const NAVIGATION_AUTH_LOADING_STACK: string =
+  "NAVIGATION_AUTH_LOADING_STACK";
+export const NAVIGATION_AUTH_STACK: string = "NAVIGATION_AUTH_STACK";
+export const NAVIGATION_MR_BOTTOM_TAB_STACK: string =
+  "NAVIGATION_MR_BOTTOM_TAB_STACK";
+export const NAVIGATION_DR_BOTTOM_TAB_STACK: string =
+  "NAVIGATION_DR_BOTTOM_TAB_STACK";
+//Screens are defined here
+export const NAVIGATION_AUTH_LOADING_SCREEN: string =
+  "NAVIGATION_AUTH_LOADING_SCREEN";
+export const WELCOME_SCREEN: string = "WELCOME_SCREEN";
+export const LOGIN_SCREEN: string = "LOGIN_SCREEN";
+export const MR_HOME_SCREEN: string = "MR_HOME_SCREEN";
+export const DR_HOME_SCREEN: string = "DR_HOME_SCREEN";
+
+export const MR_APPOINTMENT_SCREEN: string = "MR_APPOINTMENT_SCREEN";
+export const MR_MORE_SCREEN: string = "MR_MORE_SCREEN";
+export const LOCATION_SCREEN: string = "LOCATION_SCREEN";
+export const NOTIFICATION_SCREEN: string = "NOTIFICATION_SCREEN";
+export const DOCTOR_PROFILE_SCREEN: string = "DOCTOR_PROFILE_SCREEN";
+export const DOCTOR_LIST_SCREEN: string = "DOCTOR_LIST_SCREEN";
+export const REQUEST_APPOINTMENT_SCREEN: string = "REQUEST_APPOINTMENT_SCREEN";
+export const UPCOMING_APPOINTMENT_SCREEN: string =
+  "UPCOMING_APPOINTMENT_SCREEN";
+export const RESCHEDULE_APPOINTMENT_SCREEN: string =
+  "RESCHEDULE_APPOINTMENT_SCREEN";
+export const RECOVER_PASSWORD_SCREEN: string = "RECOVER_PASSWORD_SCREEN";
+export const RESET_PASSWORD_SCREEN: string = "RESET_PASSWORD_SCREEN";
+export const PAYMENT_METHOD_SCREEN: string = "PAYMENT_METHOD_SCREEN";
+export const PAYMENT_RECEIPT_SCREEN: string = "PAYMENT_RECEIPT_SCREEN";
+export const PAYMENT_SUCCESS_SCREEN: string = "PAYMENT_SUCCESS_SCREEN";
+export const MEETING_REPORT: string = "MEETING_REPORT";
+export const SELFIE_SCREEN: string = "SELFIE_SCREEN";
+export const MORE_SCREEN: string = "MORE_SCREEN";
+export const MORE_TAB: string = "MORE_TAB";
+export const SETTINGS_SCREEN: string = "SETTINGS_SCREEN";
+export const PAYMENT_HISTORY: string = "PAYMENT_HISTORY";
+export const CLAIM_PROFILE: string = "CLAIM_PROFILE";
+export const DR_RESCHEDULE_APPOINTMENT: string = "DR_RESCHEDULE_APPOINTMENT";
+export const MOBILE_VERIFICATION: string = "MOBILE_VERIFICATION";
+export const DOCTOR_MORE_SCREEN: string = "DOCTOR_MORE_SCREEN";
+export const DOCTOR_AVAILABILITY_SCREEN: string = "DOCTOR_AVAILABILITY_SCREEN";
+export const EDIT_PROFILE: string = "EDIT_PROFILE";
+export const ADD_MY_PROFILE: string = "ADD_MY_PROFILE";
+export const DOCTOR_RESCHEDULE_APPOINTMENTS: string =
+  "DOCTOR_RESCHEDULE_APPOINTMENTS";
+export const DR_APPOINTMENT_SCREEN: string = "DR_APPOINTMENT_SCREEN";
+export const PDF_VIEW: string = "PDF_VIEW";
+export const DOCTOR_DATA_DETAILS: string = "DOCTOR_DATA_DETAILS";
+export const RECENT_REQUEST: string = "RECENT_REQUEST";
+export const RECENT_REQUEST_DETAIL: string = "RECENT_REQUEST_DETAIL";
+export const RATING_SCREEN: string = "RATING_SCREEN";
+export const DOCTOR_SETTINGS_SCREEN: string = "DOCTOR_SETTINGS_SCREEN";
+export const DOCTOR_CHANGE_PASSWORD_SCREEN: string =
+  "DOCTOR_CHANGE_PASSWORD_SCREEN";
+export const DOCTOR_PAYMENT_SCREEN: string = "DOCTOR_PAYMENT_SCREEN";
+export const DOCTOR_PAYMENT_RECEIPT: string = "DOCTOR_PAYMENT_RECEIPT";
+
+//web View 
+
+export const WEBVIEWE_SCREEN: string = "WEBVIEWE_SCREEN";
+
+export const MY_LOCATION: string = "MY_LOCATION";
+export const ADD_LOCATION: string = "ADD_LOCATION";
+
+export const ADD_MR : string = "ADD_MR";
+
+export const PRODUCTS :string = "PRODUCTS";
+export const ADDPRODUCT: string = "ADDPRODUCT";
+
+export const CALLING_SCREEN: string = "CALLING_SCREEN";
+
+export const CLINIC: string = "CLINIC";
+export const CLINIC_REQUST: string = "CLINIC_REQUST";
+
+

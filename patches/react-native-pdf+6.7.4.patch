@@ -1,0 +1,244 @@
+diff --git a/node_modules/react-native-pdf/android/.project b/node_modules/react-native-pdf/android/.project
+new file mode 100644
+index 0000000..402cbd1
+--- /dev/null
++++ b/node_modules/react-native-pdf/android/.project
+@@ -0,0 +1,34 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<projectDescription>
++	<name>react-native-pdf</name>
++	<comment>Project react-native-pdf created by Buildship.</comment>
++	<projects>
++	</projects>
++	<buildSpec>
++		<buildCommand>
++			<name>org.eclipse.jdt.core.javabuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++		<buildCommand>
++			<name>org.eclipse.buildship.core.gradleprojectbuilder</name>
++			<arguments>
++			</arguments>
++		</buildCommand>
++	</buildSpec>
++	<natures>
++		<nature>org.eclipse.jdt.core.javanature</nature>
++		<nature>org.eclipse.buildship.core.gradleprojectnature</nature>
++	</natures>
++	<filteredResources>
++		<filter>
++			<id>1732681206327</id>
++			<name></name>
++			<type>30</type>
++			<matcher>
++				<id>org.eclipse.core.resources.regexFilterMatcher</id>
++				<arguments>node_modules|\.git|__CREATED_BY_JAVA_LANGUAGE_SERVER__</arguments>
++			</matcher>
++		</filter>
++	</filteredResources>
++</projectDescription>
+diff --git a/node_modules/react-native-pdf/android/bin/build.gradle b/node_modules/react-native-pdf/android/bin/build.gradle
+new file mode 100644
+index 0000000..2d76d8f
+--- /dev/null
++++ b/node_modules/react-native-pdf/android/bin/build.gradle
+@@ -0,0 +1,128 @@
++description = 'react-native-pdf'
++
++buildscript {
++    ext.safeExtGet = {prop, fallback ->
++        rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
++    }
++    repositories {
++        mavenCentral()
++        google()
++    }
++
++    dependencies {
++        classpath("com.android.tools.build:gradle:7.2.0")
++    }
++}
++
++repositories {
++    mavenCentral()
++    maven {
++        // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
++        url "$projectDir/../node_modules/react-native/android"
++        content {
++            // Use Jitpack only for AndroidPdfViewer; the rest is hosted at mavenCentral.
++            includeGroup "com.github.TalbotGooday"
++        }
++    }
++    maven { url 'https://jitpack.io' }
++}
++
++apply plugin: 'com.android.library'
++
++def resolveReactNativeDirectory() {
++    def reactNativeLocation = safeExtGet("REACT_NATIVE_NODE_MODULES_DIR", null)
++    if (reactNativeLocation != null) {
++        return file(reactNativeLocation)
++    }
++
++    // monorepo workaround
++    // react-native can be hoisted or in project's own node_modules
++    def reactNativeFromProjectNodeModules = file("${rootProject.projectDir}/../node_modules/react-native")
++    if (reactNativeFromProjectNodeModules.exists()) {
++        return reactNativeFromProjectNodeModules
++    }
++
++    def reactNativeFromNodeModulesWithPDF = file("${projectDir}/../../react-native")
++    if (reactNativeFromNodeModulesWithPDF.exists()) {
++        return reactNativeFromNodeModulesWithPDF
++    }
++
++    throw new Exception(
++            "[react-native-pdf] Unable to resolve react-native location in " +
++                    "node_modules. You should add project extension property (in app/build.gradle) " +
++                    "`REACT_NATIVE_NODE_MODULES_DIR` with path to react-native."
++    )
++}
++
++def getReactNativeMinorVersion() {
++    def REACT_NATIVE_DIR = resolveReactNativeDirectory()
++
++    def reactProperties = new Properties()
++    file("$REACT_NATIVE_DIR/ReactAndroid/gradle.properties").withInputStream { reactProperties.load(it) }
++
++    def REACT_NATIVE_VERSION = reactProperties.getProperty("VERSION_NAME")
++    def REACT_NATIVE_MINOR_VERSION = REACT_NATIVE_VERSION.startsWith("0.0.0-") ? 1000 : REACT_NATIVE_VERSION.split("\\.")[1].toInteger()
++
++    return REACT_NATIVE_MINOR_VERSION
++}
++
++def isNewArchitectureEnabled() {
++    // To opt-in for the New Architecture, you can either:
++    // - Set `newArchEnabled` to true inside the `gradle.properties` file
++    // - Invoke gradle with `-newArchEnabled=true`
++    // - Set an environment variable `ORG_GRADLE_PROJECT_newArchEnabled=true`
++    return project.hasProperty("newArchEnabled") && project.newArchEnabled == "true"
++}
++
++if (isNewArchitectureEnabled()) {
++    apply plugin: "com.facebook.react"
++}
++
++android {
++    def agpVersion = com.android.Version.ANDROID_GRADLE_PLUGIN_VERSION
++    if (agpVersion.tokenize('.')[0].toInteger() >= 7) {
++        namespace "org.wonday.pdf"
++    }
++    compileSdkVersion safeExtGet('compileSdkVersion', 31)
++
++    defaultConfig {
++        minSdkVersion safeExtGet('minSdkVersion', 21)
++        targetSdkVersion safeExtGet('targetSdkVersion', 31)
++        buildConfigField("boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString())
++    }
++
++    sourceSets.main {
++        java {
++            if (!isNewArchitectureEnabled()) {
++                srcDirs += [
++                    "src/paper/java",
++                ]
++            }
++        }
++    }
++
++    lintOptions {
++        abortOnError true
++    }
++
++    packagingOptions {
++       pickFirst 'lib/x86/libc++_shared.so'
++       pickFirst 'lib/x86_64/libjsc.so'
++       pickFirst 'lib/x86_64/libc++_shared.so'
++       pickFirst 'lib/arm64-v8a/libjsc.so'
++       pickFirst 'lib/arm64-v8a/libc++_shared.so'
++       pickFirst 'lib/armeabi-v7a/libc++_shared.so'
++    }
++}
++
++dependencies {
++    if (isNewArchitectureEnabled() && getReactNativeMinorVersion() < 71) {
++        implementation project(":ReactAndroid")
++    } else {
++        implementation 'com.facebook.react:react-native:+'
++    }
++    // NOTE: The original repo at com.github.barteksc is abandoned by the maintainer; there will be no more updates coming from that repo.
++    //       It was taken over by com.github.TalbotGooday; from now on please use this repo until (if ever) the Barteksc repo is resumed.
++    implementation 'com.github.TalbotGooday:AndroidPdfViewer:3.1.0-beta.3'
++    implementation 'com.google.code.gson:gson:2.8.5'
++}
+diff --git a/node_modules/react-native-pdf/android/bin/project.properties b/node_modules/react-native-pdf/android/bin/project.properties
+new file mode 100644
+index 0000000..616f300
+--- /dev/null
++++ b/node_modules/react-native-pdf/android/bin/project.properties
+@@ -0,0 +1,12 @@
++# This file is automatically generated by Android Tools.
++# Do not modify this file -- YOUR CHANGES WILL BE ERASED!
++#
++# This file must be checked in Version Control Systems.
++#
++# To customize properties used by the Ant build system use,
++# "ant.properties", and override values to adapt the script to your
++# project structure.
++
++android.library=true
++# Project target.
++target=android-16
+diff --git a/node_modules/react-native-pdf/android/bin/src/main/AndroidManifest.xml b/node_modules/react-native-pdf/android/bin/src/main/AndroidManifest.xml
+new file mode 100644
+index 0000000..2a14e6b
+--- /dev/null
++++ b/node_modules/react-native-pdf/android/bin/src/main/AndroidManifest.xml
+@@ -0,0 +1,4 @@
++<manifest xmlns:android="http://schemas.android.com/apk/res/android">
++
++
++</manifest>
+diff --git a/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfManager.class b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfManager.class
+new file mode 100644
+index 0000000..7da3ea5
+Binary files /dev/null and b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfManager.class differ
+diff --git a/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfView.class b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfView.class
+new file mode 100644
+index 0000000..77314a4
+Binary files /dev/null and b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/PdfView.class differ
+diff --git a/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/RNPDFPackage.class b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/RNPDFPackage.class
+new file mode 100644
+index 0000000..3b57bc7
+Binary files /dev/null and b/node_modules/react-native-pdf/android/bin/src/main/java/org/wonday/pdf/RNPDFPackage.class differ
+diff --git a/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerDelegate.class b/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerDelegate.class
+new file mode 100644
+index 0000000..b788431
+Binary files /dev/null and b/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerDelegate.class differ
+diff --git a/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerInterface.class b/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerInterface.class
+new file mode 100644
+index 0000000..2c6db9d
+Binary files /dev/null and b/node_modules/react-native-pdf/android/bin/src/paper/java/com/facebook/react/viewmanagers/RNPDFPdfViewManagerInterface.class differ
+diff --git a/node_modules/react-native-pdf/index.js b/node_modules/react-native-pdf/index.js
+index c7c58d8..6ad6716 100644
+--- a/node_modules/react-native-pdf/index.js
++++ b/node_modules/react-native-pdf/index.js
+@@ -127,7 +127,7 @@ export default class Pdf extends Component {
+ 
+         if ((nextSource.uri !== curSource.uri)) {
+             // if has download task, then cancel it.
+-            if (this.lastRNBFTask) {
++            if (this.lastRNBFTask?.cancel) {
+                 this.lastRNBFTask.cancel(err => {
+                     this._loadFromSource(this.props.source);
+                 });
+@@ -145,7 +145,7 @@ export default class Pdf extends Component {
+ 
+     componentWillUnmount() {
+         this._mounted = false;
+-        if (this.lastRNBFTask) {
++        if (this.lastRNBFTask?.cancel) {
+             this.lastRNBFTask.cancel(err => {
+             });
+             this.lastRNBFTask = null;
