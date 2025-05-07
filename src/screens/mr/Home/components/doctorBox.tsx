@@ -341,31 +341,6 @@ export const DoctorBox = ({
               </View>
             </View>
             <View style={styles.buttonContainer}>
-              {/* <Button
-              disabled={
-               (currentDateFound != formattedDate) ||
-                (adjustedFormattedTime >= currentTimeFound &&
-                  currentDateFound == formattedDate)
-                  ? true
-                  : false
-              }
-                // disabled={
-                //   (adjustedFormattedTime >= currentTimeFound) &&
-                //   (currentDateFound >= formattedDate) ?
-                //   true : false
-                // }
-                children="End Meeting"
-                containerStyle={styles.button3}
-                onPress={() => {
-                  setLongitude(
-                    item?.AppointmentTimeSlot?.timeSlotLocation[0]?.longitude
-                  );
-                  setLatitude(
-                    item?.AppointmentTimeSlot?.timeSlotLocation[0]?.latitude
-                  );
-                  refEndMeeting.current.open();
-                }}
-              /> */}
               <Button
                 children="Send Message"
                 containerStyle={[
@@ -377,63 +352,6 @@ export const DoctorBox = ({
                 }}
               />
             </View>
-            <RBSheet
-              ref={refEndMeeting}
-              height={300}
-              closeOnDragDown={true}
-              closeOnPressMask={true}
-              customStyles={{
-                wrapper: {
-                  backgroundColor: colors.rbSheetBackgroung,
-                },
-                draggableIcon: {
-                  backgroundColor: "silver",
-                  width: 100,
-                },
-              }}
-            >
-              <View
-                style={[styles.rejectionBox, { flex: 1, marginHorizontal: 16 }]}
-              >
-                <AppText
-                  type={TWENTY_FOUR}
-                  weight={SEMI_BOLD}
-                  style={styles.sendMessageBottomSheet}
-                >
-                  End Meeting
-                </AppText>
-                {EndMeetingData?.map((e, index) => {
-                  return (
-                    <View>
-                      <RadioButton
-                        radioContainerStyle={styles.appointmentContainer}
-                        value={endMeetingIdStatus === index ? true : false}
-                        onPress={() => {
-                          onPressEndMeetingTypeButton(index);
-                          setEndMeetingStatus(e?.id);
-                        }}
-                        message={e?.message}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-              <View style={styles.sendMessageSubmitButton}>
-                <Button
-                  containerStyle={styles.submit}
-                  children="Submit"
-                  onPress={() =>
-                    onPressEndMeeting(
-                      endMeetingStatus,
-                      item?.doctor_id,
-                      "upcoming"
-                    )
-                  }
-                  disabled={endMeetingStatus ? false : true}
-                  loading={isBtnLoading || distanceCheckLoader}
-                />
-              </View>
-            </RBSheet>
   
             <RBSheet
               ref={refRBSheet}
@@ -1007,7 +925,6 @@ export const DoctorBox = ({
                   ? item?.name
                   : name}
               </AppText>
-              {/* {downloadIcon()} */}
             </View>
             <View style={[styles.statusContainer]}>
               <View
@@ -1019,7 +936,6 @@ export const DoctorBox = ({
                   marginTop: 10,
                   marginRight: 5,
                 }}
-                // style={[styles.department, { width: "60%" }]}
               >
                 <AppText color={WHITE} numberOfLines={1}>
                   {specialityvalidation(item)}

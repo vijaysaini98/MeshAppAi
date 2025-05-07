@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "156569486731",
+    "project_id": "meshapp-b0fe2",
+    "storage_bucket": "meshapp-b0fe2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156569486731:android:6c787fa9ff86362ab5db8e",
+        "android_client_info": {
+          "package_name": "com.meshappAi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDiYi3TSmSyEckxfuZjcTl_jlAHAi00gc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

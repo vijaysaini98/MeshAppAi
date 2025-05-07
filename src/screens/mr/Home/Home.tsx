@@ -1,37 +1,20 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AppSafeAreaView,
-  AppText,
-  BOLD,
-  BUTTON_BG,
-  EIGHTEEN,
-  FOURTEEN,
-  Input,
-  MEDIUM,
-  THIRTY_EIGHT,
-  WHITE,
 } from "../../../common";
 import {
-  Image,
-  ImageBackground,
   NativeModules,
   Platform,
-  View,
 } from "react-native";
 import {
-  bellIcon,
   DummyMr,
-  searchIcon,
-  upcoming,
 } from "../../../helper/ImageAssets";
-import TouchableOpacityView from "../../../common/TouchableOpacityView";
-import { styles } from "../../../styles/styles";
 import NavigationService from "../../../navigation/NavigationService";
 import {
   NOTIFICATION_SCREEN,
   UPCOMING_APPOINTMENT_SCREEN,
 } from "../../../navigation/routes";
-import { IMAGE_PATH1, placeHolderText } from "../../../helper/Constants";
+import { IMAGE_PATH1 } from "../../../helper/Constants";
 import { colors } from "../../../theme/colors";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { useIsFocused } from "@react-navigation/native";
@@ -45,92 +28,12 @@ import { SectionListhangeMrTabScreen } from "../../../slices/mrSlice/mrSlice";
 import { getClientId, getKey } from "../../../helper/utility";
 import { updateFcmToken } from "../../../slices/authSlice/authAction";
 import DisplayPermission from "../VideoCallPermission";
-import {
-  MrHomeAppointmentContainerProps,
-  MrHomeSearchBarProps,
-  MrHomeToolBarProps,
-} from "../../../helper/types";
 import { NearByList } from "./components/nearByList";
-
-const HomeToolBar: FC<MrHomeToolBarProps> = ({
-  data,
-  profileImage,
-  name,
-  address,
-  handleNotificationIcon,
-}) => {
-  return (
-    <View style={styles.homeToolContainer}>
-      <Image
-        source={profileImage}
-        resizeMode="cover"
-        style={styles.profileImage}
-      />
-      <View style={styles.homeToolContainer3}>
-        <AppText color={BUTTON_BG} weight={MEDIUM} type={FOURTEEN}>
-          {name}
-        </AppText>
-        <AppText weight={MEDIUM} type={FOURTEEN} style={{ marginTop: 10 }}>
-          {address}
-        </AppText>
-      </View>
-      <TouchableOpacityView onPress={handleNotificationIcon}>
-        <Image source={bellIcon} resizeMode="contain" style={styles.bellIcon} />
-      </TouchableOpacityView>
-    </View>
-  );
-};
-
-const HomeSearchBar: React.FC<MrHomeSearchBarProps> = ({
-  value,
-  onChangeText,
-}) => {
-  return (
-    <View style={styles.searchContainer}>
-      <Input
-        placeholder={placeHolderText.search}
-        value={value}
-        onChangeText={onChangeText}
-        autoCapitalize="none"
-        returnKeyType="done"
-        mainContainer={styles.searchInput}
-        icon2={searchIcon}
-      />
-    </View>
-  );
-};
-
-const HomeAppointmentContainer: FC<MrHomeAppointmentContainerProps> = ({
-  data,
-}) => {
-  return (
-    <View style={styles.upcomigToolContainer}>
-      {data.map((e, index) => {
-        return (
-          <TouchableOpacityView
-            onPress={e.onPress}
-            style={[styles.appointmentSingle]}
-            key={e.id}
-          >
-            <ImageBackground
-              source={upcoming}
-              style={styles.upcomingImage}
-              resizeMode="stretch"
-              key={e?.id}
-            >
-              <AppText type={THIRTY_EIGHT} weight={BOLD} color={WHITE}>
-                {e.value}
-              </AppText>
-              <AppText type={EIGHTEEN} color={WHITE}>
-                {e.title}
-              </AppText>
-            </ImageBackground>
-          </TouchableOpacityView>
-        );
-      })}
-    </View>
-  );
-};
+import {
+  HomeAppointmentContainer,
+  HomeSearchBar,
+  HomeToolBar,
+} from "./components/homeComponent";
 
 const { OverlayPermissionModule, UnlockDevice } = NativeModules;
 

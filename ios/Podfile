@@ -63,6 +63,7 @@ if linkage != nil
 end
 
 target 'AnytimeDr' do
+  $RNVideoUseVideoCaching = true
   config = use_native_modules!
 
   # Flags change depending on the env values.

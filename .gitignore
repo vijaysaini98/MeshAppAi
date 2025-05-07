@@ -35,6 +35,7 @@ local.properties
 !debug.keystore
 .apk
 
+# Android
 android/.gradle/
 android/.idea/
 android/.cxx/
@@ -43,6 +44,7 @@ android/build/
 android/app/build/
 android/app/release/*.aab
 android/app/release/*.apk
+
 
 # node.js
 #
