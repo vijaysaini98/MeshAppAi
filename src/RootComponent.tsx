@@ -1,7 +1,15 @@
 import React, { useEffect, useRef, useState } from "react";
-import { AppRegistry, DeviceEventEmitter,NativeModules, PermissionsAndroid, Platform, StyleSheet, View } from "react-native";
+import {
+  AppRegistry,
+  DeviceEventEmitter,
+  NativeModules,
+  PermissionsAndroid,
+  Platform,
+  StyleSheet,
+  View,
+} from "react-native";
 import FcmService from "./FcmService";
-import NetInfo, { useNetInfo } from '@react-native-community/netinfo';
+import NetInfo, { useNetInfo } from "@react-native-community/netinfo";
 import { AppText, BOLD, TEN, THIRTEEN, WHITE } from "./common";
 import { config } from "../config/config";
 import { colors } from "./theme/colors";
@@ -10,7 +18,12 @@ import MaintenanceModal from "./screens/common/AppStatusModal/MaintainessModal";
 import { getAppVersion } from "./actions/authActions";
 import { useAppDispatch, useAppSelector } from "./store/hooks";
 import ReactNativeVersionInfo from "react-native-version-info";
-import { displayIncomingCallNow, getNewUuid, hangup, isNewerVersion } from "./helper/utility";
+import {
+  displayIncomingCallNow,
+  getNewUuid,
+  hangup,
+  isNewerVersion,
+} from "./helper/utility";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IMAGE_PATH1, NOTIFICATION_DATA, VALUES } from "./helper/Constants";
 import RNCallKeep from "react-native-callkeep";
@@ -22,10 +35,11 @@ import {
 } from "react-native-agora";
 import IncomingCall from "../libs/react-native-incoming-call";
 import { AghoraVideo } from "./screens/common/AgoraComponent";
+import { AdvertismentMediaModal } from "./screens/common/AdvertismentModal.tsx";
 
 const { UnlockDevice } = NativeModules;
 
-const NoInternetModal = ({ visible }) => {
+const NoInternetModal = ({ visible }: { visible: boolean }) => {
   return visible ? (
     <View style={styles.noInternet}>
       <AppText type={THIRTEEN} color={WHITE} weight={BOLD}>
@@ -37,7 +51,7 @@ const NoInternetModal = ({ visible }) => {
   );
 };
 
-const ServerCheckComp = ({ visible }) => {
+const ServerCheckComp = ({ visible }: { visible: boolean }) => {
   return visible ? (
     <View style={styles.serverCheckContainer}>
       <AppText type={TEN} color={WHITE} weight={BOLD}>
@@ -52,25 +66,38 @@ const ServerCheckComp = ({ visible }) => {
 let version = ReactNativeVersionInfo.appVersion;
 let buildVersion = ReactNativeVersionInfo.buildVersion;
 
-const RootComponent = ({ children }) => {
-  const dispatch = useAppDispatch()
+const media = {
+  type: "video",
+  url: "https://www.w3schools.com/html/mov_bbb.mp4", // replace with your actual video URL
+  link: "https://www.google.co.in/",
+};
+
+const RootComponent = ({ children }: { children: any }) => {
+  const dispatch = useAppDispatch();
 
   const { appInfo } = useAppSelector((state) => state.auth);
 
+  const netInfo = useNetInfo();
+  const agoraEngineRef = useRef<IRtcEngineEx>(); // Agora engine instance
+  const uid = 0;
+
   const [netConnected, setNetConnected] = useState(true);
   const [visible, setVisible] = useState(false);
-  const [isUpdate, setIsUpdate] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false);
   const [isMaintainess, setIsMaintainess] = useState(false);
 
-  const agoraEngineRef = useRef<IRtcEngineEx>(); // Agora engine instance
   const [isJoined, setIsJoined] = useState(false); // Indicates if the local user has joined the channel
   const [isMute, setIsMute] = useState(true); // Indicates if current user is mute or note
   const [remoteUid, setRemoteUid] = useState(0);
-  const [videoEnabled, setVideoEnabled] = useState(true);
+  const [videoEnabled, setVideoEnabled] = useState(false);
   const [remoteVideoEnabled, setRemoteVideoEnabled] = useState(true);
+  const [isAdverVisible, setIsAdverVisible] = useState(false);
+
+  const onNotification = (message: string) => {};
+  const onOpenNotification = (message: string) => {};// the props contain the messages and the locale
 
   useEffect(() => {
-    const unsubscribe = NetInfo.addEventListener(state => {
+    const unsubscribe = NetInfo.addEventListener((state: any) => {
       setNetConnected(state?.isConnected);
     });
     return unsubscribe;
@@ -81,10 +108,6 @@ const RootComponent = ({ children }) => {
     fcmService.register(onNotification, onOpenNotification);
   }, []);
 
-  const onNotification = (message) => { };
-  const onOpenNotification = (message) => { };
-  // the props contain the messages and the locale
-
   useEffect(() => {
     if (!netConnected) {
       setVisible(true);
@@ -93,31 +116,35 @@ const RootComponent = ({ children }) => {
     }
   }, [netConnected]);
 
-
   useEffect(() => {
-    dispatch(getAppVersion())
-  }, [])
+    dispatch(getAppVersion()); // Fetch the current app version
+    events(); // Initialize events or listeners
+
+    const timer = setTimeout(() => {
+      setIsAdverVisible(true);
+    }, 3000);
+
+    return () => {
+      clearTimeout(timer); // Cleanup timer on unmount
+    };
+  }, []);
 
   useEffect(() => {
     if (appInfo && Array.isArray(appInfo)) {
-      const platform = Platform.OS === 'android' ? 'Android' : 'IOS';
-      const latestVersionInfo = appInfo.find(info => info.param_name === platform);
-      setIsMaintainess(latestVersionInfo?.status)
+      const platform = Platform.OS === "android" ? "Android" : "IOS";
+      const latestVersionInfo = appInfo.find(
+        (info) => info.param_name === platform
+      );
+      setIsMaintainess(latestVersionInfo?.status);
       const latestVersion = latestVersionInfo?.param_description;
-      
+
       if (latestVersion && isNewerVersion(version, latestVersion)) {
         setIsUpdate(true);
       } else {
         setIsUpdate(false);
       }
     }
-  }, [appInfo, version, isUpdate,isMaintainess]);
-
-  const uid = 0;
-
-  useEffect(() => {
-    events();
-  }, []);
+  }, [appInfo, version, isUpdate, isMaintainess]);
 
   useEffect(() => {
     if (Platform.OS === "android") {
@@ -171,19 +198,19 @@ const RootComponent = ({ children }) => {
     }
   };
 
-  const answerCall = (props) => {
+  const answerCall = (props: any) => {
     if (Platform.OS === "ios") {
       RNCallKeep.backToForeground();
     }
     setupVideoSDKEngine();
   };
 
-  const endCall = async (props) => {
+  const endCall = async (props: any) => {
     if (Platform.OS === "ios") {
       hangup(props?.callUUID);
     }
 
-    let data = await AsyncStorage.getItem(NOTIFICATION_DATA);
+    let data: any = await AsyncStorage.getItem(NOTIFICATION_DATA);
 
     let _data = JSON.parse(data);
     let apiData = {
@@ -192,6 +219,7 @@ const RootComponent = ({ children }) => {
     };
     // dispatch(updateCallStatus(apiData));
   };
+
   const getPermission = async () => {
     if (Platform.OS === "android") {
       await PermissionsAndroid.requestMultiple([
@@ -207,7 +235,7 @@ const RootComponent = ({ children }) => {
       if (Platform.OS === "android") {
         await getPermission();
       }
-      let data = await AsyncStorage.getItem(NOTIFICATION_DATA);
+      let data: any = await AsyncStorage.getItem(NOTIFICATION_DATA);
 
       let _data = JSON.parse(data);
       agoraEngineRef.current = createAgoraRtcEngine() as IRtcEngineEx;
@@ -227,7 +255,7 @@ const RootComponent = ({ children }) => {
           setRemoteUid(0);
           leave();
           setIsJoined(false);
-          setIsMute(true)
+          setIsMute(true);
         },
         onUserEnableVideo: (_connection, Uid, muted) => {
           showMessage("Remote user change the status of video " + muted);
@@ -250,6 +278,7 @@ const RootComponent = ({ children }) => {
       console.log(e);
     }
   };
+  
   function showMessage(msg: string) {
     console.log("+++++++", msg);
   }
@@ -259,7 +288,7 @@ const RootComponent = ({ children }) => {
       return;
     }
     try {
-      let data = await AsyncStorage.getItem(NOTIFICATION_DATA);
+      let data: any = await AsyncStorage.getItem(NOTIFICATION_DATA);
 
       let _data = JSON.parse(data);
 
@@ -286,7 +315,7 @@ const RootComponent = ({ children }) => {
     try {
       setRemoteUid(0);
       setIsJoined(false);
-      setIsMute(true)
+      setIsMute(true);
       agoraEngineRef.current?.stopPreview();
 
       agoraEngineRef.current?.leaveChannel({
@@ -295,8 +324,8 @@ const RootComponent = ({ children }) => {
         stopMicrophoneRecording: true,
       });
 
-     showMessage("You left the channel");
-      let data = await AsyncStorage.getItem(NOTIFICATION_DATA);
+      showMessage("You left the channel");
+      let data: any = await AsyncStorage.getItem(NOTIFICATION_DATA);
 
       let _data = JSON.parse(data);
       let apiData = {
@@ -315,6 +344,7 @@ const RootComponent = ({ children }) => {
   const switchCam = () => {
     agoraEngineRef.current?.switchCamera();
   };
+
   const mute = () => {
     agoraEngineRef.current?.muteLocalAudioStream(isMute);
     setIsMute(!isMute);
@@ -327,11 +357,11 @@ const RootComponent = ({ children }) => {
     setVideoEnabled(!videoEnabled);
   };
 
-  const netInfo = useNetInfo();
-
   return (
     <View style={styles.mainContainer}>
-      <NoInternetModal visible={!(netInfo.isConnected && netInfo.isInternetReachable)} />
+      <NoInternetModal
+        visible={!(netInfo.isConnected && netInfo.isInternetReachable)}
+      />
       <ServerCheckComp visible={config.ENVIRONMENT} />
       {isMaintainess && <MaintenanceModal isVisible={isMaintainess} />}
       {isUpdate && <UpdateModal isVisible={isUpdate} />}
@@ -350,6 +380,13 @@ const RootComponent = ({ children }) => {
           remoteVideoEnabled={remoteVideoEnabled}
         />
       )}
+      {isAdverVisible && (
+        <AdvertismentMediaModal
+          visible={isAdverVisible}
+          onClose={() => setIsAdverVisible(false)}
+          media={media}
+        />
+      )}
     </View>
   );
 };
@@ -359,11 +396,15 @@ export default RootComponent;
 async function firebaseBackgroundMessage(message: any) {
   console.log("msg::::::", message);
   await AsyncStorage.setItem(NOTIFICATION_DATA, JSON.stringify(message?.data));
-  console.log("message?.data",message?.data);
-  
-  if(message?.data?.channelName){
-    let callerImage = message?.data?.doctorAvatar  ? `${IMAGE_PATH1}${message?.data?.doctorAvatar}` : `https://ui-avatars.com/api/?name=MeshApp.Ai&background=0D8ABC&color=fff`
-    let infoText = message?.data?.body ? `${message?.data?.body}` : "Incomming Call"
+  console.log("message?.data", message?.data);
+
+  if (message?.data?.channelName) {
+    let callerImage = message?.data?.doctorAvatar
+      ? `${IMAGE_PATH1}${message?.data?.doctorAvatar}`
+      : `https://ui-avatars.com/api/?name=MeshApp.Ai&background=0D8ABC&color=fff`;
+    let infoText = message?.data?.body
+      ? `${message?.data?.body}`
+      : "Incomming Call";
     if (Platform.OS === "android") {
       IncomingCall.display(
         getNewUuid(), // Call UUID v4
@@ -404,7 +445,6 @@ async function firebaseBackgroundMessage(message: any) {
       displayIncomingCallNow(message?.data);
     }
   }
-  
 
   return Promise.resolve();
 }
@@ -415,16 +455,16 @@ AppRegistry.registerHeadlessTask(
 );
 
 const styles = StyleSheet.create({
-  mainContainer:{ 
-    flex: 1 
+  mainContainer: {
+    flex: 1,
   },
   noInternet: {
-    flex:1,
+    flex: 1,
     height: 40,
-    backgroundColor: 'red',
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
+    backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
     top: 30,
     left: 0,
     right: 0,
@@ -432,39 +472,15 @@ const styles = StyleSheet.create({
   },
   serverCheckContainer: {
     height: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
-    position: 'absolute',
-    top: Platform.OS === 'android' ? 30 : 30,
-    // left: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: Platform.OS === "android" ? 30 : 30,
     right: -10,
     borderRadius: 10,
     zIndex: 999,
     width: "20%",
     backgroundColor: colors.buttonBg,
-    transform: [{ rotate: '25deg' }]
+    transform: [{ rotate: "25deg" }],
   },
-  // videoView: { width: "100%", height: dimensions.height / 2 - 20 },
-  // videoView1: {
-  //   width: "100%",
-  //   backgroundColor: "#fff",
-  //   flex: 1,
-  //   height: dimensions.height,
-  // },
-  // btnContainer2: {
-  //   flexDirection: "row",
-  //   justifyContent: "center",
-  //   backgroundColor: "white",
-  //   paddingBottom: Platform.OS === "ios" ? 40 : 0,
-  // },
-  // button: {
-  //   paddingHorizontal: 25,
-  //   paddingVertical: 4,
-  //   margin: 5,
-  // },
-  // camera: {
-  //   height: 30,
-  //   width: 30,
-  //   tintColor: colors.buttonBg,
-  // },
 });

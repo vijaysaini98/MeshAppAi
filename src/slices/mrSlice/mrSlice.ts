@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 export const initialState = {
   isLoading: false,
   appointmentType: [],
@@ -31,7 +32,7 @@ export const initialState = {
   fatherName: "",
   gender: "",
   phoneNo: "",
-  email: '',
+  email: "",
   dob: "",
   joiningDate: "",
   address: "",
@@ -39,8 +40,8 @@ export const initialState = {
   pinCode: "",
   addressState: "",
   maritalStatus: "",
-  profileImage:"",
-  productList:[]
+  profileImage: "",
+  productList: [],
 };
 
 export const mrSlice = createSlice({
@@ -50,7 +51,7 @@ export const mrSlice = createSlice({
     setLoading: (state, { payload }) => {
       state.isLoading = payload;
     },
-    setProfileImage:(state, { payload }) => {
+    setProfileImage: (state, { payload }) => {
       state.profileImage = payload;
     },
     setEmail: (state, { payload }) => {
@@ -65,10 +66,10 @@ export const mrSlice = createSlice({
     setGender: (state, { payload }) => {
       state.gender = payload;
     },
-    setDob:(state, { payload }) => {
+    setDob: (state, { payload }) => {
       state.dob = payload;
     },
-    setJoiningDate:(state, { payload }) => {
+    setJoiningDate: (state, { payload }) => {
       state.joiningDate = payload;
     },
     setPhoneNo: (state, { payload }) => {
@@ -87,32 +88,29 @@ export const mrSlice = createSlice({
       state.addressState = payload;
     },
     setPinCode: (state, { payload }) => {
-      console.log("pinCode",payload);
-      
       state.pinCode = payload;
     },
     setEmptyMrRegistration: (state, { payload }) => {
-      state.fullName = "",
-      state.fatherName = "",
-      state.dob = "",
-      state.email = "",
-      state.phoneNo = "",
-      state.address = "",
-      state.addressState = "",
-      state.city = "",
-      state.maritalStatus = "",
-      state.pinCode = "",
-      state.gender = "",
-      state.profileImage = "",
-      state.joiningDate=""
-
+      (state.fullName = ""),
+        (state.fatherName = ""),
+        (state.dob = ""),
+        (state.email = ""),
+        (state.phoneNo = ""),
+        (state.address = ""),
+        (state.addressState = ""),
+        (state.city = ""),
+        (state.maritalStatus = ""),
+        (state.pinCode = ""),
+        (state.gender = ""),
+        (state.profileImage = ""),
+        (state.joiningDate = "");
     },
     setUpcomingAppointmentType: (state, { payload }) => {
       state.upcomingAppointmentType = payload;
     },
     setUpdateUpcomingAppointmentType: (state, { payload }) => {
-      state.upcomingAppointmentType = state.upcomingAppointmentType.filter((item) =>
-        item?.id !== payload?.appointment_id
+      state.upcomingAppointmentType = state.upcomingAppointmentType.filter(
+        (item) => item?.id !== payload?.appointment_id
       );
     },
     setAppointmentType: (state, { payload }) => {
@@ -122,8 +120,8 @@ export const mrSlice = createSlice({
       state.ongoingAppointmentType = payload;
     },
     setUpdateOngoingAppointmentType: (state, { payload }) => {
-      state.ongoingAppointmentType = state.ongoingAppointmentType.filter((item) =>
-        item?.id !== payload?.appointment_id
+      state.ongoingAppointmentType = state.ongoingAppointmentType.filter(
+        (item) => item?.id !== payload?.appointment_id
       );
     },
     setCompletedAppointmentType: (state, { payload }) => {
@@ -177,11 +175,9 @@ export const mrSlice = createSlice({
     setPaymentHistoryData: (state, { payload }) => {
       state.paymentHistoryData = payload;
     },
-
     setDoctorPaymentHistoryData: (state, { payload }) => {
       state.doctorPaymentHistoryData = payload;
     },
-
     setPaymentReceiptData: (state, { payload }) => {
       state.paymentReceiptData = payload;
     },
@@ -189,32 +185,31 @@ export const mrSlice = createSlice({
       state.notificationListingData = payload;
     },
     setMrBankDetails: (state, { payload }) => {
-      state.mrBankDetails = payload
+      state.mrBankDetails = payload;
     },
     setRazorPayKey: (state, { payload }) => {
-      state.razorPayKey = payload
+      state.razorPayKey = payload;
     },
-
     setMrCompany: (state, { payload }) => {
-      state.companyList = payload
+      state.companyList = payload;
     },
     setMrCompanyZone: (state, { payload }) => {
-      state.companyZone = payload
+      state.companyZone = payload;
     },
     setProductList: (state, { payload }) => {
-      state.productList = payload
+      state.productList = payload;
     },
-    removeProduct:(state, { payload }) => {
+    removeProduct: (state, { payload }) => {
       state.productList = state.productList.filter(
-        product => product?.id !== payload,
-      )
+        (product) => product?.id !== payload
+      );
     },
-   
     resetMr: (state, { payload }) => {
-      state = initialState
+      state = initialState;
     },
   },
 });
+
 export const {
   setLoading,
   setRecentAppointmentType,
@@ -262,7 +257,7 @@ export const {
   setEmptyMrRegistration,
   setProductList,
   removeProduct,
-  resetMr
+  resetMr,
 }: any = mrSlice.actions;
-// export const authSelector = state => state.auth;
+
 export const mrReducer = mrSlice.reducer;

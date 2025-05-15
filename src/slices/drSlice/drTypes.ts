@@ -1,12 +1,3 @@
-/* eslint-disable prettier/prettier */
-// export interface DoctorDetails {
-//     fees: number
-//     bank_name: string
-//     account_number: any
-//     account_type: any
-//     dob: string
-//     pan_number: string
-//   }
 export interface DoctorDetails {
   name: string
   avatar: string

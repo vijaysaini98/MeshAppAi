@@ -9,13 +9,10 @@ export const TAB_PARAMS_REVERSE_DATA = "TAB_PARAMS_REVERSE_DATA";
 export const CLIENT_ID = "CLIENT_ID";
 export const NOTIFICATION_DATA = "NOTIFICATION_DATA";
 
-// export const IMAGE_PATH = "https://mesh-doctor-app.onrender.com/";
 export const IMAGE_PATH = "https://backend.meshapp.ai/uploads/";
 export const IMAGE_PATH1 = config.IMAGE_URL;
 export const PDF_PATH = "https://backend.meshapp.ai/";
-export const GOOGL_API = "AIzaSyBXDd4R3FBPZEPUWY3bvxdo2VMJD1s0iFw";
-
-// export const BASE_URL = 'http://65.1.155.112:3002/';
+export const GOOGL_API = config.GOOGL_API;
 export const BASE_URL = " https://backend-dev.meshapp.ai/"; //dev server
 // export const BASE_URL = "https://backend.meshapp.ai/api/"; // live server
 export const CAPTCHA_KEY = "6Ld66UUoAAAAAHz70sT_F2cMpIs-aE4Y_MeRhmBD";

@@ -49,12 +49,9 @@ import RecentRequests from "./components/recentRequest";
 import { UpcomingAndEaringCard } from "./components/upComingCard";
 import { HomeToolBarProps } from "../../../helper/types";
 
-
-
 const HomeToolBar:FC<HomeToolBarProps> = ({ avatar, name, handleBellPress }) => {
   return (
     <View style={styles.homeToolContainer}>
-      {/* <View style={[styles.homeToolContainer2, { gap: 5 }]}> */}
       <Image
         source={avatar ? { uri: `${IMAGE_PATH1}${avatar}` } : DummyDoctor}
         resizeMode="cover"
@@ -68,7 +65,6 @@ const HomeToolBar:FC<HomeToolBarProps> = ({ avatar, name, handleBellPress }) => 
           {name}
         </AppText>
       </View>
-      {/* </View> */}
       <TouchableOpacityView onPress={handleBellPress}>
         <Image source={bellIcon} resizeMode="contain" style={styles.bellIcon} />
       </TouchableOpacityView>

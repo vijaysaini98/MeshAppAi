@@ -21,11 +21,9 @@ import {
   DOCTOR_AVAILABILITY_SCREEN,
   DOCTOR_SETTINGS_SCREEN,
   EDIT_PROFILE,
-  NAVIGATION_AUTH_STACK,
 } from "../../../navigation/routes";
 import KeyBoardAware from "../../../common/KeyboardAware";
-import { IMAGE_PATH1, USER_TOKEN_KEY } from "../../../helper/Constants";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IMAGE_PATH1 } from "../../../helper/Constants";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { deleteAccount, logOut } from "../../../slices/authSlice/authAction";
 import { AnimationSpinner } from "../../../animation";

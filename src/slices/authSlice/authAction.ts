@@ -174,7 +174,7 @@ export const userLogin =
         }
       }
         await AsyncStorage.setItem(LOGIN_TYPE, "MR");
-        dispatch(mrNearByDoctor(3));
+        // dispatch(mrNearByDoctor(3));
         NavigationService.reset(NAVIGATION_MR_BOTTOM_TAB_STACK);
         await AsyncStorage.setItem(
           TAB_PARAMS_DATA,
@@ -186,6 +186,8 @@ export const userLogin =
         );
       // }
     } catch (e: any) {
+      console.log("error of login", e);
+      
       Toast.show(e?.message, Toast.LONG);
       dispatch(setLoading(false));
     } finally {

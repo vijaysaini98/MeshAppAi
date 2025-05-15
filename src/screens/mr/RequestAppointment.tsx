@@ -75,7 +75,7 @@ export const TimeSlotComponent: React.FC<TimeSlotComponentProps> = ({
       {data?.location && (
         <View
           // key={index}
-          style={requestStyle.mainContainer}
+          style={requestStyle.timeMainContainer}
         >
           <Image
             source={location_Icon}
@@ -139,7 +139,7 @@ export const TimeSlotComponent: React.FC<TimeSlotComponentProps> = ({
   );
 };
 
-const RequestAppointment = ({ route }) => {
+const RequestAppointment = ({ route }: { route: any }) => {
   const dispatch = useAppDispatch();
 
   const { data, type } = route?.params ?? "";
@@ -163,9 +163,7 @@ const RequestAppointment = ({ route }) => {
   const [slotIdFound, setSlotIdFound] = useState(null);
   const [slotTime, setSlotTime] = useState("");
   const [selectedSlot1, setSelectedSlot1] = useState(null);
-  const [value, setValue] = useState(
-    data?.doctorAddress?.id ? data?.doctorAddress?.id : null
-  );
+  const [value, setValue] = useState(data?.doctorAddress?.id ?? null);
   const [refreshing, setRefreshing] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
 
@@ -389,7 +387,7 @@ const RequestAppointment = ({ route }) => {
     }
   };
 
-  const handleSelect = (label, id) => {
+  const handleSelect = (label: string, id: number) => {
     const selectedIds = selectedItems.map((item) => item.id);
 
     if (!selectedIds.includes(id)) {
@@ -403,7 +401,7 @@ const RequestAppointment = ({ route }) => {
   };
 
   return (
-    <View style={{ backgroundColor: colors.white, flexGrow: 1 }}>
+    <View style={requestStyle.mainContainer}>
       {isLoading && <AnimationSpinner />}
 
       <AppSafeAreaView statusColor={colors.bg_second}>
@@ -611,11 +609,7 @@ const RequestAppointment = ({ route }) => {
                   <View
                     style={[
                       styles.requestBottomContainer,
-                      {
-                        flexDirection: "row",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      },
+                      requestStyle.selectProductContainer,
                     ]}
                   >
                     <AppText
@@ -627,13 +621,7 @@ const RequestAppointment = ({ route }) => {
                     </AppText>
                     <TouchableOpacityView
                       onPress={() => NavigationService.navigate(ADDPRODUCT)}
-                      style={{
-                        backgroundColor: colors.buttonBg,
-                        borderRadius: 20,
-                        alignItems: "center",
-                        height: 20,
-                        width: 20,
-                      }}
+                      style={requestStyle.addProductStyle}
                     >
                       <AppText type={SIXTEEN} weight={BOLD} color={WHITE}>
                         {"+"}
@@ -682,7 +670,7 @@ const RequestAppointment = ({ route }) => {
                           >
                             <Image
                               source={Cross_logo}
-                              style={{ width: 15, height: 15 }}
+                              style={requestStyle.crossIconStyle}
                               resizeMode="contain"
                             />
                           </TouchableOpacityView>
@@ -707,7 +695,7 @@ const RequestAppointment = ({ route }) => {
           </KeyBoardAware>
         </View>
 
-        <DateModal
+        {/* <DateModal
           mode="time"
           onPress={() => showTimePicker()}
           isVisible={isTimePickerVisible}
@@ -724,7 +712,7 @@ const RequestAppointment = ({ route }) => {
               : null
           }
           // minimumDate={new Date()}
-        />
+        /> */}
       </AppSafeAreaView>
     </View>
   );
@@ -733,7 +721,8 @@ const RequestAppointment = ({ route }) => {
 export default RequestAppointment;
 
 const requestStyle = StyleSheet.create({
-  mainContainer: {
+  mainContainer: { backgroundColor: colors.white, flexGrow: 1 },
+  timeMainContainer: {
     marginTop: 10,
     flexDirection: "row",
     width: "90%",
@@ -845,4 +834,20 @@ const requestStyle = StyleSheet.create({
     borderRadius: 5,
     gap: 5,
   },
+  crossIconStyle: {
+    width: 15,
+    height: 15,
+  },
+  addProductStyle: {
+    backgroundColor: colors.buttonBg,
+    borderRadius: 20,
+    alignItems: "center",
+    height: 20,
+    width: 20,
+  },
+  selectProductContainer:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  }
 });

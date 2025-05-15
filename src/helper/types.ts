@@ -6,7 +6,7 @@ export interface HomeToolBarProps {
 
 export interface MrHomeToolBarProps {
   data?: any;
-  profileImage?: string;
+  profileImage?: string | undefined | null;
   name: string;
   address: string;
   handleNotificationIcon?: () => void | undefined;

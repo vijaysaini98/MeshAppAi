@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Dimensions, Image, Modal, StyleSheet, View } from 'react-native';
+import { Image, Modal, StyleSheet, View } from 'react-native';
 import TouchableOpacityView from '../../../common/TouchableOpacityView';
-;
 import Pdf from 'react-native-pdf';
 import { Cross_icon } from '../../../helper/ImageAssets';
 import { IMAGE_PATH1 } from '../../../helper/Constants';
-
-const Screen = Dimensions.get('window');
 
 export function ImageItem({source, style}) {
   const [height, setHeight] = useState(300);
@@ -87,10 +84,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 10,
     margin: 10,
-    // padding: 10,
     alignItems: "center",
     width: "90%",
-    // aspectRatio: 1,
   },
   closeButtonStyle:{
     position: "absolute",
@@ -108,6 +103,7 @@ const styles = StyleSheet.create({
   imageStyle:{
     width: "100%",
     height: "100%",
-    resizeMode: "contain", borderRadius: 10
+    resizeMode: "contain", 
+    borderRadius: 10
   },
 })

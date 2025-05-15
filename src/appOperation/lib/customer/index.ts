@@ -53,7 +53,7 @@ export default (appOperation: AppOperation) => ({
   mr_near_by_doctor: (value: any, search?: string) =>
     appOperation.get(
       search
-        ? `mr/mr-profile?limit=${value ?? null}&search=${search}`
+        ? `mr/mr-profile?limit=${value ??  null}&search=${search}`
         : `mr/mr-profile?limit=${value ?? null}`,
       undefined,
       undefined,

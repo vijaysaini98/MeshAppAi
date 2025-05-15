@@ -22,7 +22,7 @@ const DropdownComponent = ({
   title,
   required,
   mainContainer
-}) => {
+}:any) => {
   return (
     <View style={[styles.container,mainContainer]}>
       {title && <AppText type={THIRTEEN} weight={MEDIUM}>{title}

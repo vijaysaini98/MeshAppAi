@@ -3,6 +3,14 @@ import React from "react";
 import { Rating } from "react-native-ratings";
 import { AppText, FIFTEEN } from "./AppText";
 
+type StarRatingProps = {
+  customContainerStyle?: object;
+  count?: number;
+  selectedStars?: number | null | undefined;
+  handleRatingStar?: (rating: number) => void;
+  startingValue?: number;
+};
+
 const StarRating = ({
   customContainerStyle,
   count,
@@ -10,19 +18,16 @@ const StarRating = ({
   handleRatingStar,
   startingValue,
   ...props
-}: InputProps) => {
+}: StarRatingProps) => {
 
   return (
     <View style={[styles.mainContainer, customContainerStyle]}>
       <Rating
-        // ratingCount={5}
         size={26}
-        // count={1}
         onFinishRating={handleRatingStar}
         imageSize={15}
         readonly={true}
         startingValue={startingValue}
-      // showReadOnlyText={4}
       />
 
       {selectedStars >= 0 && (

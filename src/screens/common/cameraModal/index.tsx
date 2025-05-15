@@ -80,7 +80,7 @@ const CameraModal = ({
   from,
   setDocument,
   isLoading,
-}) => {
+}:any) => {
   const dispatch = useAppDispatch();
 
   let formData = new FormData();

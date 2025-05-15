@@ -17,7 +17,6 @@ import {
   Toolbar,
   WHITE,
 } from "../../../common";
-;
 import { Alert, Image, View } from "react-native";
 import KeyBoardAware from "../../../common/KeyboardAware";
 import {
@@ -31,10 +30,7 @@ import TouchableOpacityView from "../../../common/TouchableOpacityView";
 import { useDispatch } from "react-redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { colors } from "../../../theme/colors";
-import {
-  appointmentType,
-  feeType,
-} from "../../../helper/dummydata";
+import { appointmentType, feeType } from "../../../helper/dummydata";
 import moment from "moment";
 import DateModal from "../../../common/DateTimePicker";
 import {
@@ -167,7 +163,9 @@ const DoctorsDetails = ({ route }) => {
   const [selectDate, setSelectDate] = useState(data?.date);
 
   const [locationId, setLocationId] = useState(
-    data?.AppointmentTimeSlot?.doctor_location_id ? data?.AppointmentTimeSlot?.doctor_location_id  : data?.doctorAddress?.id
+    data?.AppointmentTimeSlot?.doctor_location_id
+      ? data?.AppointmentTimeSlot?.doctor_location_id
+      : data?.doctorAddress?.id
   );
 
   const { doctorLocations, locationData, isLoading, drEditProfile } =
@@ -337,20 +335,11 @@ const DoctorsDetails = ({ route }) => {
         "The selected date is in the past. Please choose today's date or a future date.",
         Toast.LONG
       );
-    } 
-    // else if(selectedSlot2 != "" && selectedSlot1 !== selectedSlot2){
-    //   return Toast.show("Please select the slot time", Toast.LONG);
-    // }
-    else {
+    } else {
       let datas = {
         request: "Reschedule",
         appointment_id: data?.id,
         slot_id: slotIdFound,
-        // fee_type: keyData?.fee_type?.Free
-        // ? feeTypes === "Free"
-        //   ? keyData?.fee_type?.Free?.toString()
-        //   : keyData?.fee_type?.Paid?.toString()
-        // : "",
         fee_type: fee_type,
         appointment_type: keyData?.appointment_type
           ? appointment === "Clinic Visit"
@@ -407,21 +396,12 @@ const DoctorsDetails = ({ route }) => {
     return formattedTime;
   }
 
-  function formattedTime1(time) {
-    const formattedTime = moment(time, "HH:mm:ss.SSSSSS").format("hh:mm A");
-    return formattedTime;
-  }
-  function formattedDate(date) {
-    const formatdate = moment(date).format("DD MMM,YYYY");
-    return formatdate;
-  }
-
   const temAdress =
     data?.AppointmentTimeSlot?.timeSlotLocation?.doctorAddress.pincode != null
       ? data?.AppointmentTimeSlot?.timeSlotLocation?.doctorAddress
       : data?.doctorAddress;
 
-  const filterSlots = (timeCalculation, currentTime) => {
+  const filterSlots = (timeCalculation: any, currentTime: any) => {
     return timeCalculation
       .map((item) => {
         const filteredTime = item?.time?.filter((slot) => {
@@ -438,12 +418,12 @@ const DoctorsDetails = ({ route }) => {
           time: filteredTime,
         };
       })
-      .filter((location) => location?.time?.length > 0);
+      .filter((location: any) => location?.time?.length > 0);
   };
 
   const filteredSlots = filterSlots(timeCalculation, currentTime);
 
-  const handlePressTimeSlots = (selectedItem) => {
+  const handlePressTimeSlots = (selectedItem: any) => {
     // if (
     //   currentTimeFound >= formattedTime1(selectedItem?.slot_start_time) &&
     //   currentDateFound >= formattedDate(selectDate)
@@ -454,12 +434,12 @@ const DoctorsDetails = ({ route }) => {
     // }
   };
 
-  const handleTimePickerConfirm = (date) => {
-    let timeFormat = moment(date).format("HH:mm");
+  const handleTimePickerConfirm = (date: Date) => {
+    let timeFormat: any = moment(date).format("HH:mm");
     let timeFormatDisplay = moment(date).format("HH:mm:ss");
     // setSelectedSlot1(timeFormat);
-    setSelectedSlot2(timeFormat)
-    setSelectedSlot1(timeFormat)
+    setSelectedSlot2(timeFormat);
+    setSelectedSlot1(timeFormat);
     setTimePickerVisibility(false);
   };
 
@@ -520,14 +500,6 @@ const DoctorsDetails = ({ route }) => {
               : ""}
           </AppText>
         </View>
-        {/* <View style={[styles.feeTypeContainer,{paddingBottom:10}]}>
-            <AppText  type={SIXTEEN} weight={MEDIUM} >Fees Type: </AppText>
-            <View style={styles.feeStatusContainer}>
-              <AppText type={SIXTEEN} weight={SEMI_BOLD} color={WHITE}> 
-              {fee_type!= "200" ? "Paid" : "Free" }
-            </AppText>
-            </View>
-          </View> */}
         <KeyBoardAware isSecond style={styles.secondContainer}>
           <AppText
             type={SIXTEEN}
@@ -555,33 +527,6 @@ const DoctorsDetails = ({ route }) => {
               );
             })}
           </View>
-          {/* {(from == "Recent" && data?.timeSlotDetails?.fee_type !== "200") && (
-            <>
-              <AppText style={styles.feeType} type={SIXTEEN} weight={MEDIUM}>
-                Choose Fee Type
-              </AppText>
-
-              <View style={styles.messageBox}>
-                {feeType?.map((e, index) => {
-                  return (
-                    <TouchableOpacityView
-                    onPress={() => onPressFeeTypeButton(e?.name)}
-                      style={styles.appointmentBox}
-                      key={e.id}
-                    >
-                      <View style={styles.appointmentContainer}>
-                        <RadioButton
-                          value={feeTypes === e?.name ? true : false}
-                          onPress={() => onPressFeeTypeButton(e?.name)}
-                          message={e?.name}
-                        />
-                      </View>
-                    </TouchableOpacityView>
-                  );
-                })}
-              </View>
-            </>
-          )} */}
           <View style={styles.locationContainer}>
             <AppText type={SIXTEEN} weight={MEDIUM}>
               {"Select Location"}
@@ -651,38 +596,38 @@ const DoctorsDetails = ({ route }) => {
               <AppText style={styles.typeText} type={SIXTEEN} weight={MEDIUM}>
                 Select Time
               </AppText>
-              {/* {filteredSlots?.length == 0 && !isLoading && ( */}
-                <TouchableOpacityView
-                  style={styles.addTimeBtn}
-                  onPress={() => setTimePickerVisibility(!isTimePickerVisible)}
+              <TouchableOpacityView
+                style={styles.addTimeBtn}
+                onPress={() => setTimePickerVisibility(!isTimePickerVisible)}
+              >
+                <AppText
+                  style={[styles.typeText, styles.addTimeBtnLabel]}
+                  type={FOURTEEN}
+                  weight={MEDIUM}
                 >
-                  <AppText
-                    style={[styles.typeText, styles.addTimeBtnLabel]}
-                    type={FOURTEEN}
-                    weight={MEDIUM}
-                  >
-                    Add Time
-                  </AppText>
-                </TouchableOpacityView>
-              {/* )} */}
+                  Add Time
+                </AppText>
+              </TouchableOpacityView>
             </View>
-            {selectedSlot2 &&(
-                <View style={styles.wrapContainer}>
-                  <TouchableOpacityView
-                  onPress={()=> setSelectedSlot1(selectedSlot2)}
-                  style={[styles.slotContainer,{backgroundColor:
-                     selectedSlot1 == selectedSlot2
-                     ? colors.border
-                     : "transparent"
-                     },styles.slotText]}>
-                    <AppText type={FOURTEEN}
-                    //  style={styles.slotText}
-                     >
-                      {selectedSlot2}
-                    </AppText>
-                  </TouchableOpacityView>
-                </View>
-              )}
+            {selectedSlot2 && (
+              <View style={styles.wrapContainer}>
+                <TouchableOpacityView
+                  onPress={() => setSelectedSlot1(selectedSlot2)}
+                  style={[
+                    styles.slotContainer,
+                    {
+                      backgroundColor:
+                        selectedSlot1 == selectedSlot2
+                          ? colors.border
+                          : "transparent",
+                    },
+                    styles.slotText,
+                  ]}
+                >
+                  <AppText type={FOURTEEN}>{selectedSlot2}</AppText>
+                </TouchableOpacityView>
+              </View>
+            )}
             <View style={styles.timeSlotContainerStyle}>
               {filteredSlots?.length > 0 ? (
                 <View style={styles.wrapContainer}>
@@ -692,15 +637,15 @@ const DoctorsDetails = ({ route }) => {
                       data={item}
                       index={index}
                       type={from}
-                      handleSelectTimeSlots={(selectedItem) =>{
-                        handlePressTimeSlots(selectedItem)
-                        setSelectedSlot2("")}
-                      }
+                      handleSelectTimeSlots={(selectedItem) => {
+                        handlePressTimeSlots(selectedItem);
+                        setSelectedSlot2("");
+                      }}
                       selectedSlot={selectedSlot1}
                     />
                   ))}
                 </View>
-              ): !isLoading ? (
+              ) : !isLoading ? (
                 <AppText
                   style={styles.noTimeSlotText}
                   weight={MEDIUM}
@@ -710,7 +655,6 @@ const DoctorsDetails = ({ route }) => {
                   No Time Slots Found
                 </AppText>
               ) : null}
-              
             </View>
           </View>
         </KeyBoardAware>
@@ -723,23 +667,25 @@ const DoctorsDetails = ({ route }) => {
           />
         </View>
       </AppSafeAreaView>
-      <DateModal
-        mode="time"
-        onPress={() => showTimePicker()}
-        isVisible={isTimePickerVisible}
-        handleConfirm={(date) => handleTimePickerConfirm(date)}
-        onCancel={() => hideTimePicker()}
-        is24Hour={true}
-        isIcon
-        minimumDate={
-          isDateSame(
-            moment(selectDate).format("YYYY-MM-DD"),
-            moment(new Date()).format("YYYY-MM-DD")
-          )
-            ? new Date()
-            : null
-        }
-      />
+      {isTimePickerVisible && (
+        <DateModal
+          mode="time"
+          onPress={() => showTimePicker()}
+          isVisible={isTimePickerVisible}
+          handleConfirm={(date) => handleTimePickerConfirm(date)}
+          onCancel={() => hideTimePicker()}
+          is24Hour={true}
+          isIcon
+          minimumDate={
+            isDateSame(
+              moment(selectDate).format("YYYY-MM-DD"),
+              moment(new Date()).format("YYYY-MM-DD")
+            )
+              ? new Date()
+              : null
+          }
+        />
+      )}
     </>
   );
 };

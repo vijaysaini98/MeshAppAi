@@ -57,21 +57,19 @@ export const DOCTOR_CHANGE_PASSWORD_SCREEN: string =
 export const DOCTOR_PAYMENT_SCREEN: string = "DOCTOR_PAYMENT_SCREEN";
 export const DOCTOR_PAYMENT_RECEIPT: string = "DOCTOR_PAYMENT_RECEIPT";
 
-//web View 
+//web View
 
 export const WEBVIEWE_SCREEN: string = "WEBVIEWE_SCREEN";
 
 export const MY_LOCATION: string = "MY_LOCATION";
 export const ADD_LOCATION: string = "ADD_LOCATION";
 
-export const ADD_MR : string = "ADD_MR";
+export const ADD_MR: string = "ADD_MR";
 
-export const PRODUCTS :string = "PRODUCTS";
+export const PRODUCTS: string = "PRODUCTS";
 export const ADDPRODUCT: string = "ADDPRODUCT";
 
 export const CALLING_SCREEN: string = "CALLING_SCREEN";
 
 export const CLINIC: string = "CLINIC";
 export const CLINIC_REQUST: string = "CLINIC_REQUST";
-
-

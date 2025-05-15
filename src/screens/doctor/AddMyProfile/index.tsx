@@ -85,22 +85,40 @@ const cleanObject = (obj) => {
 const AddMyProfile = ({ route }) => {
   const routeData = route?.params?.data ?? "";
 
+  const dispatch = useDispatch();
+
+  const bottomSheetRef = useRef<any>(null);
+
+  let formData = new FormData();
+
   const [isFocus, setIsFocus] = useState(false);
   const [isMedicalCouncilFocus, setIsMedicalCouncilFocus] = useState(false);
-  const [imageName, setImageName] = useState("");
-  const dispatch = useDispatch();
+  // const [imageName, setImageName] = useState("");
   const [reqdata, setReqData] = useState([]);
-  const [status, setStatus] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
-  const [image, setImage] = useState();
   const [imgUrl, stImgUrl] = useState("");
   const [isModalVisible1, setModalVisible1] = useState(false);
-  const [consent, setConsent] = useState(false);
   const [optModalType, setOtpModalType] = useState("");
   const [modalType, setModalType] = useState("");
   const [aadharVerifyRes, setAadharVerifyRes] = useState();
-
-  let formData = new FormData();
+  const [media, setMedia] = useState([]);
+  const [moredoc, setMoredoc] = useState("");
+  const [aadhar, setAadhar] = useState("");
+  const [degree, setDegree] = useState("");
+  const [hcpiDocument, setHcpiDocument] = useState("");
+  const [gstDocument, setGstDocument] = useState("");
+  const [type, setType] = useState("");
+  const [referalCode, setReferalCode] = useState("");
+  const [pdfDetails, setPdfDetails] = useState("");
+  const [APiResponse, setAPiResponse] = useState("");
+  const [loader, setLoader] = useState(false);
+  const [openPDF, setIsOpenPDF] = useState(false);
+  const [customOption, setCustomOption] = useState("");
+  const [otp, setOtp] = useState("");
+  const [viewimgData, setViewData] = useState({
+    profile: "",
+    medicalInfo: [],
+  });
 
   const {
     doctorSpeciality,
@@ -126,26 +144,10 @@ const AddMyProfile = ({ route }) => {
     return state.doctor;
   });
 
-  const { verifyOtp, isBtnLoading, privacyPolicy } =
-    useAppSelector((state) => {
+  const { verifyOtp, isBtnLoading, privacyPolicy } = useAppSelector((state) => {
       return state.auth;
     });
 
-  const [media, setMedia] = useState([]);
-  const [moredoc, setMoredoc] = useState("");
-  const [aadhar, setAadhar] = useState("");
-  const [degree, setDegree] = useState("");
-  const [hcpiDocument, setHcpiDocument] = useState("");
-  const [gstDocument, setGstDocument] = useState("");
-  const [type, setType] = useState("");
-  const [referalCode, setReferalCode] = useState("");
-  
-  const bottomSheetRef = useRef<any>(null);
-
-  const [viewimgData, setViewData] = useState({
-    profile: "",
-    medicalInfo: [],
-  });
   useEffect(() => {
     if (imgUrl) {
       const _data = {
@@ -228,9 +230,7 @@ const AddMyProfile = ({ route }) => {
     data = cleanObject(data);
     Keyboard.dismiss();
     dispatch(addMyProfile(data, successCallBack));
-
   };
-  
 
   const successCallBack = () => {
     setTimeout(()=>{
@@ -243,14 +243,6 @@ const AddMyProfile = ({ route }) => {
     setModalVisible(!isModalVisible);
     setType("profile");
   };
-
-  const [pdfDetails, setPdfDetails] = useState("");
-  const [APiResponse, setAPiResponse] = useState("");
-
-  const [loader, setLoader] = useState(false);
-  const [openPDF, setIsOpenPDF] = useState(false);
-
-  const [customOption, setCustomOption] = useState("");
 
   const openPdf = (pdfType) => {
     if (type === "hcpi" && pdfType === undefined) {
@@ -294,8 +286,6 @@ const AddMyProfile = ({ route }) => {
     }
   }, [APiResponse]);
 
-  const [otp, setOtp] = useState("");
-
   const handleOTPChange = (code) => {
     setOtp(code);
   };
@@ -305,7 +295,7 @@ const AddMyProfile = ({ route }) => {
     if (type == "phone") {
       if (!doctorCondition) {
         // if (false) {
-        setStatus(true);
+        // setStatus(true);
       } else if (phoneNo === "") {
         Toast.show("Please Enter Phone Number", Toast.LONG);
       } else if (!validatePhoneNumber(phoneNo)) {
@@ -334,7 +324,7 @@ const AddMyProfile = ({ route }) => {
   const handleResendOtp = () => {
     let data = {
       aadharNo: aadharNo,
-      consent: consent ? "Y" : "N",
+      consent: privacyPolicy ? "Y" : "N",
     };
     dispatch(onAadharValidateSendotp(data, aadharSuccess));
   };
@@ -354,7 +344,7 @@ const AddMyProfile = ({ route }) => {
         otp: otp,
         accessKey: aadharVerifyRes?.requestId,
         aadhaarNo: aadharNo,
-        consent: consent ? "Y" : "N",
+        consent: privacyPolicy ? "Y" : "N",
         caseid: aadharVerifyRes?.clientData?.caseId,
       };
       dispatch(aadharVerifyValidateOtps(data, handleOtpSucess));
@@ -692,9 +682,9 @@ const AddMyProfile = ({ route }) => {
             setModalVisible(thing);
             setIsOpenPDF(false);
           }}
-          setImage={setImage}
+          // setImage={setImage}
           stImgUrl={stImgUrl}
-          setImageName={setImageName}
+          // setImageName={setImageName}
           opnePdf={openPDF && openPdf}
         />
       </AppSafeAreaView>

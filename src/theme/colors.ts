@@ -1,7 +1,7 @@
 export const colors = {
   white: "#ffffff",
   black: "#000000",
-  red:"#FF0000",
+  red: "#FF0000",
   transparent: "transparent",
   buttonBg: "#8D6AE2",
   mainBg: "#FFFFFF",
@@ -27,7 +27,19 @@ export const colors = {
   rbSheetBackgroung: "#333333E6",
   toggleColor: "#FFD9FD",
   toggleCircle: "#0000001A",
-  loaderBackground: 'rgba(0,0,0,0.3)',
-  bordeColor1:"rgba(184, 167, 240, 0.6)",
-  sheetBgColor:"rgba(0,0,0, 0.7)"
+  loaderBackground: "rgba(0,0,0,0.3)",
+  bordeColor1: "rgba(184, 167, 240, 0.6)",
+  sheetBgColor: "rgba(0,0,0, 0.7)",
+  progressBarColor: [
+    "rgba(142, 106, 226, 0.85)",
+    "rgba(142, 106, 226, 0.8)",
+    "rgba(142, 106, 226, 0.7)",
+    "rgba(142, 106, 226, 0.6)",
+  ],
+  modalBagColor: [
+    "rgba(0, 0, 0, 1)",
+    "rgba(0, 0, 0, 0.95)",
+    "rgba(0, 0, 0, 0.9)",
+    // "rgba(0, 0, 0, 0.85)",
+  ],
 };

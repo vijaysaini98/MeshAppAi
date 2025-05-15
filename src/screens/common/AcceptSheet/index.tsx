@@ -32,7 +32,7 @@ interface AcceptTypeSheetProps {
   appointmentFeeType?: string;
 }
 
-const AcceptTypeSheet: FC<AcceptTypeSheetProps> = ({
+const AcceptTypeSheet= ({
   refSheet,
   id,
   time,
@@ -41,10 +41,10 @@ const AcceptTypeSheet: FC<AcceptTypeSheetProps> = ({
   timeSlotsAvailable,
   fees,
   appointmentFeeType,
-}) => {
+}:AcceptTypeSheetProps) => {
   const dispatch = useAppDispatch();
-  const [appointment, setAppointment] = useState();
-  const [feeTypes, setFeeTypes] = useState(appointmentFeeType);
+  const [appointment, setAppointment] = useState<number |undefined>();
+  const [feeTypes, setFeeTypes] = useState<string|undefined>(appointmentFeeType);
   const [keyData, setKeyData] = useState([]);
 
   const { isBtnLoading } = useAppSelector((state) => {
@@ -62,7 +62,7 @@ const AcceptTypeSheet: FC<AcceptTypeSheetProps> = ({
       setKeyData(JSON.parse(newKey));
     }
   };
-  const onPressAppointmentTypeButton = (id) => {
+  const onPressAppointmentTypeButton = (id:number) => {
     if (appointment !== id) {
       setAppointment(id);
     } else {
@@ -70,7 +70,7 @@ const AcceptTypeSheet: FC<AcceptTypeSheetProps> = ({
     }
   };
 
-  const onPressFeeTypeButton = (fee) => {
+  const onPressFeeTypeButton = (fee:string) => {
     if (feeTypes !== fee) {
       setFeeTypes(fee);
     } else {

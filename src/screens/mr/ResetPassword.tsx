@@ -4,7 +4,6 @@ import {
   AppText,
   Button,
   EIGHTEEN,
-  FOURTEEN,
   Input,
   LIGHT,
   MEDIUM,
@@ -12,35 +11,29 @@ import {
   Toolbar,
 } from "../../common";
 import KeyBoardAware from "../../common/KeyboardAware";
-;
 import { logoIcon } from "../../helper/ImageAssets";
 import { styles } from "../../styles/styles";
 import { Image, Keyboard, View } from "react-native";
 import { placeHolderText } from "../../helper/Constants";
-import NavigationService from "../../navigation/NavigationService";
-import { LOGIN_SCREEN } from "../../navigation/routes";
 import { resetPassword } from "../../slices/authSlice/authAction";
 import { useDispatch, useSelector } from "react-redux";
-import { SpinnerSecond } from "../../common/SpinnerSecond";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import Toast from "react-native-simple-toast";
 import { AnimationSpinner } from "../../animation";
 
 const ResetPassword = ({ route }) => {
   const dispatch = useDispatch();
-  const { isLoading,forgotPasswordId } = useSelector((state) => {
+  const passwordInputRef = useRef(null);
+  const { isLoading, forgotPasswordId } = useSelector((state) => {
     return state.auth;
   });
-  const [userName, setUserName] = useState<string>("");
+
   const [newPassword, setNewPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-
-  const [isNewPasswordVisible, setIsNewPasswordVisible] = useState(false);
+  const [isNewPasswordVisible, setIsNewPasswordVisible] =
+    useState<boolean>(false);
   const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
+    useState<boolean>(false);
 
-
-  const passwordInputRef = useRef(null);
   const onReset = async () => {
     if (!newPassword) {
       return Toast.show("New Password is Required ...", Toast.LONG);
@@ -53,14 +46,12 @@ const ResetPassword = ({ route }) => {
       );
     } else {
       let data = {
-        // otp: otp,
         user_id: forgotPasswordId,
         newPassword: newPassword,
         confirmPassword: confirmPassword,
       };
       dispatch(resetPassword(data));
       Keyboard.dismiss();
-      // NavigationService.navigate(LOGIN_SCREEN);
     }
   };
 

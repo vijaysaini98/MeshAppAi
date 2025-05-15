@@ -1,13 +1,6 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import { Alert, Image, Linking, View, ViewStyle } from "react-native";
-import moment from "moment";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { useAppSelector, useAppDispatch } from "../../../../store/hooks";
-import NavigationService from "../../../../navigation/NavigationService";
-import {
-  CALLING_SCREEN,
-  DOCTOR_DATA_DETAILS,
-} from "../../../../navigation/routes";
+import React, { FC } from "react";
+import { View } from "react-native";
+import { useAppDispatch } from "../../../../store/hooks";
 import {
   AppText,
   BOLD,
@@ -15,37 +8,13 @@ import {
   MEDIUM,
   TEN,
   THIRTEEN,
-  TWELVE,
-  FOURTEEN,
-  WHITE,
-  TWENTY,
 } from "../../../../common";
-import {
-  calendarIcon,
-  locationIcon,
-  bellIcon,
-  DummyMr,
-} from "../../../../helper/ImageAssets";
-import TouchableOpacityView from "../../../../common/TouchableOpacityView";
 import { styles } from "../../../../styles/styles";
 import { colors } from "../../../../theme/colors";
-import StarRating from "../../../../common/StarRating";
-import {
-  addRatings,
-  doctorStartMeeting,
-  endMeeting,
-} from "../../../../slices/drSlice/drAction";
 import RejectionSheet from "../../../common/RejectionSheet";
 import AcceptTypeSheet from "../../../common/AcceptSheet";
-import {
-  setAppointmentProductData,
-  setProductModal,
-} from "../../../../slices/drSlice/drSlice";
-import { getReverseKey, getStatus } from "../../../../helper/utility";
-import RatingScreen from "../../../common/RatingScreen";
+import { setProductModal } from "../../../../slices/drSlice/drSlice";
 import ProductModal from "../productModal";
-import { IMAGE_PATH1 } from "../../../../helper/Constants";
-import { universalPaddingVertical } from "../../../../theme/dimens";
 
 interface CompleteAndRejectFeatureProps {
   formattedDate: string;

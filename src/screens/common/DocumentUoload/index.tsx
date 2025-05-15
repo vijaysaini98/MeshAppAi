@@ -1,16 +1,15 @@
-import React from 'react'
-import { Image, Platform, StyleSheet, View } from 'react-native';
-import TouchableOpacityView from '../../../common/TouchableOpacityView';
-;
-import { Cross_icon, addMore, attach } from '../../../helper/ImageAssets';
-import Pdf from 'react-native-pdf';
-import { AppText, FOURTEEN } from '../../../common';
-import { IMAGE_PATH1 } from '../../../helper/Constants';
-import { colors } from '../../../theme/colors';
+import React from "react";
+import { Image, Platform, StyleSheet, View } from "react-native";
+import TouchableOpacityView from "../../../common/TouchableOpacityView";
+import { Cross_icon, addMore, attach } from "../../../helper/ImageAssets";
+import Pdf from "react-native-pdf";
+import { AppText, FOURTEEN } from "../../../common";
+import { IMAGE_PATH1 } from "../../../helper/Constants";
+import { colors } from "../../../theme/colors";
 
 export const getUri = (path) => {
   const data = {
-    uri: IMAGE_PATH1 + path
+    uri: IMAGE_PATH1 + path,
   };
 
   return data;
@@ -22,19 +21,22 @@ interface DocUploadContainerProps {
   handleModal: () => void;
   title: string;
   required: boolean;
-  type: string
+  type: string;
 }
 
-export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, handleDelete, handleModal, title, required, type }) => {
-
+export const DocUploadContainer = ({
+  data,
+  handleDelete,
+  handleModal,
+  title,
+  required,
+  type,
+}: DocUploadContainerProps) => {
   if (type !== "more") {
     return (
       <View style={styles.subContainer1}>
-        <View
-          style={styles.selfieContainer}
-        >
-          
-          {(data?.path) ? (
+        <View style={styles.selfieContainer}>
+          {data?.path ? (
             <>
               <TouchableOpacityView
                 onPress={handleDelete}
@@ -46,7 +48,7 @@ export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, ha
                   style={styles.closeIcon}
                 />
               </TouchableOpacityView>
-              {(data?.path.includes(".pdf")) ? (
+              {data?.path.includes(".pdf") ? (
                 <Pdf
                   source={data?.path ? getUri(data?.path) : getUri(data)}
                   trustAllCerts={Platform.OS === "ios"}
@@ -55,7 +57,7 @@ export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, ha
                 />
               ) : (
                 <Image
-                source={data?.path ? getUri(data?.path) : getUri(data)}
+                  source={data?.path ? getUri(data?.path) : getUri(data)}
                   resizeMode="contain"
                   style={styles.pdf}
                 />
@@ -73,24 +75,19 @@ export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, ha
               />
               <AppText type={FOURTEEN} style={styles.textStyle}>
                 {title}
-                {required &&
-                  <AppText style={styles.requiredStyle}>*</AppText>
-                }
+                {required && <AppText style={styles.requiredStyle}>*</AppText>}
               </AppText>
             </TouchableOpacityView>
           )}
         </View>
       </View>
-    )
+    );
   } else {
     return (
       <>
-        <View
-          style={styles.addMoreContainer}
-        >
+        <View style={styles.addMoreContainer}>
           {data?.map((item, index) => {
             if (true) {
-              // if (index > 1) {
               return (
                 <View
                   key={index}
@@ -109,28 +106,24 @@ export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, ha
                       style={styles.closeIcon}
                     />
                   </TouchableOpacityView>
-                {/*                   
-                  <Pdf
-                    source={getUri(data[index])}
-                    trustAllCerts={Platform.OS === "ios"}
-                    onLoadComplete={(numberOfPages, filePath) => { }}
-                    style={styles.pdf}
-                    trustAllCerts={false}
-                  /> */}
-                   {(data[index]?.includes(".pdf")) ? (
-                <Pdf
-                source={getUri(data[index])}
-                  trustAllCerts={Platform.OS === "ios"}
-                  style={styles.pdf}
-                  trustAllCerts={false}
-                />
-              ) : (
-                <Image
-                source={data[index]?.path ? getUri(data[index]?.path) : getUri(data[index])}
-                  resizeMode="contain"
-                  style={styles.pdf}
-                />
-              )}
+                  {data[index]?.includes(".pdf") ? (
+                    <Pdf
+                      source={getUri(data[index])}
+                      trustAllCerts={Platform.OS === "ios"}
+                      style={styles.pdf}
+                      trustAllCerts={false}
+                    />
+                  ) : (
+                    <Image
+                      source={
+                        data[index]?.path
+                          ? getUri(data[index]?.path)
+                          : getUri(data[index])
+                      }
+                      resizeMode="contain"
+                      style={styles.pdf}
+                    />
+                  )}
                 </View>
               );
             }
@@ -146,21 +139,23 @@ export const DocUploadContainer: React.FC<DocUploadContainerProps> = ({ data, ha
               resizeMode="contain"
               style={styles.selfieCamera}
             />
-            <AppText type={FOURTEEN} style={[styles.textStyle, { width: "50%" }]}>
+            <AppText
+              type={FOURTEEN}
+              style={[styles.textStyle, { width: "50%" }]}
+            >
               {title}
             </AppText>
           </TouchableOpacityView>
         </View>
       </>
-    )
+    );
   }
-}
-
+};
 
 const styles = StyleSheet.create({
   subContainer1: {
     alignSelf: "center",
-    marginHorizontal: 6
+    marginHorizontal: 6,
   },
   selfieContainer: {
     height: 110,
@@ -183,12 +178,12 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   requiredStyle: {
-    color: "red"
+    color: "red",
   },
   pdf: {
     width: 90,
     height: 90,
-    borderRadius: 16
+    borderRadius: 16,
   },
   closeBtnStyle: {
     alignSelf: "flex-end",
@@ -204,5 +199,5 @@ const styles = StyleSheet.create({
   addMoreContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-  }
-})
+  },
+});

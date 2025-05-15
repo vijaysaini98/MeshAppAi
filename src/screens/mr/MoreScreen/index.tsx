@@ -2,13 +2,10 @@ import { View, Alert, ActivityIndicator, Image } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AppSafeAreaView, AppText, Toolbar } from "../../../common";
 import styles from "./style";
-;
 import {
   DummyMr,
-  DummyUser,
   leftArrow,
   logout,
-  payment,
   profileEdit,
   referIcon,
   settings,
@@ -17,7 +14,6 @@ import { MEDIUM, TWELVE, TWENTY_SIX, FOURTEEN } from "../../../common/AppText";
 import MoreTab from "../../common/MoreTab";
 import NavigationService from "../../../navigation/NavigationService";
 import {
-  PAYMENT_HISTORY,
   PRODUCTS,
   SETTINGS_SCREEN,
 } from "../../../navigation/routes";
@@ -34,7 +30,7 @@ import { SectionListhangeMrTabScreen } from "../../../slices/mrSlice/mrSlice";
 import { colors } from "../../../theme/colors";
 import TouchableOpacityView from "../../../common/TouchableOpacityView";
 import CameraModal from "../../common/cameraModal";
-import { shareToAny } from "../../../helper/utility";
+import { capitalizeFirst, shareToAny } from "../../../helper/utility";
 
 const MoreScreen = () => {
   const dispatch = useAppDispatch();
@@ -140,7 +136,8 @@ const MoreScreen = () => {
                 </AppText>
                 <View style={styles.divisionStyle}>
                   <AppText type={TWELVE} style={styles.divisionText}>
-                    {mrProfiledata?.division_details?.name}
+                    {/* {mrProfiledata?.division_details?.name.toUpperCase()} */}
+                    {capitalizeFirst(mrProfiledata?.division_details?.name)}
                   </AppText>
                 </View>
               </View>

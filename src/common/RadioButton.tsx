@@ -67,8 +67,6 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   selectedUIFilter: (colors) => ({
-    // height: "100%",
-    // width: "100%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
@@ -82,7 +80,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: colors.buttonBg,
   }),
-
   unchecked: (colors) => ({
     borderRadius: 20,
     flex: 1,

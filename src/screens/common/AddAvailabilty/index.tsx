@@ -1,20 +1,18 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
+import { AppText, Button, FOURTEEN, PLACEHOLDER } from "../../../common";
 import {
-  AppText,
-  Button,
-  FOURTEEN,
-  PLACEHOLDER,
-} from "../../../common";
-import { borderWidth, universalPaddingHorizontal, universalPaddingHorizontalMedium } from "../../../theme/dimens";
+  borderWidth,
+  universalPaddingHorizontal,
+  universalPaddingHorizontalMedium,
+} from "../../../theme/dimens";
 import { colors } from "../../../theme/colors";
 import DateModal from "../../../common/DateTimePicker";
 import moment from "moment";
 import TouchableOpacityView from "../../../common/TouchableOpacityView";
 import Toast from "react-native-simple-toast";
 import { MEDIUM, THIRTY_EIGHT, SIXTEEN } from "../../../common/AppText";
-;
 import { Cross_icon, downArrow_Icon } from "../../../helper/ImageAssets";
 import { Dropdown } from "react-native-element-dropdown";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -32,7 +30,7 @@ const AddAvailabilty = ({
   appointment,
   userId,
   type,
-  title
+  title,
 }) => {
   const refRBSheet = useRef();
   const dispatch = useAppDispatch();
@@ -43,13 +41,13 @@ const AddAvailabilty = ({
   const [fromDisplay, setFromDisplay] = useState("");
   const [toDisplay, setToDisplay] = useState("");
   const [dateType, setDateType] = useState("");
-  const [value, setValue] = useState()
+  const [value, setValue] = useState();
 
-  const { doctorLocations, locationData,isLoading } = useAppSelector((state) => {
-    return state.doctor;
-  })
-
-
+  const { doctorLocations, locationData, isLoading } = useAppSelector(
+    (state) => {
+      return state.doctor;
+    }
+  );
 
   useEffect(() => {
     if (opneRbSheet) {
@@ -59,7 +57,7 @@ const AddAvailabilty = ({
     }
   }, [opneRbSheet]);
 
-  const showDatePicker = (type) => {
+  const showDatePicker = (type: string) => {
     setDateType(type);
     setDatePickerVisibility(true);
   };
@@ -68,7 +66,7 @@ const AddAvailabilty = ({
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (date) => {
+  const handleConfirm = (date: any) => {
     let timeFormat = moment(date).format("HH:mm:ss");
     let timeFormatDisplay = moment(date).format("HH:mm:ss");
 
@@ -83,15 +81,14 @@ const AddAvailabilty = ({
   };
 
   const handlesubmit = () => {
-
     const moment = require("moment");
-    const newDate = new Date()
-    newDate.setMinutes(newDate.getMinutes())
-    const currentTime = newDate.toLocaleTimeString('en-US', { hour12: false });
+    const newDate = new Date();
+    newDate.setMinutes(newDate.getMinutes());
+    const currentTime = newDate.toLocaleTimeString("en-US", { hour12: false });
 
     let currentDate = moment.utc(newDate).format("YYYY-MM-DD");
-    let selectedDate = moment(setDay, "dddd, DD MMM YYYY").format("YYYY-MM-DD")
-    const formattedDate = moment(setDay).format('YYYY-MM-DD[T]')
+    let selectedDate = moment(setDay, "dddd, DD MMM YYYY").format("YYYY-MM-DD");
+    const formattedDate = moment(setDay).format("YYYY-MM-DD[T]");
     const fromDateObj = new Date(`${formattedDate}${fromdate}`);
     const toTimeObj = new Date(`${formattedDate}${toTime}`);
 
@@ -111,10 +108,9 @@ const AddAvailabilty = ({
     if (timeDifferenceInMinutes < 5) {
       return Toast.show(messages.selectTimeAfterFiveMinutes, Toast.LONG);
     }
-    if (type == 'doctor' && !value) {
+    if (type == "doctor" && !value) {
       return Toast.show(messages.selectLocation, Toast.LONG);
-    }
-    else {
+    } else {
       let momentStartTime = moment(fromdate, "HH:mm:ss");
       let momentEndTime = moment(toTime, "HH:mm:ss");
 
@@ -123,29 +119,27 @@ const AddAvailabilty = ({
           startTime: fromdate,
           endTime: toTime,
           display: `${fromDisplay}-${toDisplay}`,
-          locationId:value
+          locationId: value,
         });
         // setFromDate("");
         // settoTime("");
-        if (type == 'doctor') {
-          handleOnSuccess(selectedDate,fromdate,toTime,value)
-        }
-        else{
-          
+        if (type == "doctor") {
+          handleOnSuccess(selectedDate, fromdate, toTime, value);
+        } else {
           let loc;
-          locationData.forEach((item) => {
+          locationData.forEach((item: any) => {
             if (item?.value == value) {
               loc = item?.label;
             }
           });
-          
-           setData({
-          startTime: fromdate,
-          endTime: toTime,
-          display: `${fromDisplay}-${toDisplay}`,
-          locationId:value,
-          location:loc
-        });
+
+          setData({
+            startTime: fromdate,
+            endTime: toTime,
+            display: `${fromDisplay}-${toDisplay}`,
+            locationId: value,
+            location: loc,
+          });
           setOpenRbSheet(false);
         }
       } else {
@@ -154,40 +148,33 @@ const AddAvailabilty = ({
     }
   };
 
-
-const handleOnSuccess = (day,startTime,endTime,locationId) =>{
+  const handleOnSuccess = (day, startTime, endTime, locationId) => {
     let data = {
-              doctor_id: userId,
-              slot_day: moment(setDay).format("YYYY-MM-DD"),
-              period_availability: appointment === 1 ? "Monthly" : "Weekly",
-              daylight: "",
-              doctor_location_id: locationId,
-              slots_times: [
-                {
-                  startTime:startTime,
-                  endTime: endTime,
-                },
-              ],
-            };
-            dispatch(addDoctorSlots(data, onSucess));
-}
+      doctor_id: userId,
+      slot_day: moment(setDay).format("YYYY-MM-DD"),
+      period_availability: appointment === 1 ? "Monthly" : "Weekly",
+      daylight: "",
+      doctor_location_id: locationId,
+      slots_times: [
+        {
+          startTime: startTime,
+          endTime: endTime,
+        },
+      ],
+    };
+    dispatch(addDoctorSlots(data, onSucess));
+  };
 
-const onSucess = () => {
-  setFromDate("");
-  settoTime("");
-  setOpenRbSheet(false);
-  refRBSheet?.current?.close();
-  dispatch(drProfileTimeSlot(userId));
-};
+  const onSucess = () => {
+    setFromDate("");
+    settoTime("");
+    setOpenRbSheet(false);
+    refRBSheet?.current?.close();
+    dispatch(drProfileTimeSlot(userId));
+  };
 
   return (
-    <View
-    // style={{
-    //   backgroundColor: "#00000000",
-    //   width: "100%",
-    //   height: "50%",
-    // }}
-    >
+    <View>
       <RBSheet
         ref={refRBSheet}
         height={500}
@@ -201,15 +188,15 @@ const onSucess = () => {
             backgroundColor: "#333333E1",
           },
           container: {
-            backgroundColor: 'transparent'
-          }
+            backgroundColor: "transparent",
+          },
         }}
-
       >
         <View style={styles.mainContainer}>
           <TouchableOpacityView
             style={styles.closeBtnStyle}
-            onPress={() => setOpenRbSheet(false)}>
+            onPress={() => setOpenRbSheet(false)}
+          >
             <Image
               source={Cross_icon}
               resizeMode="contain"
@@ -242,9 +229,7 @@ const onSucess = () => {
                   type={FOURTEEN}
                   color={PLACEHOLDER}
                 >
-                  {fromdate
-                    ? fromdate
-                    : "Select From Time"}
+                  {fromdate ? fromdate : "Select From Time"}
                 </AppText>
               </TouchableOpacityView>
             </View>
@@ -264,52 +249,48 @@ const onSucess = () => {
                   type={FOURTEEN}
                   color={PLACEHOLDER}
                 >
-                  {toTime
-                    ? toTime
-                    : "Select To Time"}
+                  {toTime ? toTime : "Select To Time"}
                 </AppText>
               </TouchableOpacityView>
             </View>
           </View>
 
-          {location && 
-           ( 
-           <View style={styles.container}>
-            <Dropdown
-              style={[styles.dropdown
-              ]}
-              placeholderStyle={[styles.placeholderStyle]}
-              selectedTextStyle={styles.selectedTextStyle}
-              inputSearchStyle={styles.inputSearchStyle}
-              iconStyle={styles.iconStyle}
-              data={locationData}
-              search
-              maxHeight={300}
-              labelField="label"
-              valueField="value"
-              placeholder={"Select Location"}
-              searchPlaceholder="Search..."
-              itemTextStyle={{ color: colors.black }}
-              value={value}
-              onChange={(item) => {
-                setValue(item?.value)
-              }}
-              renderRightIcon={() => (
-                <Image
-                  source={downArrow_Icon}
-                  resizeMode="contain"
-                  style={styles.icon}
-                />
-              )}
-            />
-          </View>
-        )}
+          {location && (
+            <View style={styles.container}>
+              <Dropdown
+                style={[styles.dropdown]}
+                placeholderStyle={[styles.placeholderStyle]}
+                selectedTextStyle={styles.selectedTextStyle}
+                inputSearchStyle={styles.inputSearchStyle}
+                iconStyle={styles.iconStyle}
+                data={locationData}
+                search
+                maxHeight={300}
+                labelField="label"
+                valueField="value"
+                placeholder={"Select Location"}
+                searchPlaceholder="Search..."
+                itemTextStyle={{ color: colors.black }}
+                value={value}
+                onChange={(item) => {
+                  setValue(item?.value);
+                }}
+                renderRightIcon={() => (
+                  <Image
+                    source={downArrow_Icon}
+                    resizeMode="contain"
+                    style={styles.icon}
+                  />
+                )}
+              />
+            </View>
+          )}
         </View>
         <View style={styles.buttonContainer}>
           <Button
             containerStyle={styles.submitBtnStyle}
             onPress={handlesubmit}
-            children={title ? title :"Update & Save"}
+            children={title ? title : "Update & Save"}
             loading={isLoading}
           />
         </View>
@@ -335,12 +316,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    overflow: 'hidden'
+    overflow: "hidden",
   },
   buttonContainer: {
     paddingBottom: 20,
     backgroundColor: colors.mainBg,
-    justifyContent: 'flex-end'
+    justifyContent: "flex-end",
   },
   claim: {
     alignSelf: "center",
@@ -369,7 +350,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.mainBg,
     marginTop: 15,
-    paddingHorizontal: universalPaddingHorizontal
+    paddingHorizontal: universalPaddingHorizontal,
   },
   dropdown: {
     height: 60,
@@ -409,18 +390,17 @@ const styles = StyleSheet.create({
   submitBtnStyle: {
     marginTop: 20,
     bottom: 0,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   closeBtnStyle: {
-    alignSelf: 'flex-end',
-    alingItem: 'Center',
-    padding: 5
+    alignSelf: "flex-end",
+    alingItem: "Center",
+    padding: 5,
   },
   closeIconStyle: {
     height: 20,
     width: 20,
     alignSelf: "flex-end",
     bottom: 2,
-  }
+  },
 });
-

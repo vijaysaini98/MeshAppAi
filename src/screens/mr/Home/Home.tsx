@@ -1,14 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  AppSafeAreaView,
-} from "../../../common";
-import {
-  NativeModules,
-  Platform,
-} from "react-native";
-import {
-  DummyMr,
-} from "../../../helper/ImageAssets";
+import { AppSafeAreaView } from "../../../common";
+import { NativeModules, Platform } from "react-native";
+import { DummyMr } from "../../../helper/ImageAssets";
 import NavigationService from "../../../navigation/NavigationService";
 import {
   NOTIFICATION_SCREEN,
@@ -54,9 +47,9 @@ const Home = () => {
 
   useEffect(() => {
     if (focus) {
-      dispatch(mrNearByDoctor(3));
       dispatch(SectionListhangeMrTabScreen(0));
       dispatch(MrProfileData());
+      dispatch(mrNearByDoctor(3));
       dispatch(updateFcmToken());
     }
   }, [focus]);
@@ -146,15 +139,15 @@ const Home = () => {
           }
           handleNotificationIcon={() => onPressBell()}
         />
+        <HomeSearchBar
+          value={value}
+          onChangeText={(text) => onChangeHandler(text)}
+        />
+        <HomeAppointmentContainer data={data} />
         {!show ? (
           <AnimationSpinner />
         ) : (
           <>
-            <HomeSearchBar
-              value={value}
-              onChangeText={(text) => onChangeHandler(text)}
-            />
-            <HomeAppointmentContainer data={data} />
             <NearByList
               data={
                 nearByDoctor[0]?.near_by_doctor

@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     // marginTop: 10,
     marginHorizontal: 16,
     flexDirection: 'row',
-    marginVertical: 15,
+    // marginVertical: 15,
+    paddingHorizontal:10
   },
   imageStyles: {
     height: 44,

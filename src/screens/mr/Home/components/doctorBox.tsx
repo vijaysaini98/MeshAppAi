@@ -20,7 +20,6 @@ import {
 } from "react-native";
 import {
   calendarIcon,
-  download_icon,
   DummyDoctor,
   locationIcon,
 } from "../../../../helper/ImageAssets";
@@ -57,14 +56,10 @@ import {
 import MeetingTypeSheet from "../../../common/MeetingSheet";
 import CancelSheet from "../../../common/CancelSheet";
 import {
-  getClientId,
   getMrLocation,
-  getReverseKey,
   getStatus,
 } from "../../../../helper/utility";
 import { showError } from "../../../../helper/logger";
-
-
 
 export const DoctorBox = ({
     item,
@@ -74,7 +69,7 @@ export const DoctorBox = ({
     location,
     download,
     type,
-  }) => {
+  }:any) => {
     const dispatch = useDispatch();
     const { name, department, address, feature = featureNo } = item;
 
@@ -104,26 +99,6 @@ export const DoctorBox = ({
         setEndMeetingStatusId(id);
       }
     };
-  
-    // const getData = async () => {
-    //   let newKey = await getReverseKey();
-    //   let clinet = await getClientId();
-    //   if (newKey) {
-    //     setKeyData(JSON.parse(newKey));
-    //   }
-    //   if (clinet) {
-    //     setClientIds(clinet);
-    //   }
-    // };
-  
-    // useEffect(() => {
-    //   // getKey();
-    //   getData();
-    // }, []);
-    // useEffect(() => {
-    //   // getKey();
-    //   getData();
-    // }, []);
   
     const featureValidation = () => {
       const onPressRequest = () => {
@@ -157,7 +132,6 @@ export const DoctorBox = ({
       useEffect(() => {
         if (imgUrl) {
           formData.append("image", imgUrl);
-          // setProfile({ ...viewimgData, medicalInfo: [...medicaldoc, imgUrl] });
           dispatch(uploadImage(formData, uploadedImage, setuploadedImage));
         }
       }, [imgUrl]);
@@ -950,7 +924,6 @@ export const DoctorBox = ({
               {imageSelect(num)}
               {locationDate(location)}
             </View>
-            {/* )} */}
           </View>
         </TouchableOpacityView>
         <CameraModal

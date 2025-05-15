@@ -218,18 +218,6 @@ export const doctorSlice = createSlice({
     setSearchDataInitial: (state, { payload }) => {
       state.searchDataInitial = payload;
     },
-    // setDoctorLocation: (state, { payload }) => {
-    //   state.isLocation= payload?.length 
-    //   state.doctorLocations = payload;
-    //   state.locationData = payload.flatMap((item) => {
-    //     return item.doctorLocations.map((location) => {
-    //       return {
-    //         value: location?.id,
-    //         label: `${location?.name},${location?.address}, ${location?.city}, ${location?.pincode}, ${location?.state}`
-    //       };
-    //     });
-    //   });
-    // },
     setDoctorLocation: (state, { payload }) => {
       const locations = payload || []; // Ensure payload is always an array
       state.isLocation = locations.length;

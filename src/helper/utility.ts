@@ -19,7 +19,6 @@ import RNCallKeep from "react-native-callkeep";
 
 const { width, height } = Dimensions.get("window");
 
-
 export const dimensions = {
   width: Dimensions.get("window").width,
   height: Dimensions.get("window").height,
@@ -357,3 +356,8 @@ const displayIncomingCall = (number: string, data: any) => {
 export const hangup = (callUUID: string) => {
   RNCallKeep.endAllCalls();
 };
+
+export function capitalizeFirst(str:string) {
+  if (!str) return ''; // handle empty string
+  return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+}

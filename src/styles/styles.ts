@@ -4,14 +4,12 @@ import {
   averageBuutonHeight,
   borderWidth,
   inputHeight,
-  midButtonHeight,
   Screen,
   universalPaddingHorizontal,
   universalPaddingHorizontalMedium,
   universalPaddingTop,
   universalPaddingVertical,
 } from "../theme/dimens";
-import { isTablet } from "react-native-device-info";
 
 export const styles = StyleSheet.create({
   welcomeLogo: {
@@ -57,16 +55,15 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: universalPaddingHorizontal,
     backgroundColor: colors.mainBg,
-    // backgroundColor:'red',
     paddingTop: universalPaddingTop,
   },
   homeToolContainer2: {
     flexDirection: "row",
     alignItems: "center",
     flexWrap: "wrap",
+    gap: 5,
   },
   homeToolContainer3: {
-    // width: "68%",
     flex: 1,
     marginStart: 10,
   },
@@ -79,8 +76,7 @@ export const styles = StyleSheet.create({
   upcomigToolContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 24,
-    // width:"100%"
+    marginTop: 10,
   },
   homeToolContainer5: {
     flexDirection: "row",
@@ -133,13 +129,9 @@ export const styles = StyleSheet.create({
   },
   appointmentSingle: {
     flex: 1,
-    // paddingStart: isTablet ? "20%" : 36,
     justifyContent: "center",
     paddingHorizontal: 16,
     alignItems: "center",
-    // overflow: "hidden",
-    // backgroundColor:'red',
-    // flexDirection:'row'
   },
   colorLine: {
     position: "absolute",
@@ -374,7 +366,6 @@ export const styles = StyleSheet.create({
   },
   appointmentTypeContainer: {
     flexDirection: "row",
-    // marginTop: 10,
   },
   typeText: {
     // marginTop: 15,
@@ -512,7 +503,6 @@ export const styles = StyleSheet.create({
     borderColor: colors.border,
     borderStyle: "dashed",
     borderRadius: 8,
-    // marginTop: 16,
     justifyContent: "center",
   },
   uploadText: {
@@ -528,17 +518,11 @@ export const styles = StyleSheet.create({
     marginTop: 14,
   },
   typeHereBox: {
-    // borderWidth: 1,
-    // // height: 140,
-    // borderRadius: 6,
     marginTop: 15,
-    // height: inputHeight,
     borderWidth: borderWidth,
     borderColor: colors.border,
     borderRadius: 5,
     paddingHorizontal: universalPaddingHorizontal,
-    // flexDirection: "row",
-    // alignItems: "center",
     backgroundColor: colors.white,
     minHeight: 100,
     marginBottom: 100,
@@ -570,7 +554,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     flex: 1,
     alignSelf: "flex-end",
-    // marginRight: 6,
   },
   downloadContainer: {
     flexDirection: "row",
@@ -586,15 +569,11 @@ export const styles = StyleSheet.create({
     marginHorizontal: universalPaddingHorizontal,
     backgroundColor: colors.buttonBg,
     marginBottom: 16,
-    // flex: 1,
-    // marginEnd: 5,
     height: 50,
-    // marginStart: 5,
   },
   meetingLinkButton: {
     marginHorizontal: universalPaddingHorizontalMedium,
     backgroundColor: colors.buttonBg,
-    // flex: 1,
     marginBottom: 16,
     height: averageBuutonHeight,
   },
@@ -615,17 +594,10 @@ export const styles = StyleSheet.create({
   feeType: {
     marginTop: 20,
   },
-  // upcomingImage: {
-  //   height: 140,
-  //   // width: "96%",
-  //   width:329,
-  //   marginHorizontal: 16,
-  // },
   upcomingImage: {
     height: 170,
     width: Screen.Width - 32,
     marginVertical: 8,
-    // paddingStart: 36,
     justifyContent: "center",
     overflow: "hidden",
     borderRadius: 8,
@@ -633,7 +605,6 @@ export const styles = StyleSheet.create({
   },
   meetingContainer: {
     backgroundColor: colors.border,
-    // height: 150,
     marginTop: 16,
     marginBottom: 40,
   },
@@ -665,7 +636,6 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     borderStyle: "dashed",
     borderRadius: 16,
-    // marginHorizontal:40,
     alignContent: "center",
     justifyContent: "center",
     alignItems: "center",
@@ -680,7 +650,6 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   pdf: {
-    // flex: 1,
     width: 80,
     height: 80,
   },
@@ -695,13 +664,9 @@ export const styles = StyleSheet.create({
     marginTop: 20,
   },
   pdf_two: {
-    // borderWidth: 2,
     height: 100,
     width: 100,
-    // borderColor: colors.border,
-    // borderStyle: "dashed",
     borderRadius: 8,
-    // marginTop: 16,
     justifyContent: "center",
     alignSelf: "center",
   },

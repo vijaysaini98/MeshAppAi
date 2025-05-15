@@ -1,5 +1,18 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Image, Platform, ScrollView, StyleSheet, View } from "react-native";
+import React, {
+  useEffect,
+  useState,
+  useCallback,
+  useMemo,
+  useRef,
+} from "react";
+import {
+  Animated,
+  Image,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  View,
+} from "react-native";
 import Modal from "react-native-modal";
 import { AppText, BOLD, FOURTEEN, SEMI_BOLD, TWELVE } from "../../../common";
 import Swiper from "react-native-swiper";
@@ -8,7 +21,8 @@ import TouchableOpacityView from "../../../common/TouchableOpacityView";
 import { Cross_icon } from "../../../helper/ImageAssets";
 import { IMAGE_PATH1 } from "../../../helper/Constants";
 import { useAppSelector } from "../../../store/hooks";
-import FastImage from 'react-native-fast-image'
+import FastImage from "react-native-fast-image";
+import { ProgressBar } from "../../common/AdvertismentModal.tsx";
 
 const ProductModal = ({ isModalVisible, onClose }) => {
   const [showCloseButton, setShowCloseButton] = useState(false);
@@ -16,8 +30,29 @@ const ProductModal = ({ isModalVisible, onClose }) => {
 
   const { appointmentProductData } = useAppSelector((state) => state?.doctor);
 
+  // const progress = useRef(new Animated.Value(0)).current;
+
+  // const progressBarWidth = useMemo(
+  //   () =>
+  //     progress.interpolate({
+  //       inputRange: [0, 0.5, 1],
+  //       outputRange: ["0%", "50%", "100%"],
+  //     }),
+  //   [progress]
+  // );
+
+  // const animateProgressBar = useCallback(() => {
+  //   progress.setValue(0);
+  //   Animated.timing(progress, {
+  //     toValue: 1,
+  //     duration: countdown * 1000,
+  //     useNativeDriver: false,
+  //     easing: Animated?.Easing?.linear,
+  //   }).start();
+  // }, [progress]);
+
   useEffect(() => {
-    let timer;
+    let timer: NodeJS.Timeout;
     if (isModalVisible) {
       setCountdown(5);
       setShowCloseButton(false);
@@ -34,6 +69,26 @@ const ProductModal = ({ isModalVisible, onClose }) => {
     }
     return () => clearInterval(timer);
   }, [isModalVisible]);
+
+  // useEffect(() => {
+  //   let timer: NodeJS.Timeout;
+  //   if (isModalVisible) {
+  //     setCountdown(10);
+  //     animateProgressBar();
+  //     timer = setInterval(() => {
+  //       setCountdown((prev) => {
+  //         if (prev <= 1) {
+  //           clearInterval(timer);
+  //           setShowCloseButton(true);
+  //           return 0;
+  //         }
+  //         return prev - 1;
+  //       });
+  //     }, 1000);
+  //   }
+
+  //   return () => clearInterval(timer);
+  // }, [isModalVisible, animateProgressBar]);
 
   const renderProductSlide = useCallback(
     (item, productIndex) => (
@@ -81,6 +136,11 @@ const ProductModal = ({ isModalVisible, onClose }) => {
     >
       <View style={styles.absoluteFill}>
         <ScrollView contentContainerStyle={styles.scrollContent}>
+          {/* <ProgressBar
+        style={{backgroundColor: colors.white}}
+                       progressBarColor={colors.progressBarColor}
+                       progressBarWidth={progressBarWidth}
+                     /> */}
           {showCloseButton ? (
             <TouchableOpacityView onPress={onClose} style={styles.closeButton}>
               <Image source={Cross_icon} style={styles.closeIcon} />
@@ -123,7 +183,7 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     backgroundColor: colors.white,
-    paddingVertical:Platform.OS == "ios" ? 40 :20
+    paddingVertical: Platform.OS == "ios" ? 40 : 20,
   },
   scrollContent: {
     flexGrow: 1,

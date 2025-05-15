@@ -13,10 +13,8 @@ import { AppText, SEMI_BOLD, SIXTEEN, WHITE } from "../../../common";
 import {
   callEndIcon,
   muteIcon,
-  noVideoIcon,
   switchCameraIcon,
   unmuteIcon,
-  videoIcon,
 } from "../../../helper/ImageAssets";
 import { dimensions } from "../../../helper/utility";
 import { colors } from "../../../theme/colors";
@@ -30,7 +28,7 @@ interface AghoraVideoProps {
   isMute: boolean;
   mute: () => void;
   videoEnabled: boolean;
-  onVideo: () => void;
+  onVideo: () => void | undefined;
   remoteVideoEnabled: boolean;
 }
 
@@ -45,7 +43,7 @@ export const AghoraVideo= ({
   videoEnabled,
   onVideo,
   remoteVideoEnabled,
-}: any) => {
+}: AghoraVideoProps) => {
   return (
     <ReactNativeModal isVisible={isVisible} style={{ margin: 0 }}>
       <>

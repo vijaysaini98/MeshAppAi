@@ -14,18 +14,17 @@ import {
 } from "../../common";
 import KeyBoardAware from "../../common/KeyboardAware";
 ;
-import { doctor, emailIcon, logoIcon } from "../../helper/ImageAssets";
+import { emailIcon, logoIcon } from "../../helper/ImageAssets";
 import { styles } from "../../styles/styles";
 import { Image, Keyboard, View } from "react-native";
 import { FCM_TOKEN_KEY, LOGIN_TYPE, placeHolderText } from "../../helper/Constants";
 import NavigationService from "../../navigation/NavigationService";
 import {
-  ADD_MR,
   ADD_MY_PROFILE,
   CLAIM_PROFILE,
   RECOVER_PASSWORD_SCREEN,
 } from "../../navigation/routes";
-import { drLogin, mrLogin, userLogin } from "../../slices/authSlice/authAction";
+import { drLogin, mrLogin } from "../../slices/authSlice/authAction";
 import Toast from "react-native-simple-toast";
 import { validateEmail } from "../../helper/utility";
 import { AnimationSpinner } from "../../animation";
@@ -40,6 +39,7 @@ const Login = ({ route }) => {
   const { isLoading } = useAppSelector((state) => {
     return state.auth;
   });
+  
 
   const dispatch = useAppDispatch();
 

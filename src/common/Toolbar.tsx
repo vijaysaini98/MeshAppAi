@@ -10,10 +10,7 @@ import NavigationService from "../navigation/NavigationService";
 import {
   AppText,
   MEDIUM,
-  SEMI_BOLD,
-  SIXTEEN,
   TWENTY_FOUR,
-  TWENTY_SIX,
 } from "./AppText";
 import { colors } from "../theme/colors";
 import { add_logo, backIcon, filterSecond } from "../helper/ImageAssets";

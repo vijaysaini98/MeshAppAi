@@ -1,7 +1,16 @@
 import React, {ReactNode} from 'react';
-import {TouchableOpacity as TouchableOpacityBase, Platform, ActivityIndicator} from 'react-native';
+import {TouchableOpacity as TouchableOpacityBase, Platform, ActivityIndicator, ViewStyle} from 'react-native';
 import {TouchableOpacity as TouchableOpacityGesture} from 'react-native-gesture-handler';
 import { colors } from '../theme/colors';
+
+type TouchableOpacityViewProps = {
+  children: ReactNode;
+  isGesture?: boolean;
+  onFocus?: () => void;
+  containerStyle?: ViewStyle;
+  loader?: boolean;
+  loaderColor?: string;
+}
 
 const TouchableOpacityView = ({
   children,
@@ -11,7 +20,7 @@ const TouchableOpacityView = ({
   loader,
   loaderColor,
   ...props
-}: any) => {
+}: TouchableOpacityViewProps) => {
   const isIos = Platform.OS === 'ios';
 
   if (isGesture && !isIos) {
@@ -32,8 +41,6 @@ const TouchableOpacityView = ({
               ):
             children
           }
-        {/* {children} */}
-
       </TouchableOpacityBase>
     );
   }

@@ -1,19 +1,19 @@
-import React from 'react';
-import { Image, Modal, StyleSheet, View } from 'react-native';
-import { UnderMaintainess } from '../../../helper/ImageAssets';
+import React from "react";
+import { Modal, View, Image, StyleSheet } from "react-native";
+import { UnderMaintainess } from "../../../helper/ImageAssets";
+// import { UnderMaintainess } from "../../../assets"; // Make sure this path is correct
 
 const MaintenanceModal = ({ visible, imageUrl }) => {
   return (
-    <Modal
-      visible={visible}
-      transparent={true}
-      animationType="fade"
-    >
+    <Modal visible={visible} transparent animationType="fade">
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={UnderMaintainess}
-          // resizeMode={FastImage.resizeMode.cover}
+          source={
+            imageUrl
+              ? { uri: imageUrl }
+              : UnderMaintainess
+          }
           resizeMode="cover"
         />
       </View>
@@ -21,22 +21,18 @@ const MaintenanceModal = ({ visible, imageUrl }) => {
   );
 };
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-    image: {
-      width: '100%',
-      height: '100%',
-      position: 'absolute',
-    },
-    overlay: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-    },
-});
-
 export default MaintenanceModal;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "80%",
+    height: "50%",
+    borderRadius: 10,
+  },
+});

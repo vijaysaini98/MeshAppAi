@@ -25,51 +25,7 @@ import {
 import AnimatedLottieView from "lottie-react-native";
 import { Screen, universalPaddingHorizontal } from "../../theme/dimens";
 
-// import Video from "react-native-video";
 
-// const { width } = Dimensions.get("window");
-
-// const media = {
-//   type: "video",
-//   url: "https://www.w3schools.com/html/mov_bbb.mp4", // replace with your actual video URL
-// };
-
-// export const SingleMediaModal = ({ visible, onClose, media }) => {
-//   const handlePress = async () => {
-//     const supported = await Linking.canOpenURL(media.url);
-//     if (supported) {
-//       await Linking.openURL(media.url);
-//     } else {
-//       console.warn("Can't open URL:", media.url);
-//     }
-//   };
-
-//   return (
-//     <Modal visible={visible} transparent animationType="fade">
-//       <View style={styles.overlay}>
-//         <TouchableOpacity style={styles.background} onPress={onClose} />
-
-//         <TouchableOpacity style={styles.mediaWrapper} onPress={handlePress}>
-//           {media.type === "image" ? (
-//             <Image
-//               source={{ uri: media.url }}
-//               style={styles.media}
-//               resizeMode="contain"
-//             />
-//           ) : (
-//             <Video
-//               source={{ uri: media.url }}
-//               style={styles.media}
-//               resizeMode="contain"
-//               paused
-//               controls
-//             />
-//           )}
-//         </TouchableOpacity>
-//       </View>
-//     </Modal>
-//   );
-// };
 
 const AuthLoading = () => {
   const dispatch = useAppDispatch();
@@ -103,8 +59,6 @@ const AuthLoading = () => {
     }
   };
 
-  const [visible, setVisible] = useState(true);
-
   return (
     <AppSafeAreaView>
       <View style={styles.topContainer}>
@@ -133,23 +87,5 @@ const styles = StyleSheet.create({
     height: Screen.Height * 0.6,
     width: Screen.Width - universalPaddingHorizontal,
   },
-  overlay: {
-    flex: 1,
-    backgroundColor: "#000000cc",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  background: {
-    ...StyleSheet.absoluteFillObject,
-  },
-  mediaWrapper: {
-    width: Screen.Width * 0.9,
-    height: Screen.Width * 0.6,
-    zIndex: 1,
-  },
-  media: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 10,
-  },
+ 
 });

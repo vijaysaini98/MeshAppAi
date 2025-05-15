@@ -5,6 +5,6 @@ export const showError = (err: any) => {
   Toast.showWithGravity(temp, Toast.LONG, Toast.BOTTOM);
 };
 
-export const logger = e => {
+export const logger = (e:any) => {
   console.log(e);
 };

@@ -108,9 +108,12 @@ export const mrAppointmentType =
   };
 
 export const mrNearByDoctor =
-  (value: any, search: string | undefined) =>
+  (value: any, search?: string | undefined) =>
   async (dispatch: Dispatch<any>) => {
     try {
+      console.log("value", value);
+      console.log("search", search);
+      
       dispatch(setLoading(true));
       const response: any = await appOperation.customer.mr_near_by_doctor(
         value,

@@ -35,10 +35,8 @@ import {
 } from "../../../slices/mrSlice/mrAction";
 import Pdf from "react-native-pdf";
 import { Screen } from "../../../theme/dimens";
-import Toast from "react-native-simple-toast";
 import DocumentPreViewModal from "../DocumentPreViewModal";
 import KeyBoardAware from "../../../common/KeyboardAware";
-// import ImagePicker from "react-native-image-crop-picker";
 import { showError } from "../../../helper/logger";
 import { CameraOptions, launchCamera } from "react-native-image-picker";
 
@@ -308,29 +306,12 @@ const MeetingTypeSheet = ({ refSheet, item }) => {
               <View style={{ marginTop: 10 }}>
                 {imgUrl && imgUrl?.uri ? (
                   <View style={styles.imageContainer}>
-                    {/* <TouchableOpacityView
-                      onPress={() => handleImageCancel()}
-                      style={meetingTypeSheetStyle.cancelImageBtnStyle}
-                    >
-                      <Image
-                        source={Cross_icon}
-                        resizeMode="contain"
-                        style={{
-                          height: 16,
-                          width: 16,
-                        }}
-                      />
-                    </TouchableOpacityView> */}
                     <CancelImageBtn handleCancel={() => handleImageCancel()} />
-                    {/* <TouchableOpacityView
-                      onPress={() => handleModal("image", imgUrl?.uri)}
-                    > */}
                     <Image
                       source={{ uri: imgUrl?.uri }}
                       resizeMode="cover"
                       style={styles.selfieCamera1}
                     />
-                    {/* </TouchableOpacityView> */}
                   </View>
                 ) : (
                   <TouchableOpacityView
@@ -374,28 +355,6 @@ const MeetingTypeSheet = ({ refSheet, item }) => {
             <View style={styles.imageContainer}>
               {pdfUpload ? (
                 <View>
-                  {/* <TouchableOpacityView
-                    onPress={() => handleCancelPdf()}
-                    style={{
-                      alignSelf: "flex-end",
-                      position: "absolute",
-                      zIndex: 1,
-                      top: 0,
-                      left: "80%",
-                      borderRadius: 20,
-                      backgroundColor: "white",
-                      //  right:,
-                    }}
-                  >
-                    <Image
-                      source={Cross_icon}
-                      resizeMode="contain"
-                      style={{
-                        height: 16,
-                        width: 16,
-                      }}
-                    />
-                  </TouchableOpacityView> */}
                   <CancelImageBtn handleCancel={() => handleCancelPdf()} />
                   <TouchableOpacityView
                     onPress={() => handleModal("pdf", pdfUpload)}
@@ -410,7 +369,6 @@ const MeetingTypeSheet = ({ refSheet, item }) => {
               ) : (
                 <TouchableOpacityView
                   onPress={handleClickDoc}
-                  // style={styles.imageContainer}
                   loader={pdfLoader}
                 >
                   <Image
@@ -437,28 +395,6 @@ const MeetingTypeSheet = ({ refSheet, item }) => {
                   let space = index % 2 !== 0 && { marginRight: 2 };
                   return (
                     <View style={[styles.imageContainer, space]}>
-                      {/* <TouchableOpacityView
-                        onPress={() => handleCancelPdf("addMore", index)}
-                        style={{
-                          alignSelf: "flex-end",
-                          position: "absolute",
-                          zIndex: 1,
-                          top: 0,
-                          left: "80%",
-                          borderRadius: 20,
-                          backgroundColor: "white",
-                          //  right:,
-                        }}
-                      >
-                        <Image
-                          source={Cross_icon}
-                          resizeMode="contain"
-                          style={{
-                            height: 16,
-                            width: 16,
-                          }}
-                        />
-                      </TouchableOpacityView> */}
                       <CancelImageBtn
                         handleCancel={() => handleCancelPdf("addMore", index)}
                       />

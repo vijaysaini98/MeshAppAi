@@ -1,42 +1,29 @@
-import { View, Text, Alert, TextInput, Platform, Image } from "react-native";
+import { View, Platform, Image, StyleSheet } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import {
   AppText,
   Button,
   FOURTEEN,
   Input,
-  LIGHT,
-  RadioButton,
   SEMI_BOLD,
-  SIXTEEN,
   TWENTY_FOUR,
 } from "../../../common";
 import { styles } from "../../../styles/styles";
-import { rejectionMessage } from "../../../helper/dummydata";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
-import { ifscVerify, requestStatus } from "../../../slices/drSlice/drAction";
+import { ifscVerify } from "../../../slices/drSlice/drAction";
 import TouchableOpacityView from "../../../common/TouchableOpacityView";
-import NavigationService from "../../../navigation/NavigationService";
-import {
-  MR_APPOINTMENT_SCREEN,
-  NAVIGATION_DR_BOTTOM_TAB_STACK,
-} from "../../../navigation/routes";
-import { SectionListChangeDrTabScreen } from "../../../slices/drSlice/drSlice";
 import { colors } from "../../../theme/colors";
-import { IMAGE_PATH, IMAGE_PATH1, placeHolderText } from "../../../helper/Constants";
-import { fontFamily } from "../../../theme/typography";
+import { IMAGE_PATH1 } from "../../../helper/Constants";
 import { ScrollView } from "react-native-gesture-handler";
 import {
   Cross_icon,
   Profile_Icon,
   bank_icon,
   camera_icon,
-  delete_icon,
   password,
 } from "../../../helper/ImageAssets";
 import DropdownComponent from "../Dropdown";
-;
 import { PDFModal } from "../PDFModal";
 import Pdf from "react-native-pdf";
 import {
@@ -45,7 +32,13 @@ import {
 } from "../../../slices/mrSlice/mrAction";
 import Toast from "react-native-simple-toast";
 
-const BankDetailSheet = ({ refSheet, id }) => {
+const BankDetailSheet = ({
+  refSheet,
+  id,
+}: {
+  refSheet: any;
+  id: number | undefined;
+}) => {
   const dispatch = useAppDispatch();
   const inputRef = useRef();
 
@@ -54,8 +47,8 @@ const BankDetailSheet = ({ refSheet, id }) => {
   });
 
   const { isBtnLoading } = useAppSelector((state) => {
-    return state.auth
-  })
+    return state.auth;
+  });
 
   const [dataValue, setDataValue] = useState("");
   const [isFocus, setIsFocus] = useState(false);
@@ -85,8 +78,16 @@ const BankDetailSheet = ({ refSheet, id }) => {
       );
       setIfscCode(mrBankDetails?.ifsc_code ? mrBankDetails?.ifsc_code : "");
       setPanNumber(mrBankDetails?.pan_number ? mrBankDetails?.pan_number : "");
-      setAPiResponse(mrBankDetails?.supporting_documents ? mrBankDetails?.supporting_documents : "");
-      setPdfDetails(mrBankDetails?.supporting_documents ? mrBankDetails?.supporting_documents : "")
+      setAPiResponse(
+        mrBankDetails?.supporting_documents
+          ? mrBankDetails?.supporting_documents
+          : ""
+      );
+      setPdfDetails(
+        mrBankDetails?.supporting_documents
+          ? mrBankDetails?.supporting_documents
+          : ""
+      );
     }
   }, [mrBankDetails]);
 
@@ -131,11 +132,10 @@ const BankDetailSheet = ({ refSheet, id }) => {
         supporting_documents: APiResponse && APiResponse,
         full_name: fullName,
         ifsc_code: ifscCode,
-        branch_name:branch
+        branch_name: branch,
       };
-      
+
       dispatch(mrAddBankDetails(data, successCallBack));
-      
     }
   };
 
@@ -148,21 +148,21 @@ const BankDetailSheet = ({ refSheet, id }) => {
   };
 
   const onPressDelete = () => {
-    setAPiResponse("")
-  }
+    setAPiResponse("");
+  };
 
-  const handleIfscCodeVerify = () =>{
+  const handleIfscCodeVerify = () => {
     let data = {
-      ifscCode: ifscCode
-    }
-    dispatch(ifscVerify(data,onIfscSuccess))
-  }
+      ifscCode: ifscCode,
+    };
+    dispatch(ifscVerify(data, onIfscSuccess));
+  };
 
-  const onIfscSuccess = (data) =>{
-    setIfscCodeVerify(true)
-    setBankName(data?.bank)
-    setBranch(data?.branch)
-  }
+  const onIfscSuccess = (data) => {
+    setIfscCodeVerify(true);
+    setBankName(data?.bank);
+    setBranch(data?.branch);
+  };
 
   return (
     <RBSheet
@@ -180,7 +180,7 @@ const BankDetailSheet = ({ refSheet, id }) => {
         },
       }}
     >
-      <View style={{ flex: 1, marginHorizontal: 16 }}>
+      <View style={bankDetailSheetStyles.container}>
         <AppText
           type={TWENTY_FOUR}
           weight={SEMI_BOLD}
@@ -190,7 +190,7 @@ const BankDetailSheet = ({ refSheet, id }) => {
         </AppText>
         <ScrollView
           style={styles.rejectionBox}
-          contentContainerStyle={{ flexGrow: 1 }}
+          contentContainerStyle={bankDetailSheetStyles.scrollContainer}
           showsVerticalScrollIndicator={false}
         >
           <View>
@@ -202,57 +202,40 @@ const BankDetailSheet = ({ refSheet, id }) => {
               onChangeText={(text) => setFullName(text)}
             />
 
-            <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
-            >
+            <View style={bankDetailSheetStyles.fromContainer}>
               <Input
-                mainContainer={{
-                  width: "63%",
-                }}
+                mainContainer={bankDetailSheetStyles.ifscInput}
                 placeholder="IFSC Code"
                 icon={password}
                 value={ifscCode}
                 onChangeText={(value) => setIfscCode(value)}
-              // keyboardType="numeric"
-              // maxLength={10}
-              // editable={routeData?.registration_number ? false : true}
               />
               <Button
                 onPress={() => handleIfscCodeVerify()}
-                containerStyle={{
-                  width: "33%",
-                  marginTop: 15,
-                }}
+                containerStyle={bankDetailSheetStyles.validateBtn}
                 children="Validate"
-                disabled={(ifscCode == null || ifscCode == "") ? true : false}
+                disabled={ifscCode == null || ifscCode == "" ? true : false}
                 loading={isBtnLoading}
               />
             </View>
-
-            {/* <Input
-              value={bankName}
-              placeholderColor={colors.defaultText}
-              placeholder="Bank Name"
-              icon={bank_icon}
-              onChangeText={(text) => setBankName(text)}
-            /> */}
-             {(ifscCodeVerify || bankName || branch) && 
-         (<> 
-         <Input
-            placeholder="Bank Name"
-            icon={bank_icon}
-            value={bankName}
-            onChangeText={(val) => setBankName(val)}
-            editable={false}
-          />
-          <Input
-            placeholder="Branch Name"
-            icon={bank_icon}
-            value={branch}
-            onChangeText={(val) => setBranch(val)}
-            editable={false}
-          />
-          </>)}
+            {(ifscCodeVerify || bankName || branch) && (
+              <>
+                <Input
+                  placeholder="Bank Name"
+                  icon={bank_icon}
+                  value={bankName}
+                  onChangeText={(val) => setBankName(val)}
+                  editable={false}
+                />
+                <Input
+                  placeholder="Branch Name"
+                  icon={bank_icon}
+                  value={branch}
+                  onChangeText={(val) => setBranch(val)}
+                  editable={false}
+                />
+              </>
+            )}
             <Input
               value={accountNumber}
               placeholderColor={colors.defaultText}
@@ -261,7 +244,6 @@ const BankDetailSheet = ({ refSheet, id }) => {
               onChangeText={(text) => setAccountNumber(text)}
               maxLength={18}
             />
-            {/* <Input placeholder="Account Type" /> */}
 
             <View>
               <DropdownComponent
@@ -269,11 +251,6 @@ const BankDetailSheet = ({ refSheet, id }) => {
                 isFocus={isFocus}
                 onFocus={() => setIsFocus(true)}
                 onBlur={() => setIsFocus(false)}
-                //   placeholder={
-                //     !isFocus
-                //       ? drEditProfile?.doctor_details?.account_type
-                //       : "Select"
-                //   }
                 placeholder="Account Type"
                 onChange={(item) => {
                   setDataValue(item.value);
@@ -283,14 +260,6 @@ const BankDetailSheet = ({ refSheet, id }) => {
                 customPlaceholderStyle={{ color: colors.defaultText }}
               />
             </View>
-
-            {/* <Input
-              value={ifscCode}
-              placeholderColor={colors.defaultText}
-              placeholder="IFSC Code"
-              onChangeText={(text) => setIfscCode(text)}
-            /> */}
-
             <Input
               value={panNumber}
               placeholderColor={colors.defaultText}
@@ -309,31 +278,27 @@ const BankDetailSheet = ({ refSheet, id }) => {
                       <>
                         <TouchableOpacityView
                           onPress={() => onPressDelete()}
-                          style={{ alignSelf: "flex-end", position: 'absolute', zIndex: 1, top: 0, right: 2 }}
+                          style={bankDetailSheetStyles.docCancelBtn}
                         >
                           <Image
                             source={Cross_icon}
                             resizeMode="contain"
-                            style={{
-                              height: 16,
-                              width: 16,
-                            }}
+                            style={bankDetailSheetStyles.crossIconStyle}
                           />
                         </TouchableOpacityView>
                         <Pdf
                           source={getUri(APiResponse)}
                           // source={getUri(APiResponse?.data)}
                           trustAllCerts={Platform.OS === "ios"}
-                          onLoadComplete={(numberOfPages, filePath) => { }}
+                          onLoadComplete={(numberOfPages, filePath) => {}}
                           style={styles.pdf}
                           trustAllCerts={false}
                         />
-
                       </>
                     )}
                   </>
                 ) : (
-                  <View style={{ alignItems: "center" }}>
+                  <View style={bankDetailSheetStyles.addDocContainer}>
                     <TouchableOpacityView
                       onPress={() => openPdf()}
                       style={styles.selfieContainer}
@@ -368,3 +333,38 @@ const BankDetailSheet = ({ refSheet, id }) => {
 };
 
 export default BankDetailSheet;
+
+const bankDetailSheetStyles = StyleSheet.create({
+  container: {
+    flex: 1,
+    marginHorizontal: 16,
+  },
+  scrollContainer: {
+    flexGrow: 1,
+  },
+  fromContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  ifscInput: {
+    width: "63%",
+  },
+  validateBtn: {
+    width: "33%",
+    marginTop: 15,
+  },
+  docCancelBtn: {
+    alignSelf: "flex-end",
+    position: "absolute",
+    zIndex: 1,
+    top: 0,
+    right: 2,
+  },
+  crossIconStyle: {
+    height: 16,
+    width: 16,
+  },
+  addDocContainer: {
+    alignItems: "center",
+  },
+});

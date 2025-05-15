@@ -1,4 +1,4 @@
-import React, { Children } from "react";
+import React from "react";
 import {
   View,
   Modal,
@@ -16,13 +16,13 @@ interface DeleteConfirmationModalProps {
   onDelete?: () => void;
 }
 
-const DeleteConfirmationModal: React.FC<DeleteConfirmationModalProps> = ({
+const DeleteConfirmationModal = ({
   visible,
   confirmationText,
   buttonTitle,
   onCancel,
   onDelete
-}) => {
+}:DeleteConfirmationModalProps) => {
   return (
     <Modal
       animationType="fade"

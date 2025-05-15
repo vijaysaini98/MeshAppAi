@@ -17,9 +17,8 @@ import {
 import { fontFamily } from "../theme/typography";
 import { colors } from "../theme/colors";
 import TouchableOpacityView from "./TouchableOpacityView";
-
-import { AppText, BOLD, FOURTEEN, MEDIUM, THIRTEEN, TWELVE } from "./AppText";
-import { edit, editIcon, eye_close_icon, eye_open_icon, validateIcon } from "../helper/ImageAssets";
+import { AppText, MEDIUM, THIRTEEN, TWELVE } from "./AppText";
+import { editIcon, eye_close_icon, eye_open_icon, validateIcon } from "../helper/ImageAssets";
 
 interface InputProps extends TextInputProps {
   value?: string;
@@ -38,9 +37,9 @@ interface InputProps extends TextInputProps {
   icon2?: any;
   icon?: any;
   placeholderColor?: TextStyle;
-  verifyIcon:boolean,
-  required:boolean,
-  editInput:boolean,
+  verifyIcon?:boolean,
+  required?:boolean,
+  editInput?:boolean,
   onPressEditInput?:()=>void
 }
 

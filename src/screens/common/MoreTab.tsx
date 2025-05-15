@@ -38,7 +38,7 @@ const MoreTab: React.FC<MoreTabProps> = ({
             tintColor={tintColor}
           />
         )}
-        <AppText style={{ paddingLeft: 16 }} type={EIGHTEEN}>
+        <AppText style={styles.titleStyle} type={EIGHTEEN}>
           {title}
         </AppText>
       </View>
@@ -68,17 +68,17 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 16,
-    // alignSelf:"center",
     alignItems: "center",
+  },
+  titleStyle: { 
+    paddingLeft: 16 
   },
   IconStyle1: {
     width: 20,
     height: 20,
-    // alignSelf:"center"
   },
   subContainer: {
     flexDirection: "row",
-    // backgroundColor:"red",
   },
   IconStyle2: {
     width: 6,

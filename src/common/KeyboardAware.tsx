@@ -1,10 +1,10 @@
 import React from 'react';
-import {KeyboardAwareScrollView} from '@codler/react-native-keyboard-aware-scroll-view';
+import {KeyboardAwareScrollView, KeyboardAwareScrollViewProps} from '@codler/react-native-keyboard-aware-scroll-view';
 import {commonStyles} from '../theme/commonStyles';
 import {colors} from '../theme/colors';
 import { Platform } from 'react-native';
 
-const KeyBoardAware = props => {
+const KeyBoardAware = (props:KeyboardAwareScrollViewProps) => {
   return (
     <KeyboardAwareScrollView
       {...props}

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Button, Text } from "react-native";
-// import DocumentPicker from "react-native-document-picker";
 import { pick,types,isErrorWithCode } from '@react-native-documents/picker'
 
 const Pdf = () => {

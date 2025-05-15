@@ -3,5 +3,6 @@ export const config = {
   ANDROID_CODEPUSH_DEPLOYMENT: `0vg7L_uHYg_gl8YdfHbDj6gjWU8wuRprmNKka`,
   ENVIRONMENT: `Staging`,
   WEBSITE_URL: `https://backend-dev.meshapp.ai/api/v1/`,
-  IMAGE_URL: `https://backend-dev.meshapp.ai/`
+  IMAGE_URL: `https://backend-dev.meshapp.ai/`,
+  GOOGL_API:"AIzaSyBXDd4R3FBPZEPUWY3bvxdo2VMJD1s0iFw"
 };
