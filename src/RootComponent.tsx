@@ -25,7 +25,12 @@ import {
   isNewerVersion,
 } from "./helper/utility";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { IMAGE_PATH1, NOTIFICATION_DATA, VALUES } from "./helper/Constants";
+import {
+  IMAGE_PATH1,
+  NOTIFICATION_DATA,
+  USER_TOKEN_KEY,
+  VALUES,
+} from "./helper/Constants";
 import RNCallKeep from "react-native-callkeep";
 import {
   ClientRoleType,
@@ -34,8 +39,8 @@ import {
   IRtcEngineEx,
 } from "react-native-agora";
 import IncomingCall from "../libs/react-native-incoming-call";
-import { AghoraVideo } from "./screens/common/AgoraComponent";
-import { AdvertismentMediaModal } from "./screens/common/AdvertismentModal.tsx";
+import { AdvertismentMediaModal, AghoraVideo } from "./screens/common";
+import { getAddvertisment } from "./slices/authSlice/authAction";
 
 const { UnlockDevice } = NativeModules;
 
@@ -66,16 +71,40 @@ const ServerCheckComp = ({ visible }: { visible: boolean }) => {
 let version = ReactNativeVersionInfo.appVersion;
 let buildVersion = ReactNativeVersionInfo.buildVersion;
 
-const media = {
-  type: "video",
-  url: "https://www.w3schools.com/html/mov_bbb.mp4", // replace with your actual video URL
-  link: "https://www.google.co.in/",
+let advData = {
+  ad: 368,
+  code: 200,
+  data: {
+    advertiser_id: 19,
+    createdAt: "2025-05-27T06:44:37.000Z",
+    deletedAt: null,
+    description:
+      "Certainly! Here's a general product description for dietary supplements, which you can customize based on the type (e.g. multivitamin, joint support, immune booster, etc.",
+    end_date: "2025-05-28",
+    id: 36,
+    media_path: [
+      "uploads/1748328274906-0-11611004589663021.jpg",
+      "uploads/1748328274906-0-11611004589663021.jpg",
+      "uploads/1748328274906-0-11611004589663021.jpg",
+      "uploads/1748328274906-0-11611004589663021.jpg",
+    ],
+    redirect_url: "https://www.google.co.in/",
+    start_date: "2025-05-27",
+    status: 2,
+    title: "abc",
+    type: "image",
+    updatedAt: "2025-05-27T06:44:51.000Z",
+  },
+  message: "Advertisement fetched successfully.",
+  success: true,
 };
 
 const RootComponent = ({ children }: { children: any }) => {
   const dispatch = useAppDispatch();
 
-  const { appInfo } = useAppSelector((state) => state.auth);
+  const { appInfo, isAdverVisible, advertismentData } = useAppSelector(
+    (state) => state.auth
+  );
 
   const netInfo = useNetInfo();
   const agoraEngineRef = useRef<IRtcEngineEx>(); // Agora engine instance
@@ -91,10 +120,10 @@ const RootComponent = ({ children }: { children: any }) => {
   const [remoteUid, setRemoteUid] = useState(0);
   const [videoEnabled, setVideoEnabled] = useState(false);
   const [remoteVideoEnabled, setRemoteVideoEnabled] = useState(true);
-  const [isAdverVisible, setIsAdverVisible] = useState(false);
+  // const [isAdverVisible, setIsAdverVisible] = useState(false);
 
   const onNotification = (message: string) => {};
-  const onOpenNotification = (message: string) => {};// the props contain the messages and the locale
+  const onOpenNotification = (message: string) => {}; // the props contain the messages and the locale
 
   useEffect(() => {
     const unsubscribe = NetInfo.addEventListener((state: any) => {
@@ -116,18 +145,28 @@ const RootComponent = ({ children }: { children: any }) => {
     }
   }, [netConnected]);
 
+  // useEffect(() => {
+  //   // const customerToken = await AsyncStorage.getItem(USER_TOKEN_KEY);
+  //   // if (customerToken) {
+  //   //     dispatch(getAddvertisment());
+  //   // }
+  //   dispatch(getAppVersion()); // Fetch the current app version
+  //   events(); // Initialize events or listeners
+
+  //   // const timer = setTimeout(() => {
+  //   //   // setIsAdverVisible(true);
+  //   // }, 3000);
+
+  //   // return () => {
+  //   //   clearTimeout(timer); // Cleanup timer on unmount
+  //   // };
+  // }, []);
+
   useEffect(() => {
     dispatch(getAppVersion()); // Fetch the current app version
+    // If events is async, use: (async () => { await events(); })();
     events(); // Initialize events or listeners
-
-    const timer = setTimeout(() => {
-      setIsAdverVisible(true);
-    }, 3000);
-
-    return () => {
-      clearTimeout(timer); // Cleanup timer on unmount
-    };
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (appInfo && Array.isArray(appInfo)) {
@@ -278,7 +317,7 @@ const RootComponent = ({ children }: { children: any }) => {
       console.log(e);
     }
   };
-  
+
   function showMessage(msg: string) {
     console.log("+++++++", msg);
   }
@@ -380,11 +419,11 @@ const RootComponent = ({ children }: { children: any }) => {
           remoteVideoEnabled={remoteVideoEnabled}
         />
       )}
-      {isAdverVisible && (
+      {isAdverVisible && advertismentData && advertismentData?.data && (
         <AdvertismentMediaModal
           visible={isAdverVisible}
-          onClose={() => setIsAdverVisible(false)}
-          media={media}
+          mediaData={advertismentData}
+          // mediaData={advData}
         />
       )}
     </View>

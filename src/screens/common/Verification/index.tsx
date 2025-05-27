@@ -4,30 +4,20 @@ import {
   AppText,
   Button,
   EIGHTEEN,
-  FOURTEEN,
   LIGHT,
   MEDIUM,
   SIXTEEN,
   THIRTY_EIGHT,
   Toolbar,
 } from "../../../common";
-
-;
 import OTPInputView from "@twotalltotems/react-native-otp-input";
-
-// import {styles} from '../../../styles/styles';
-import { View, Alert, Image } from "react-native";
+import { View, Image } from "react-native";
 import KeyBoardAware from "../../../common/KeyboardAware";
 import { logoIcon } from "../../../helper/ImageAssets";
 import styles from "./styles";
 import TouchableOpacityView from "../../../common/TouchableOpacityView";
-import NavigationService from "../../../navigation/NavigationService";
-import { RESET_PASSWORD_SCREEN } from "../../../navigation/routes";
 import { useDispatch, useSelector } from "react-redux";
 import { onResend, verifyOtp } from "../../../slices/authSlice/authAction";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { colors } from "../../../theme/colors";
-import { SpinnerSecond } from "../../../common/SpinnerSecond";
 import { AnimationSpinner } from "../../../animation";
 
 const Verification = () => {

@@ -4,6 +4,8 @@ import {
   AppText,
   BOLD,
   Button,
+  BUTTON_BG,
+  EIGHTEEN,
   FOURTEEN,
   Input,
   MEDIUM,
@@ -22,6 +24,7 @@ import {
 import {
   DummyDoctor,
   locationIcon,
+  noResult,
   searchIcon,
 } from "../../helper/ImageAssets";
 import TouchableOpacityView from "../../common/TouchableOpacityView";
@@ -42,6 +45,7 @@ import {
 } from "../../theme/dimens";
 import { colors } from "../../theme/colors";
 import { getStatus } from "../../helper/utility";
+import LottieView from "lottie-react-native";
 
 type InputProps = {
   value: string;
@@ -64,9 +68,8 @@ type NearByCardProps = {
   item: any;
   index: number;
   handleOnPressBox: () => void;
-  handleRequestOnPress: () => void; 
-}
-
+  handleRequestOnPress: () => void;
+};
 
 const HomeSearchBar = ({ value, onChangeText }: InputProps) => {
   return (
@@ -169,7 +172,7 @@ export const NearByCard = ({
   index,
   handleOnPressBox,
   handleRequestOnPress,
-}:NearByCardProps) => {
+}: NearByCardProps) => {
   const [showFullAddress, setShowFullAddress] = useState(false);
 
   const address = `${item?.address?.address},${item?.address?.city},${item?.address?.state}`;
@@ -218,62 +221,7 @@ export const NearByCard = ({
   );
 };
 
-// const DoctorList = () => {
-//   const dispatch = useAppDispatch();
-//   let focus = useIsFocused();
-
-//   const { isLoading, nearByDoctor, nearByProfile } = useAppSelector((state) => {
-//     return state.mr;
-//   });
-
-//   const [refreshing, setRefreshing] = useState(false);
-
-//   useEffect(() => {
-//     if (focus) {
-//       dispatch(mrNearByDoctor(null));
-//     }
-//   }, [focus]);
-
-//   const onRefresh = () => {
-//     dispatch(mrNearByDoctor(null));
-//   };
-
-//   const onPressBox = (e) => {
-//     NavigationService.navigate(DOCTOR_PROFILE_SCREEN, { data: e });
-//   };
-
-//   const onPressRequest = (item) => {
-//     NavigationService.navigate(REQUEST_APPOINTMENT_SCREEN, { data: item });
-//   };
-
-//   return (
-//     <>
-//       {isLoading && <AnimationSpinner />}
-
-//       <AppSafeAreaView style={{ backgroundColor: colors.white }}>
-//         <HomeSearchBar />
-//         <FlatList
-//           refreshControl={
-//             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-//           }
-//           data={nearByDoctor[0]?.near_by_doctor ? nearByDoctor[0]?.near_by_doctor : nearByDoctor}
-//           renderItem={({ item, index }) => (
-//             <NearByCard
-//               item={item}
-//               index={index}
-//               handleOnPressBox={() => onPressBox(item)}
-//               handleRequestOnPress={() => onPressRequest(item)}
-//             />
-//           )}
-//           contentContainerStyle={styles.listContainerStyle}
-//           keyExtractor={(item) => item?.id?.toString()}
-//           showsVerticalScrollIndicator={false}
-//         />
-//       </AppSafeAreaView>
-//     </>
-//   );
-// };
-let LIMIT =10
+let LIMIT = 10;
 const DoctorList = () => {
   const dispatch = useAppDispatch();
   const isFocused = useIsFocused();
@@ -288,17 +236,20 @@ const DoctorList = () => {
 
   useEffect(() => {
     if (isFocused) {
-      fetchDoctors(1); // Fetch the first page
+      fetchDoctors(1);
     }
   }, [isFocused]);
 
   const fetchDoctors = useCallback(
-    (pageNumber: number, value: string|undefined,isRefreshing:boolean) => {
-      console.log("value", value);
-      if(isRefreshing){
+    (
+      pageNumber?: number,
+      value?: string | undefined,
+      isRefreshing?: boolean
+    ) => {
+      if (isRefreshing) {
         setValue("");
       }
-      const limt = pageNumber * LIMIT; 
+      const limt = pageNumber * LIMIT;
       dispatch(mrNearByDoctor(limt, value));
     },
     [dispatch, page]
@@ -306,21 +257,10 @@ const DoctorList = () => {
 
   const onRefresh = useCallback(() => {
     setRefreshing(true);
-    fetchDoctors(1, undefined,true); // Refresh starts from the first page
-    // setValue("");
+    fetchDoctors(1, undefined, true);
     setPage(1);
     setTimeout(() => setRefreshing(false), 1000);
   }, [fetchDoctors]);
-
-  const loadMoreDoctors = useCallback(() => {
-    if (!isFetchingMore) {
-      // setIsFetchingMore(true);
-      const nextPage = page + 1;
-      fetchDoctors(nextPage, value);
-      setPage(nextPage);
-      // setIsFetchingMore(false);
-    }
-  }, [fetchDoctors, isFetchingMore, page]);
 
   const onPressBox = useCallback((doctor: any) => {
     NavigationService.navigate(DOCTOR_PROFILE_SCREEN, { data: doctor });
@@ -329,6 +269,19 @@ const DoctorList = () => {
   const onPressRequest = useCallback((doctor: any) => {
     NavigationService.navigate(REQUEST_APPOINTMENT_SCREEN, { data: doctor });
   }, []);
+
+  const onChangeHandler = (value: string) => {
+    setPage(1);
+    setValue(value);
+    clearTimeout(timeout.current);
+    if (value?.trim()) {
+      timeout.current = setTimeout(() => {
+        dispatch(mrNearByDoctor(page, value));
+      }, 500);
+    } else {
+      dispatch(mrNearByDoctor(null));
+    }
+  };
 
   const renderDoctorCard = useCallback(
     ({ item, index }: { item: any; index: number }) => (
@@ -342,19 +295,35 @@ const DoctorList = () => {
     [onPressBox, onPressRequest]
   );
 
-  const onChangeHandler = (value: string) => {
-    setPage(1);
-    setValue(value);
-    // handler(value)
-    clearTimeout(timeout.current);
-    if (value?.trim()) {
-      timeout.current = setTimeout(() => {
-        dispatch(mrNearByDoctor(page, value));
-      }, 500);
-    } else {
-      dispatch(mrNearByDoctor(null));
+  const loadMoreDoctors = useCallback(() => {
+    if (!isFetchingMore) {
+      const nextPage = page + 1;
+      fetchDoctors(nextPage, value);
+      setPage(nextPage);
     }
-  };
+  }, [fetchDoctors, isFetchingMore, page]);
+
+  const listEmptyContainer = useCallback(() => {
+    return (
+      <View style={styles.emptyListContainerStyle}>
+        <LottieView
+          resizeMode="contain"
+          style={styles.emptyLottieStyle}
+          source={noResult}
+          autoPlay
+          loop
+        />
+        <AppText
+          style={styles.emptyLottieText}
+          type={EIGHTEEN}
+          weight={MEDIUM}
+          color={BUTTON_BG}
+        >
+          No Doctor's Found
+        </AppText>
+      </View>
+    );
+  }, []);
 
   return (
     <>
@@ -374,6 +343,7 @@ const DoctorList = () => {
           onEndReached={loadMoreDoctors}
           onEndReachedThreshold={0.5}
           ListFooterComponent={isFetchingMore && <AnimationSpinner />}
+          ListEmptyComponent={listEmptyContainer}
         />
       </AppSafeAreaView>
     </>
@@ -455,5 +425,19 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: colors.buttonBg,
     flex: 0.2,
+  },
+  emptyListContainerStyle: {
+    flex: 1,
+    alignItems: "center",
+  },
+  emptyLottieStyle: {
+    height: 250,
+    width: 250,
+    alignSelf: "center",
+  },
+  emptyLottieText: {
+    alignSelf: "center",
+    marginBottom: 30,
+    color: colors.bg_one_dark,
   },
 });

@@ -28,10 +28,10 @@ interface ToolbarProps {
   noBack?: boolean | undefined;
   isFilter?: boolean | undefined;
   isAdd?: boolean | undefined;
-  handleAddIcon:() => void | undefined;
-  isAddIcon:boolean | undefined;
-  rightIcon:any
-  backFunction:()=>void | undefined
+  handleAddIcon?:() => void | undefined;
+  isAddIcon?:boolean | undefined;
+  rightIcon?:any
+  backFunction?:()=>void | undefined
 }
 
 const Toolbar = ({

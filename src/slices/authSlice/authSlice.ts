@@ -11,7 +11,10 @@ export const initialState = {
   mrLoginData: [],
   adharVerifyOtp: false,
   privacyPolicy: false,
-  appInfo:{}
+  appInfo:{},
+  advertismentData:{},
+  isAdverVisible: false,
+
 };
 
 export const authSlice = createSlice({
@@ -54,6 +57,12 @@ export const authSlice = createSlice({
     setAppinfo : (state,{payload})=>{
       state.appInfo = payload
     },
+    setAdverModal : (state,{payload})=>{
+      state.isAdverVisible = payload
+    },
+    setAdvertisment : (state,{payload})=>{
+      state.advertismentData = payload
+    },
     resetAuth: (state,{payload})=>{
       state = initialState
     },
@@ -71,6 +80,8 @@ export const {
   setBtnLoading,
   setPrivacyPolicy,
   setAppinfo,
+  setAdvertisment,
+  setAdverModal,
   resetAuth
 } : any =authSlice.actions;
 // = authSlice.actions;

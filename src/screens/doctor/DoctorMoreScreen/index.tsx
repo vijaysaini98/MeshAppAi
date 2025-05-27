@@ -6,6 +6,7 @@ import {
   clinicIcon,
   clockIcon1,
   DummyDoctor,
+  insuranceIcon,
   leftArrow,
   logout,
   profileEdit,
@@ -16,12 +17,7 @@ import { MEDIUM, TWENTY_SIX, FOURTEEN } from "../../../common/AppText";
 import MoreTab from "../../common/MoreTab";
 import styles from "./styles";
 import NavigationService from "../../../navigation/NavigationService";
-import {
-  CLINIC,
-  DOCTOR_AVAILABILITY_SCREEN,
-  DOCTOR_SETTINGS_SCREEN,
-  EDIT_PROFILE,
-} from "../../../navigation/routes";
+import * as routes from "../../../navigation/routes";
 import KeyBoardAware from "../../../common/KeyboardAware";
 import { IMAGE_PATH1 } from "../../../helper/Constants";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
@@ -118,21 +114,21 @@ const DoctorMoreScreen = () => {
             source2={leftArrow}
             onPress={() =>{
                dispatch(getSpeciality());
-              NavigationService.navigate(EDIT_PROFILE)}}
+              NavigationService.navigate(routes.EDIT_PROFILE)}}
           />
           <MoreTab
             tabStyle={styles.settingStyle}
             source={clinicIcon}
             title="Clinic"
             source2={leftArrow}
-            onPress={() => NavigationService.navigate(CLINIC)}
+            onPress={() => NavigationService.navigate(routes.CLINIC)}
           />
           <MoreTab
             tabStyle={styles.settingStyle}
             source={settings}
             title="Settings"
             source2={leftArrow}
-            onPress={() => NavigationService.navigate(DOCTOR_SETTINGS_SCREEN)}
+            onPress={() => NavigationService.navigate(routes.DOCTOR_SETTINGS_SCREEN)}
           />
           <MoreTab
             tabStyle={styles.settingStyle}
@@ -140,9 +136,24 @@ const DoctorMoreScreen = () => {
             title="My Availability"
             source2={leftArrow}
             onPress={() =>
-              NavigationService.navigate(DOCTOR_AVAILABILITY_SCREEN)
+              NavigationService.navigate(routes.DOCTOR_AVAILABILITY_SCREEN)
             }
           />
+           {/* <MoreTab
+            tabStyle={styles.settingStyle}
+            source={insuranceIcon}
+            title="Insurance"
+            source2={leftArrow}
+            onPress={() =>
+              NavigationService.navigate(routes.INSURANCE_SCREEN)
+            }
+          /> */}
+          {/* <MoreTab
+            tabStyle={styles.settingStyle}
+            source={logout}
+            title="Legal Help"
+            onPress={() => createAlert()}
+          /> */}
           <MoreTab
             tabStyle={styles.settingStyle}
             source={logout}

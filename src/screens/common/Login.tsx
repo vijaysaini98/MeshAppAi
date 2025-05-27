@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AppSafeAreaView,
   AppText,
@@ -33,13 +33,12 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setPrivacyPolicy } from "../../slices/authSlice/authSlice";
 import { getMrCompanyList } from "../../slices/mrSlice/mrAction";
 
-const Login = ({ route }) => {
+const Login = ({ route }:any) => {
   const { type } = route?.params;
 
   const { isLoading } = useAppSelector((state) => {
     return state.auth;
   });
-  
 
   const dispatch = useAppDispatch();
 
@@ -68,10 +67,10 @@ const Login = ({ route }) => {
       if (type == "doctor") {
         dispatch(drLogin(data))
         //  await AsyncStorage.setItem(LOGIN_TYPE);
-        await AsyncStorage.setItem(LOGIN_TYPE, "DR");
+        // await AsyncStorage.setItem(LOGIN_TYPE, "DR");
       } else {
         dispatch(mrLogin(data))
-        await AsyncStorage.setItem(LOGIN_TYPE, "MR");
+        // await AsyncStorage.setItem(LOGIN_TYPE, "MR");
       }
       // dispatch(userLogin(data))
     }

@@ -102,6 +102,9 @@ const ProductModal = ({ isModalVisible, onClose }) => {
           autoplayTimeout={3}
           showsPagination={false}
           style={styles.imageSwiper}
+          removeClippedSubviews={false} // important fix for blinking
+          loadMinimal
+          loadMinimalSize={1}
         >
           {item?.images?.map((image, imageIndex) => (
             <View key={imageIndex} style={styles.imageSlide}>
@@ -161,6 +164,9 @@ const ProductModal = ({ isModalVisible, onClose }) => {
             dotColor="#ccc"
             activeDotColor={colors.buttonBg}
             paginationStyle={{ bottom: 15 }}
+            //  removeClippedSubviews={false} // important fix for blinking
+            // loadMinimal
+            // loadMinimalSize={1}
           >
             {productSlides}
           </Swiper>

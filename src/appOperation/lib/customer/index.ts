@@ -302,4 +302,10 @@ export default (appOperation: AppOperation) => ({
 
   pdf_upload: (data: any) =>
     appOperation.post("upload/pdf", data, CUSTOMER_TYPE),
+
+   get_advertisment: (data?:any)=> appOperation.get("advertisement/ads",undefined,undefined,CUSTOMER_TYPE),
+
+    update_advertisment: (data?: any) =>
+       appOperation.patch("advertisement", data, CUSTOMER_TYPE),
+    // appOperation.patch("advertisement", data, undefined, CUSTOMER_TYPE),
 });

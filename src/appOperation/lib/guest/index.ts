@@ -50,7 +50,11 @@ export default (appOperation: AppOperation) => ({
     aadhar_verify_validate_otp: (data: any) =>
       appOperation.post("users/aadhar-verifyotp", data, GUEST_TYPE),
 
-    appVersion : (data:any)=>
+    appVersion : (data?:any)=>
       appOperation.get("/users/version",undefined,undefined,GUEST_TYPE),
-    
+
+    // get_advertisment: (data?:any)=> appOperation.get("advertisement/adsvertisement",undefined,undefined,GUEST_TYPE),
+
+    // update_advertisment: (data?: any) =>
+    // appOperation.patch("advertisement", data, undefined, GUEST_TYPE),
 });

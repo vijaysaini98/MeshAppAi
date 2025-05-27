@@ -31,7 +31,7 @@ export const colors = {
   bordeColor1: "rgba(184, 167, 240, 0.6)",
   sheetBgColor: "rgba(0,0,0, 0.7)",
   progressBarColor: [
-    "rgba(142, 106, 226, 0.85)",
+    "rgba(142, 106, 226, 0.90)",
     "rgba(142, 106, 226, 0.8)",
     "rgba(142, 106, 226, 0.7)",
     "rgba(142, 106, 226, 0.6)",

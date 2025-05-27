@@ -139,7 +139,7 @@ export const logoutAction = () => async () => {
   NavigationService.reset(NAVIGATION_AUTH_STACK);
 };
 
-export const getAppVersion = (data: any) => async (dispatch: AppDispatch) => {
+export const getAppVersion = (data?: any) => async (dispatch: AppDispatch) => {
   try {
     const response: any = await appOperation.guest.appVersion();
     if (response.success) {

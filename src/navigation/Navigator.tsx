@@ -64,6 +64,7 @@ import AddProduct from "../screens/mr/Products/addProduct";
 import CallingScreen from "../screens/doctor/CallingScreen";
 import Clinic from "../screens/doctor/Clinic";
 import ClinicRequest from "../screens/doctor/Clinic/clinicRequest";
+import Insurance from "../screens/doctor/Insurance";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -191,6 +192,7 @@ const MyAuthLoadingStack = () => (
     <Stack.Screen name={routes.CALLING_SCREEN} component={CallingScreen} />
     <Stack.Screen name={routes.CLINIC} component={Clinic} />
     <Stack.Screen name={routes.CLINIC_REQUST} component={ClinicRequest} />
+     <Stack.Screen name={routes.INSURANCE_SCREEN} component={Insurance} />
   </Stack.Navigator>
 );
 

@@ -17,8 +17,15 @@ import {
 import { commonStyles } from "../../../../theme/commonStyles";
 import { NearByCard } from "../../DoctorList";
 import { styles } from "../../../../styles/styles";
+import LottieView from "lottie-react-native";
+import { noResult } from "../../../../helper/ImageAssets";
+import { colors } from "../../../../theme/colors";
 
-export const NearByList: FC<MrNearByListProps> = ({ refreshing, onRefresh, data }) => {
+export const NearByList: FC<MrNearByListProps> = ({
+  refreshing,
+  onRefresh,
+  data,
+}) => {
   const onPressBox = (e: any) => {
     NavigationService.navigate(DOCTOR_PROFILE_SCREEN, { data: e });
   };
@@ -49,15 +56,34 @@ export const NearByList: FC<MrNearByListProps> = ({ refreshing, onRefresh, data 
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {data?.map((item: any, index: number) => (
-          <NearByCard
-            key={index}
-            item={item}
-            index={index}
-            handleOnPressBox={() => onPressBox(item)}
-            handleRequestOnPress={() => onPressRequest(item)}
-          />
-        ))}
+        {data.length >= 1 ? (
+          data?.map((item: any, index: number) => (
+            <NearByCard
+              key={index}
+              item={item}
+              index={index}
+              handleOnPressBox={() => onPressBox(item)}
+              handleRequestOnPress={() => onPressRequest(item)}
+            />
+          ))
+        ) : (
+          <>
+            <LottieView
+              resizeMode="contain"
+              style={nearListStyle.emptyLottieStyle}
+              source={noResult}
+              autoPlay
+              loop
+            />
+            <AppText
+              style={nearListStyle.emptyLottieText}
+              type={FOURTEEN}
+              color={BUTTON_BG}
+            >
+              No Doctor's Found
+            </AppText>
+          </>
+        )}
       </ScrollView>
     </View>
   );
@@ -73,5 +99,15 @@ const nearListStyle = StyleSheet.create({
   containerStyle: {
     marginHorizontal: 16,
     flex: 1,
+  },
+  emptyLottieStyle: {
+    height: 150,
+    width: 150,
+    alignSelf: "center",
+  },
+  emptyLottieText: {
+    alignSelf: "center",
+    marginBottom: 30,
+    color: colors.bg_one_dark,
   },
 });

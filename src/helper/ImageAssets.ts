@@ -124,6 +124,8 @@ export const switchIcon = require("../../assets/images/switch.png");
 export const historyIcon = require("../../assets/images/history.png");
 export const clinicIcon = require("../../assets/images/clinic-stroke-rounded.png")
 
+export const insuranceIcon = require("../../assets/images/insurance-svgrepo-com.png")
+
 
 //animations
 export const popper= require('../../assets/animation/popper.json')

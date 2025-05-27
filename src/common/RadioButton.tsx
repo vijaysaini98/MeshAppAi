@@ -12,6 +12,7 @@ interface RadioButtonProps {
   radioContainerStyle?: StyleProp<ViewStyle>;
   radioStyle?: StyleProp<ViewStyle>;
   appTextType?: string;
+  color?:string
 }
 
 const RadioButton = ({
@@ -22,6 +23,7 @@ const RadioButton = ({
   radioContainerStyle,
   appTextType,
   radioStyle,
+  color
 }: RadioButtonProps) => {
   return (
     <TouchableOpacityView
@@ -29,21 +31,13 @@ const RadioButton = ({
       onPress={onPress}
       disabled={disabled}
     >
-      <View
-        style={[
-          {
-            width: 20,
-            height: 20,
-          },
-          radioStyle,
-        ]}
-      >
+      <View style={[styles.radioStyle, radioStyle]}>
         {value ? (
-          <View style={styles.selectedUIFilter(colors)}>
-            <View style={styles.selectedUIFilterInner(colors)} />
+          <View style={styles.selectedUIFilter(color)}>
+            <View style={styles.selectedUIFilterInner(color)} />
           </View>
         ) : (
-          <View style={styles.unchecked(colors)} />
+          <View style={styles.unchecked(color)} />
         )}
       </View>
       {message && (
@@ -66,25 +60,29 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 5,
   },
-  selectedUIFilter: (colors) => ({
+  radioStyle: {
+    width: 20,
+    height: 20,
+  },
+  selectedUIFilter: (color) => ({
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: colors.buttonBg,
+    borderColor: color? color : colors.buttonBg,
     flex: 1,
   }),
-  selectedUIFilterInner: (colors) => ({
+  selectedUIFilterInner: (color) => ({
     height: 14,
     width: 14,
     borderRadius: 10,
-    backgroundColor: colors.buttonBg,
+    backgroundColor:color? color : colors.buttonBg,
   }),
-  unchecked: (colors) => ({
+  unchecked: (color) => ({
     borderRadius: 20,
     flex: 1,
     borderWidth: 1,
-    borderColor: colors.buttonBg,
+    borderColor: color? color : colors.buttonBg,
   }),
   message: {
     // left: 10,

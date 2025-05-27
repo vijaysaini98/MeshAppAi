@@ -3,7 +3,6 @@ import { Image, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import { AppSafeAreaView, AppText, THIRTEEN, Toolbar } from "../../common";
 import TouchableOpacityView from "../../common/TouchableOpacityView";
-;
 import { checkbox_check, checkbox_uncheck } from "../../helper/ImageAssets";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { setPrivacyPolicy } from "../../slices/authSlice/authSlice";
@@ -12,13 +11,12 @@ import { config } from "../../../config/config";
 import { colors } from "../../theme/colors"; // Ensure you have this import
 
 const WebViewScreen = ({ route }) => {
-
-  const { type } = route?.params ?? ""
+  const { type } = route?.params ?? "";
 
   const webRef = useRef();
   const dispatch = useAppDispatch();
 
-  const { privacyPolicy } = useAppSelector((state) => state?.auth)
+  const { privacyPolicy } = useAppSelector((state) => state?.auth);
 
   const [isDisabled, setIsDisabled] = useState(true);
   const [isConsent, setIsConsent] = useState(privacyPolicy);
@@ -39,12 +37,12 @@ const WebViewScreen = ({ route }) => {
   // }, [isConsent, dispatch]);
 
   const handleConsent = () => {
-    setIsConsent(!isConsent)
+    setIsConsent(!isConsent);
     dispatch(setPrivacyPolicy(!privacyPolicy));
     if (!privacyPolicy) {
       NavigationService.goBack();
     }
-  }
+  };
 
   return (
     <AppSafeAreaView style={styles.mainContainer}>
@@ -54,9 +52,8 @@ const WebViewScreen = ({ route }) => {
         source={{ uri: `${config.IMAGE_URL}public/privacyPolicy.html` }}
         onScroll={_onScroll}
       />
-      {(type == 'doctor' && isDisabled) && (
+      {type == "doctor" && isDisabled && (
         <TouchableOpacityView
-          // onPress={() => setIsConsent(true)}
           onPress={() => handleConsent()}
           style={styles.consentContainer}
         >
@@ -80,7 +77,7 @@ export default WebViewScreen;
 
 const styles = StyleSheet.create({
   mainContainer: {
-    flex: 1
+    flex: 1,
   },
   consentContainer: {
     flexDirection: "row",
@@ -97,6 +94,6 @@ const styles = StyleSheet.create({
   },
   consentIcon: {
     width: 20,
-    height: 20
-  }
+    height: 20,
+  },
 });

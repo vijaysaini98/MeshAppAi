@@ -24,6 +24,7 @@ import {
 } from "react-native";
 import AnimatedLottieView from "lottie-react-native";
 import { Screen, universalPaddingHorizontal } from "../../theme/dimens";
+import { getAddvertisment } from "../../slices/authSlice/authAction";
 
 
 
@@ -44,6 +45,7 @@ const AuthLoading = () => {
       const loginType = await AsyncStorage.getItem(LOGIN_TYPE);
 
       if (customerToken) {
+         dispatch(getAddvertisment()); 
         if (loginType === "DR") {
           NavigationService.reset(NAVIGATION_DR_BOTTOM_TAB_STACK);
           dispatch(DrEditProfile());

@@ -5,13 +5,13 @@ import { AppText, EIGHTEEN } from "../../common";
 import TouchableOpacityView from "../../common/TouchableOpacityView";
 
 interface MoreTabProps {
-  source: string | undefined;
-  title: string | undefined;
-  source2: string | undefined;
-  tabStyle: ViewStyle | undefined;
-  onPress: () => void | undefined;
-  source2Style: ViewStyle | undefined;
-  tintColor: string | undefined;
+  source?: string | undefined;
+  title?: string | undefined;
+  source2?: string | undefined;
+  tabStyle?: ViewStyle | undefined;
+  onPress?: () => void | undefined;
+  source2Style?: ViewStyle | undefined;
+  tintColor?: string | undefined;
 }
 
 const MoreTab: React.FC<MoreTabProps> = ({

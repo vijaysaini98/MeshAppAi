@@ -18,6 +18,8 @@ import {
 import {
   resetAuth,
   setAadharVerifyOtp,
+  setAdverModal,
+  setAdvertisment,
   setBtnLoading,
   setForgotPasswordId,
   setLoading,
@@ -38,10 +40,7 @@ import { mrNearByDoctor } from "../mrSlice/mrAction";
 import { DrEditProfile, doctorAppointmentList } from "../drSlice/drAction";
 import { AppDispatch } from "../../store/store";
 import { logger, showError } from "../../helper/logger";
-import {
-  deleteUploadImages,
-  resetDr,
-} from "../drSlice/drSlice";
+import { deleteUploadImages, resetDr } from "../drSlice/drSlice";
 import { resetMr, setMrProfileData } from "../mrSlice/mrSlice";
 
 export const userLogin =
@@ -102,98 +101,94 @@ export const userLogin =
     }
   };
 
-  export const drLogin=(data: LoginProps) => async (dispatch: AppDispatch) => {
-    try {
-      dispatch(setLoading(true));
-      const response: LoginApiResponse = await appOperation.guest.dr_login(data);
-      
-      if (response?.code === 200) {
-        Toast.show(response?.message, Toast.LONG);
-        dispatch(setLoginData(response?.data));
-        appOperation.setCustomerToken(response?.data?.access_token);
-        await AsyncStorage.setItem(
-          USER_TOKEN_KEY,
-          response?.data?.access_token
-        );
-        await AsyncStorage.setItem(
-          REFRESH_TOKEN_KEY,
-          response?.data?.refresh_token
-        );
-        await AsyncStorage.setItem("id", response?.data?.id?.toString());
-        if (response?.data?.client_id) {
-          await AsyncStorage.setItem(
-            CLIENT_ID,
-            response?.data?.client_id?.toString()
-          );
-        }
-      }
-        await AsyncStorage.setItem(LOGIN_TYPE, "DR");
-        
-        dispatch(doctorAppointmentList(2, 1));
-        dispatch(DrEditProfile());
-        await AsyncStorage.setItem(
-          TAB_PARAMS_DATA,
-          JSON.stringify(response?.data?.tab_params)
-        );
-        await AsyncStorage.setItem(
-          TAB_PARAMS_REVERSE_DATA,
-          JSON.stringify(response?.data?.tab_params_reversed)
-        );
+export const drLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const response: LoginApiResponse = await appOperation.guest.dr_login(data);
 
-        NavigationService.reset(NAVIGATION_DR_BOTTOM_TAB_STACK);
-    } catch (e: any) {
-      dispatch(setLoading(false));
-      Toast.show(e?.message, Toast.LONG);
-    } finally {
-      dispatch(setLoading(false));
-    }
-  }
-
-  export const mrLogin=(data: LoginProps) => async (dispatch: AppDispatch) => {
-    try {
-      dispatch(setLoading(true));
-      const response: LoginApiResponse = await appOperation.guest.mr_login(data);
-      if (response?.code === 200) {
-        Toast.show(response?.message, Toast.LONG);
-        dispatch(setLoginData(response?.data));
-        appOperation.setCustomerToken(response?.data?.access_token);
+    if (response?.code === 200) {
+      Toast.show(response?.message, Toast.LONG);
+      dispatch(getAddvertisment());
+      dispatch(setLoginData(response?.data));
+      appOperation.setCustomerToken(response?.data?.access_token);
+      await AsyncStorage.setItem(USER_TOKEN_KEY, response?.data?.access_token);
+      await AsyncStorage.setItem(
+        REFRESH_TOKEN_KEY,
+        response?.data?.refresh_token
+      );
+      await AsyncStorage.setItem("id", response?.data?.id?.toString());
+      if (response?.data?.client_id) {
         await AsyncStorage.setItem(
-          USER_TOKEN_KEY,
-          response?.data?.access_token
+          CLIENT_ID,
+          response?.data?.client_id?.toString()
         );
-        await AsyncStorage.setItem(
-          REFRESH_TOKEN_KEY,
-          response?.data?.refresh_token
-        );
-        await AsyncStorage.setItem("id", response?.data?.id?.toString());
-        if (response?.data?.client_id) {
-          await AsyncStorage.setItem(
-            CLIENT_ID,
-            response?.data?.client_id?.toString()
-          );
-        }
       }
-        await AsyncStorage.setItem(LOGIN_TYPE, "MR");
-        // dispatch(mrNearByDoctor(3));
-        NavigationService.reset(NAVIGATION_MR_BOTTOM_TAB_STACK);
-        await AsyncStorage.setItem(
-          TAB_PARAMS_DATA,
-          JSON.stringify(response?.data?.tab_params)
-        );
-        await AsyncStorage.setItem(
-          TAB_PARAMS_REVERSE_DATA,
-          JSON.stringify(response?.data?.tab_params_reversed)
-        );
-      // }
-    } catch (e: any) {
-      console.log("error of login", e);
-      
-      Toast.show(e?.message, Toast.LONG);
-      dispatch(setLoading(false));
-    } finally {
-      dispatch(setLoading(false));
     }
+    await AsyncStorage.setItem(LOGIN_TYPE, "DR");
+
+    dispatch(doctorAppointmentList(2, 1));
+    dispatch(DrEditProfile());
+    await AsyncStorage.setItem(
+      TAB_PARAMS_DATA,
+      JSON.stringify(response?.data?.tab_params)
+    );
+    await AsyncStorage.setItem(
+      TAB_PARAMS_REVERSE_DATA,
+      JSON.stringify(response?.data?.tab_params_reversed)
+    );
+
+    NavigationService.reset(NAVIGATION_DR_BOTTOM_TAB_STACK);
+  } catch (e: any) {
+    dispatch(setLoading(false));
+    Toast.show(e?.message, Toast.LONG);
+  } finally {
+    dispatch(setLoading(false));
   }
+};
+
+export const mrLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
+  try {
+    dispatch(setLoading(true));
+    const response: LoginApiResponse = await appOperation.guest.mr_login(data);
+    if (response?.code === 200) {
+      Toast.show(response?.message, Toast.LONG);
+      dispatch(getAddvertisment());
+      dispatch(setLoginData(response?.data));
+      appOperation.setCustomerToken(response?.data?.access_token);
+      await AsyncStorage.setItem(USER_TOKEN_KEY, response?.data?.access_token);
+      await AsyncStorage.setItem(
+        REFRESH_TOKEN_KEY,
+        response?.data?.refresh_token
+      );
+      await AsyncStorage.setItem("id", response?.data?.id?.toString());
+      if (response?.data?.client_id) {
+        await AsyncStorage.setItem(
+          CLIENT_ID,
+          response?.data?.client_id?.toString()
+        );
+      }
+    }
+    await AsyncStorage.setItem(LOGIN_TYPE, "MR");
+    // dispatch(mrNearByDoctor(3));
+    NavigationService.reset(NAVIGATION_MR_BOTTOM_TAB_STACK);
+    await AsyncStorage.setItem(
+      TAB_PARAMS_DATA,
+      JSON.stringify(response?.data?.tab_params)
+    );
+    await AsyncStorage.setItem(
+      TAB_PARAMS_REVERSE_DATA,
+      JSON.stringify(response?.data?.tab_params_reversed)
+    );
+    // }
+  } catch (e: any) {
+    console.log("error of login", e);
+
+    Toast.show(e?.message, Toast.LONG);
+    dispatch(setLoading(false));
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
 
 export const forgotPassword =
   (data: ForgotPasswordProps) => async (dispatch: Dispatch<any>) => {
@@ -257,7 +252,7 @@ export const onResend =
       dispatch(setLoading(false));
     }
   };
-  
+
 export const verifyOtp =
   (data: LoginProps) => async (dispatch: Dispatch<any>) => {
     try {
@@ -283,7 +278,7 @@ export const verifyOtp =
 export const onValidateSendotp =
   (data: any, onSuccess?: any) => async (dispatch: AppDispatch) => {
     try {
-      console.log("data",data);
+      console.log("data", data);
       dispatch(setBtnLoading(true));
       const response: any = await appOperation.guest.on_validate_otp(data);
       if (response.success) {
@@ -294,8 +289,8 @@ export const onValidateSendotp =
       }
     } catch (e: any) {
       // console.log(e, "error of valid otp");
-      console.log("eee===>>>>",e);
-      
+      console.log("eee===>>>>", e);
+
       showError(e?.message);
     } finally {
       dispatch(setBtnLoading(false));
@@ -407,7 +402,7 @@ export const logOut = () => async (dispatch: AppDispatch) => {
       dispatch(deleteUploadImages("aadhar"));
       dispatch(deleteUploadImages("gst"));
       dispatch(setMrProfileData());
-      dispatch(resetAuth())
+      dispatch(resetAuth());
       dispatch(resetDr());
       dispatch(resetMr());
     }
@@ -447,19 +442,54 @@ export const updateFcmToken =
     try {
       dispatch(setLoading(true));
       let fcmToken = await AsyncStorage.getItem(FCM_TOKEN_KEY);
-     
+
       let data = {
         fcm_token: fcmToken,
         latitude: location?.latitude ? location?.latitude : null,
         longitude: location?.longitude ? location?.longitude : null,
       };
-      
+
       const response: any = await appOperation.customer.update_fcm(data);
-      console.log("updateFcmTokenresponse",response);
-      
+      console.log("updateFcmTokenresponse", response);
     } catch (e: any) {
       logger(e);
-    }finally{
+    } finally {
       dispatch(setLoading(false));
+    }
+  };
+
+export const getAddvertisment =
+  (data?: any) => async (dispatch: AppDispatch) => {
+    try {
+      const response: any = await appOperation.customer.get_advertisment();
+      console.log("response", response);
+
+      if (response?.success) {
+        dispatch(setAdvertisment(response));
+        setTimeout(() => {
+          dispatch(setAdverModal(true));
+        }, 2500);
+      }
+    } catch (e: any) {
+      console.log("error of get addvertisment", e);
+      logger(e);
+    } finally {
+    }
+  };
+
+export const upateAddvertisment =
+  (data?: any) => async (dispatch: AppDispatch) => {
+    try {
+      const response: any = await appOperation.customer.update_advertisment(
+        data
+      );
+      console.log("getAddvertisment", response);
+      if (response?.success) {
+        dispatch(setAdverModal(false));
+        dispatch(setAdvertisment({}));
+      }
+    } catch (e: any) {
+      logger(e);
+    } finally {
     }
   };
