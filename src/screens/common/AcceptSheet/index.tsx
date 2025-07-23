@@ -130,6 +130,7 @@ const AcceptTypeSheet= ({
 
   const successCallBack = () => {
     refSheet?.current?.close();
+    setAppointment(undefined)
   };
 
   return (

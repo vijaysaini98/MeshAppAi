@@ -11,7 +11,6 @@ import {
   TWENTY,
 } from "../../common";
 import KeyBoardAware from "../../common/KeyboardAware";
-;
 import { meshAppLogo } from "../../helper/ImageAssets";
 import { styles } from "../../styles/styles";
 import { Image, View } from "react-native";

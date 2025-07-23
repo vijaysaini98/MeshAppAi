@@ -83,6 +83,7 @@ export const gstICon = require("../../assets/images/gst.png");
 export const accountDelete = require("../../assets/images/accountDelete.png");
 export const referIcon = require("../../assets/images/referalIcon.png");
 export const editIcon = require("../../assets/images/edit-text.png");
+export const helpIcon = require("../../assets/images/help.png");
 
 export const checkbox_uncheck = require('../../assets/images/checkbox_uncheck.png');
 export const checkbox_check = require('../../assets/images/checkbox_check.png');

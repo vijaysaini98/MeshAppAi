@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import NavigationService from "../../../../navigation/NavigationService";
 import {
   DOCTOR_DATA_DETAILS,
@@ -40,6 +40,38 @@ const RecentRequests = () => {
 
   const appointmentTypeSheet = useRef();
   const rejectionSheet = useRef();
+  const [appointmentData,setAppointmentData] = useState();
+  
+  const handleAccept = (item) => {
+  const updatedData = {
+    id: item?.id,
+    date: item?.date,
+    time_slots_available: item?.time_slots_available,
+    time: item?.time,
+    location_id: item?.location_id
+      ? item?.location_id
+      : item?.AppointmentTimeSlot?.doctor_location_id,
+      fee_type:item?.fee_type === "200" ? "Free" : "Paid"
+  };
+
+  setAppointmentData(updatedData);
+  // setFeeTypes(item?.fee_type === "200" ? "Free" : "Paid");
+
+  setTimeout(() => {
+    appointmentTypeSheet.current.open();
+  }, 100);
+};
+
+const handleReject = (item) => {
+  const updatedData = {
+    id: item?.id,
+    date: item?.date,
+  };
+  setAppointmentData(updatedData);
+  setTimeout(() => {
+    rejectionSheet.current.open();
+  }, 100);
+}
 
   const RenderItem = ({ item, index }) => {
     const address =
@@ -87,36 +119,14 @@ const RecentRequests = () => {
               : "- - -"
           }
           location={address?.pincode == null ? false : true}
-          handleAccept={() => {
-            appointmentTypeSheet.current.open();
-          }}
+          handleAccept={() => handleAccept(item)}
           handleRescheduleBtn={() => RescheduleButton(item)}
-          handleReject={() => {
-            rejectionSheet.current.open();
-          }}
+          handleReject={()=> handleReject(item)}
           isReschedule={item?.time_slots_available == 1}
           isAcceptDisabled={disableButton}
           mobaileNo={item?.Users?.phone}
         />
-        <AcceptTypeSheet
-          refSheet={appointmentTypeSheet}
-          id={item?.id}
-          date={item?.date}
-          timeSlotsAvailable={item?.time_slots_available}
-          time={item?.time}
-          locationId={
-            item?.location_id
-              ? item?.location_id
-              : item?.AppointmentTimeSlot?.doctor_location_id
-          }
-          fees={drEditProfile?.doctor_details?.fees}
-          appointmentFeeType={item?.fee_type == "200" ? "Free" : "Paid"}
-        />
-        <RejectionSheet
-          refSheet={rejectionSheet}
-          id={item?.id}
-          date={item?.date}
-        />
+       
       </View>
     );
   };
@@ -168,6 +178,23 @@ const RecentRequests = () => {
           )}
         </View>
       </View>
+       <AcceptTypeSheet
+          refSheet={appointmentTypeSheet}
+          id={appointmentData?.id}
+          date={appointmentData?.date}
+          timeSlotsAvailable={appointmentData?.time_slots_available}
+          time={appointmentData?.time}
+          locationId={
+            appointmentData?.location_id
+          }
+          fees={drEditProfile?.doctor_details?.fees}
+          appointmentFeeType={appointmentData?.fee_type}
+        />
+        <RejectionSheet
+          refSheet={rejectionSheet}
+          id={appointmentData?.id}
+          date={appointmentData?.date}
+        />
     </>
   );
 };

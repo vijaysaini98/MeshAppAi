@@ -33,6 +33,7 @@ export const initialState = {
   gender: "",
   phoneNo: "",
   email: "",
+  companyName: "",
   dob: "",
   joiningDate: "",
   address: "",
@@ -75,6 +76,9 @@ export const mrSlice = createSlice({
     setPhoneNo: (state, { payload }) => {
       state.phoneNo = payload;
     },
+     setCompanyName: (state, { payload }) => {
+      state.companyName = payload;
+    },
     setMaritalStatus: (state, { payload }) => {
       state.maritalStatus = payload;
     },
@@ -104,6 +108,7 @@ export const mrSlice = createSlice({
         (state.gender = ""),
         (state.profileImage = ""),
         (state.joiningDate = "");
+        (state.companyName = "");
     },
     setUpcomingAppointmentType: (state, { payload }) => {
       state.upcomingAppointmentType = payload;
@@ -246,6 +251,7 @@ export const {
   setFatherName,
   setGender,
   setEmail,
+  setCompanyName,
   setPhoneNo,
   setMaritalStatus,
   setDob,

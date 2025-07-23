@@ -94,6 +94,7 @@ export class AppOperation {
       console.log({ uri, method, headers, data, ...params });
   
       let bodyData = null;
+      
           if (data instanceof FormData) {
             bodyData = data;
             headers["Content-Type"] = "multipart/form-data";
@@ -112,6 +113,7 @@ export class AppOperation {
                 let jsonData: any = JSON.parse(responseData);
                 resolve({ ...jsonData, code: status });
               } catch (errorResponse) {
+                
                 Promise.reject({ code: status, data: errorResponse });
               }
             });

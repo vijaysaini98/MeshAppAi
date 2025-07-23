@@ -42,6 +42,9 @@ export interface MediaContentProps {
   onLoadStart: () => void;
   onLoad: () => void;
   onBuffer: (event: { isBuffering: boolean }) => void;
+  handlePress?: () => void;
+  isImageReady?: boolean;
+  imageSize?: { width: number; height: number } | null;
 }
 
 const styles = StyleSheet.create({
@@ -67,10 +70,11 @@ const styles = StyleSheet.create({
   carouselContainer: {
     marginTop: 20,
     backgroundColor: "transparent",
-    // width: Screen.Width * 0.9,
-    // height: Screen.Width * 0.5,
+    alignItems: "center",
+    justifyContent: "center",
+    height:500,
+    padding: 1,
     borderRadius: 8,
-    // alignSelf: "center",
   },
   countdownContainer: {
     position: "absolute",
@@ -114,6 +118,13 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.4)",
     zIndex: 1,
   },
+  paginationDots: {
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "absolute",
+    bottom: -10,
+    width: "100%",
+  },
   descriptionContainer: {
     maxHeight: "100%",
     // minHeight:"60%",
@@ -123,6 +134,20 @@ const styles = StyleSheet.create({
     bottom: 0,
     // backgroundColor:'red'
   },
+  dotBase: {
+  borderRadius: 4,
+  marginHorizontal: 4,
+  backgroundColor: 'gray',
+},
+
+  dot: (isActive: boolean) => ({
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginHorizontal: 4,
+    backgroundColor: isActive ? colors.buttonBg : "#ccc",
+    paddingHorizontal: isActive ? 10 : 0,
+  }),
   imageStyle: (imageSize: any) => ({
     width: imageSize.width,
     height: imageSize.height,

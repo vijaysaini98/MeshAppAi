@@ -88,7 +88,7 @@ export const styles = StyleSheet.create({
     height: 65,
     width: 65,
     borderRadius: 100,
-    marginTop:10,
+    marginTop: 10,
     marginHorizontal: 0,
     borderWidth: 2,
     borderColor: colors.bg_one_dark,
@@ -527,7 +527,7 @@ export const styles = StyleSheet.create({
     minHeight: 100,
     marginBottom: 100,
   },
- 
+
   submitButton: {
     marginVertical: 16,
     marginHorizontal: 16,

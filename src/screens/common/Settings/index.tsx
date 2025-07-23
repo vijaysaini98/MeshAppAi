@@ -1,15 +1,12 @@
-import {
-  Image,
-  StyleSheet,
-} from "react-native";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useCallback } from "react";
+import { View } from "react-native";
 import {
   AppSafeAreaView,
-  AppText,
-  BOLD,
+  Button,
+  FIFTEEN,
   FOURTEEN,
   Input,
-  NORMAL,
+  THIRTEEN,
   Toolbar,
 } from "../../../common";
 import KeyBoardAware from "../../../common/KeyboardAware";
@@ -18,47 +15,122 @@ import {
   emailId_Icon,
   phoneNumber_Icon,
   leftArrow,
+  downArrow,
 } from "../../../helper/ImageAssets";
-import { universalPaddingHorizontal } from "../../../theme/dimens";
 import { colors } from "../../../theme/colors";
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { useIsFocused } from "@react-navigation/native";
-import { MrProfileData } from "../../../slices/mrSlice/mrAction";
-import TouchableOpacityView from "../../../common/TouchableOpacityView";
-import NavigationService from "../../../navigation/NavigationService";
-import { DOCTOR_CHANGE_PASSWORD_SCREEN } from "../../../navigation/routes";
+import { MrProfileData, updateMrProfile } from "../../../slices/mrSlice/mrAction";
+import Toast from "react-native-simple-toast";
+import { DrChangePassword } from "../../../slices/drSlice/drAction";
+import MoreTab from "../MoreTab";
+import styles from "./styles";
 
 const Settings = () => {
   const dispatch = useAppDispatch();
-  let focus = useIsFocused();
+  const focus = useIsFocused();
 
-  const { mrProfiledata } = useAppSelector(
-    (state) => {
-      return state.mr;
-    }
-  );
+  const { mrProfiledata } = useAppSelector((state) => state.mr);
+  const { isBtnLoading } = useAppSelector((state) => state.auth)
+  const { isLoading } = useAppSelector((state) => state.doctor)
+
+  const [nameEditable, setNameEditable] = useState(false);
+  const [name, setName] = useState(mrProfiledata?.name ?? "")
+  const [changePassword, setChangePassword] = useState({
+    isChangePassword: false,
+    isPasswordVisible: true,
+    isNewPasswordVisible: true,
+    isConfirmPasswordVisible: true,
+    oldPassword: "",
+    newPassword: "",
+    confirmPassword: "",
+  });
 
   useEffect(() => {
     if (focus) {
       dispatch(MrProfileData());
     }
-  }, [focus]);
+  }, [focus, dispatch]);
 
-  const changePassword = () => {
-    NavigationService.navigate(DOCTOR_CHANGE_PASSWORD_SCREEN);
-  };
-  
+  const handleChangePassword = useCallback(() => {
+    if (!changePassword.oldPassword) {
+      return Toast.show("Please Enter Old Password...", Toast.LONG);
+    }
+    if (!changePassword.newPassword) {
+      return Toast.show("Please Enter New Password...", Toast.LONG);
+    }
+    if (!changePassword.confirmPassword) {
+      return Toast.show("Please Enter Confirm password...", Toast.LONG);
+    }
+    if (changePassword.newPassword !== changePassword.confirmPassword) {
+      return Toast.show(
+        "New password and Confirm password must be the same.",
+        Toast.LONG
+      );
+    }
+    const data = {
+      oldPassword: changePassword.oldPassword,
+      newPassword: changePassword.newPassword,
+      confirmPassword: changePassword.confirmPassword,
+    };
+    dispatch(DrChangePassword(data));
+  }, [changePassword, dispatch]);
+
+  const toggleEditName = useCallback(() => {
+    setNameEditable((prev) => !prev);
+  }, []);
+
+  const toggleChangePassword = useCallback(() => {
+    setChangePassword((prev) => ({
+      ...prev,
+      isChangePassword: !prev.isChangePassword,
+    }));
+  }, []);
+
+  const togglePasswordVisibility = useCallback((field: string) => {
+    setChangePassword((prev) => ({
+      ...prev,
+      [field]: !prev[field as keyof typeof prev],
+    }));
+  }, []);
+
+  const handleChangeName = () => {
+    if (mrProfiledata?.name == name) {
+      setNameEditable(false)
+      return Toast.show("No changes detected. Please modify your name before saving.", Toast.LONG);
+    }
+    let data = {
+      name: name
+    }
+    dispatch(updateMrProfile(data, setNameEditable(false)))
+  }
+
+  let changePassCheck = changePassword.oldPassword != "" &&
+    changePassword.newPassword !== "" &&
+    changePassword.confirmPassword !== "" &&
+    (changePassword.newPassword === changePassword.confirmPassword)
 
   return (
     <AppSafeAreaView>
       <Toolbar title="Settings" />
       <KeyBoardAware>
-        <Input
-          mainContainer={styles.nameContainer}
-          value={mrProfiledata?.name}
-          icon={Profile_Icon}
-          editable={false}
-        />
+        <View style={styles.nameContainer}>
+          <Input
+            mainContainer={styles.nameInputContainer}
+            value={name}
+            onChangeText={(val) => setName(val)}
+            icon={Profile_Icon}
+            editable={nameEditable}
+          />
+          <Button
+            loading={isBtnLoading}
+            appTextType={THIRTEEN}
+            isSecond={!nameEditable}
+            containerStyle={styles.nameEditeBtn(nameEditable)}
+            children={nameEditable ? "Save" : "Edit"}
+            onPress={nameEditable ? handleChangeName : toggleEditName}
+          />
+        </View>
         <Input
           value={mrProfiledata?.email}
           icon={emailId_Icon}
@@ -69,89 +141,71 @@ const Settings = () => {
           editable={false}
           icon={phoneNumber_Icon}
         />
-        <TouchableOpacityView
-        onPress={changePassword}
-        style={styles.changePasswordBtnContainer}
-        >
-          <AppText weight={NORMAL} type={FOURTEEN}>{"Change Password"}</AppText>
-          <Image
-          source={leftArrow}
-          style={styles.iconStyle}
-          resizeMode="contain"
-          />
-        </TouchableOpacityView>
+        <MoreTab
+          tabStyle={styles.changePassTabStyle}
+          titleType={FOURTEEN}
+          titleStyle={styles.tabTitleStyle}
+          title="Change Password"
+          source2={changePassword.isChangePassword ? downArrow : leftArrow}
+          onPress={toggleChangePassword}
+          source2Style={{ height: 18, width: 18 }}
+          tintColor={colors.defaultText}
+        />
+
+        {changePassword.isChangePassword && (
+          <>
+            <Input
+              placeholder="Old Password"
+              value={changePassword.oldPassword}
+              onChangeText={(val) =>
+                setChangePassword((prev) => ({ ...prev, oldPassword: val }))
+              }
+              secureTextEntry={changePassword.isPasswordVisible}
+              isSecure
+              onPressVisible={() =>
+                togglePasswordVisibility("isPasswordVisible")
+              }
+            />
+            <Input
+              placeholder="New Password"
+              value={changePassword.newPassword}
+              onChangeText={(val) =>
+                setChangePassword((prev) => ({ ...prev, newPassword: val }))
+              }
+              secureTextEntry={changePassword.isNewPasswordVisible}
+              isSecure
+              onPressVisible={() =>
+                togglePasswordVisibility("isNewPasswordVisible")
+              }
+            />
+            <Input
+              isSecure
+              placeholder="Confirm Password"
+              value={changePassword.confirmPassword}
+              secureTextEntry={changePassword.isConfirmPasswordVisible}
+              onChangeText={(val) =>
+                setChangePassword((prev) => ({
+                  ...prev,
+                  confirmPassword: val,
+                }))
+              }
+              onPressVisible={() =>
+                togglePasswordVisibility("isConfirmPasswordVisible")
+              }
+            />
+            <Button
+              children="Submit"
+              loading={isLoading}
+              appTextType={FIFTEEN}
+              disabled={!changePassCheck}
+              onPress={handleChangePassword}
+              containerStyle={styles.changePassBtn}
+            />
+          </>
+        )}
       </KeyBoardAware>
     </AppSafeAreaView>
   );
 };
 
 export default Settings;
-
-const styles = StyleSheet.create({
-  nameContainer: {
-    marginTop: 50,
-  },
-  btnView: {
-    padding: universalPaddingHorizontal,
-    elevation: 10,
-    backgroundColor: colors.mainBg,
-  },
-  availabilityView: {
-    height: 60,
-    borderWidth: 2,
-    borderColor: colors.border,
-    borderRadius: 6,
-    marginTop: 60,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  availableStyle: {
-    opacity: 0.5,
-    marginHorizontal: 16,
-    alignSelf: "center",
-  },
-  addBankView: {
-    backgroundColor: colors.bg_second,
-    height: 86,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  addBankText: {
-    alignSelf: "center",
-  },
-  addBankLogo: {
-    height: 30,
-    width: 30,
-  },
-  addBankView1: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginVertical: 35,
-    marginHorizontal: 25,
-  },
-  bankDetailView: { backgroundColor: colors.bg_second },
-  mapView: { marginBottom: 10 },
-  mapSubView: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginHorizontal: 25,
-    marginVertical: 10,
-  },
-  bankValueStyle:{ 
-    alignSelf: "flex-start", 
-     width: "60%" 
-    },
-  changePasswordBtnContainer:{
-    flexDirection:'row',
-    justifyContent:"space-between",
-    marginTop:20,
-    backgroundColor:colors.border,
-    paddingVertical:15,
-    paddingHorizontal:10,
-    borderRadius:8
-  },
-  iconStyle:{
-    height: 22,
-    width: 22,
-  }
-});

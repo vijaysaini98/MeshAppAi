@@ -1,23 +1,20 @@
 import React from 'react';
-import {View, StyleSheet, Platform,Image} from 'react-native';
-// import Image from 'react-native-fast-image';
-
+import {View, StyleSheet, Image} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-// import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import DatePicker from 'react-native-date-picker';
 import {calendarIcon, clockIcon} from '../helper/ImageAssets';
 
 interface DateTimeProps {
-  onPress: () => {};
-  handleConfirm: () => {};
-  onCancel: () => {};
-  minimumDate: any;
-  isVisible: boolean;
-  date: boolean;
-  mode: any;
-  is24Hour:boolean;
-  isIcon:boolean,
-  maximumDate:any
+  onPress?: () => {};
+  handleConfirm?: () => {};
+  onCancel?: () => {};
+  minimumDate?: any;
+  isVisible?: boolean;
+  date?: boolean;
+  mode?: any;
+  is24Hour?:boolean;
+  isIcon?:boolean,
+  maximumDate?:any
 }
 
 const DateModal = ({

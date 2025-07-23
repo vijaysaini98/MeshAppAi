@@ -109,16 +109,6 @@ export const UpComingFeature: FC<UpComingFeatureProps> = ({
           ]}
         />
       </View>
-      {/* {item.appointment_type == 500 && (
-            <Button
-              children="Join Meeting Link"
-              containerStyle={[
-                styles.rescheduleButton,
-                { backgroundColor: colors.buttonBg },
-              ]}
-              onPress={() => handleJoinMeetingLink(item?.appointment_link)}
-            />
-          )} */}
       <AcceptTypeSheet refSheet={acceptSheetRef} id={item?.id} />
       <RejectionSheet
         refSheet={rejectionSheet}
@@ -171,7 +161,7 @@ export const OnGoingFeature: FC<OnGoingFeature> = ({
         <ProductModal
           isModalVisible={isProductModalVisible}
           onClose={() => handleClose()}
-          // data={productData}
+        // data={productData}
         />
       )}
     </View>
@@ -205,8 +195,8 @@ export const PendingFeature: FC<PendingFeature> = ({
         </View>
       </View>
       {(item?.fee_type == "300" || item?.payment_status == "700") &&
-      item?.appointment_status != "1700" &&
-      item?.appointment_status != "800" ? (
+        item?.appointment_status != "1700" &&
+        item?.appointment_status != "800" ? (
         <>
           {disableStartButton && item?.appointment_type != "400" && (
             <AppText
@@ -262,11 +252,6 @@ export const PendingFeature: FC<PendingFeature> = ({
         id={item?.id}
         date={item?.date}
       />
-      {/* <ProductModal
-          data={item?.product_details}
-          isModalVisible={isProductModalVisible}
-          onClose={()=> handleClose()}
-          /> */}
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { AppSafeAreaView, AppText, Input, MEDIUM, SIXTEEN, THIRTY_FOUR, Toolbar, WHITE } from '../../../common';
 import { FlatList, Image, View } from 'react-native';
 import { colors } from '../../../theme/colors';
@@ -23,7 +23,7 @@ const MylocationSearchBar = () => {
     NavigationService.goBack();
   };
   const timeout: any = useRef(null);
-  const dispatch: any = useDispatch();
+  const dispatch: any = useAppDispatch();
 
   const onChangeHandler = (value: string) => {
     setValue(value);
@@ -83,35 +83,35 @@ const MyLocation = () => {
     setShowModal(false);
   };
 
-  const renderItem = ({ item }) => {
-    let tempAdress = item.doctorLocations[0]
-
-    return (
-      <View style={[styles.itemContainer]}>
-        <View style={styles.itemContainer2}>
-          <Image
-            source={location_Icon}
-            style={styles.locationIconStyle}
-            resizeMode='contain'
-            tintColor={colors.buttonBg}
-          />
-          <AppText type={SIXTEEN} weight={MEDIUM} style={{ flex: 1 }}>
-            {`${tempAdress?.name}, ${tempAdress?.address}, ${tempAdress?.state}, ${tempAdress?.pincode}`}
-          </AppText>
+   const renderItem = useCallback(
+    ({ item }: { item: any }) => {
+      const tempAdress = item.doctorLocations[0];
+      return (
+        <View style={styles.itemContainer}>
+          <View style={styles.itemContainer2}>
+            <Image
+              source={location_Icon}
+              style={styles.locationIconStyle}
+              resizeMode="contain"
+              tintColor={colors.buttonBg}
+            />
+            <AppText type={SIXTEEN} weight={MEDIUM} style={{ flex: 1 }}>
+              {`${tempAdress?.name}, ${tempAdress?.address}, ${tempAdress?.state}, ${tempAdress?.pincode}`}
+            </AppText>
+          </View>
+          <TouchableOpacityView onPress={() => handleDeleteLocation(item)}>
+            <Image
+              source={delete_icon}
+              resizeMode="contain"
+              style={styles.deleteIconStyle}
+              tintColor={colors.buttonBg}
+            />
+          </TouchableOpacityView>
         </View>
-        <TouchableOpacityView
-          onPress={() => handleDeleteLocation(item)}
-        >
-          <Image
-            source={delete_icon}
-            resizeMode='contain'
-            style={styles.deleteIconStyle}
-            tintColor={colors.buttonBg}
-          />
-        </TouchableOpacityView>
-      </View>
-    )
-  }
+      );
+    },
+    [doctorLocations]
+  );
 
   return (
     <AppSafeAreaView>

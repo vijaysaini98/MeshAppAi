@@ -72,28 +72,24 @@ let version = ReactNativeVersionInfo.appVersion;
 let buildVersion = ReactNativeVersionInfo.buildVersion;
 
 let advData = {
-  ad: 368,
+  ad: 542,
   code: 200,
   data: {
-    advertiser_id: 19,
-    createdAt: "2025-05-27T06:44:37.000Z",
+    advertiser_id: 27,
+    createdAt: "2025-05-28T09:34:46.000Z",
     deletedAt: null,
     description:
       "Certainly! Here's a general product description for dietary supplements, which you can customize based on the type (e.g. multivitamin, joint support, immune booster, etc.",
-    end_date: "2025-05-28",
-    id: 36,
-    media_path: [
-      "uploads/1748328274906-0-11611004589663021.jpg",
-      "uploads/1748328274906-0-11611004589663021.jpg",
-      "uploads/1748328274906-0-11611004589663021.jpg",
-      "uploads/1748328274906-0-11611004589663021.jpg",
-    ],
-    redirect_url: "https://www.google.co.in/",
-    start_date: "2025-05-27",
+    end_date: "2025-05-30",
+    id: 42,
+    media_path: ["uploads/1748424883291-0-039122525511186224.mp4"],
+    redirect_url:
+      "https://www.pexels.com/search/videos/pharmaceutical%20industry/",
+    start_date: "2025-05-28",
     status: 2,
-    title: "abc",
-    type: "image",
-    updatedAt: "2025-05-27T06:44:51.000Z",
+    title: "test",
+    type: "video",
+    updatedAt: "2025-05-28T09:35:14.000Z",
   },
   message: "Advertisement fetched successfully.",
   success: true,
@@ -421,7 +417,7 @@ const RootComponent = ({ children }: { children: any }) => {
       )}
       {isAdverVisible && advertismentData && advertismentData?.data && (
         <AdvertismentMediaModal
-          visible={isAdverVisible}
+          visible={true}
           mediaData={advertismentData}
           // mediaData={advData}
         />

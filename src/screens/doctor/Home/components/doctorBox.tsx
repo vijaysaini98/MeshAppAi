@@ -49,15 +49,15 @@ import { universalPaddingVertical } from "../../../../theme/dimens";
 import { CompleteAndRejectFeature, OnGoingFeature, PendingFeature, UpComingFeature } from "./features";
 
 
-interface DoctorBoxProps{
-  item?:any,
-  borderStyle:ViewStyle|undefined,
-  onNavigation:()=>void | undefined,
-  featureNo:number,
-  featureType:string | undefined,
+interface DoctorBoxProps {
+  item?: any,
+  borderStyle: ViewStyle | undefined,
+  onNavigation: () => void | undefined,
+  featureNo: number,
+  featureType: string | undefined,
 }
 
-const DoctorBox:FC<DoctorBoxProps> = ({
+const DoctorBox: FC<DoctorBoxProps> = ({
   item,
   borderStyle,
   onNavigation,
@@ -111,7 +111,10 @@ const DoctorBox:FC<DoctorBoxProps> = ({
     dispatch(
       doctorStartMeeting(data, (res) => {
         dispatch(setAppointmentProductData(res?.product_details));
-        setTimeout(() => dispatch(setProductModal(true)), 300);
+        if (res?.product_details?.length > 0) {
+          setTimeout(() => dispatch(setProductModal(true)), 300);
+        }
+
         if (res?.appointment_type !== "400") {
           NavigationService.navigate(CALLING_SCREEN, {
             appointmentId: res?.id,
@@ -155,10 +158,10 @@ const DoctorBox:FC<DoctorBoxProps> = ({
     switch (feature) {
       case 2:
         return <CompleteAndRejectFeature
-        formattedDate={formattedDate}
-        formattedTime={formattedTime}
-        appointmentType={item?.appointment_type == "400" ? "Clinic Visit" : "Virtual"}
-         />;
+          formattedDate={formattedDate}
+          formattedTime={formattedTime}
+          appointmentType={item?.appointment_type == "400" ? "Clinic Visit" : "Virtual"}
+        />;
       case 11:
         return (
           <UpComingFeature {...props} acceptSheetRef={appointmentTypeSheet} />
@@ -172,7 +175,7 @@ const DoctorBox:FC<DoctorBoxProps> = ({
     }
   };
 
-  const imageSelect = (n:number | undefined) => {
+  const imageSelect = (n: number | undefined) => {
     if (n === 1) {
       return (
         <Image
@@ -200,7 +203,7 @@ const DoctorBox:FC<DoctorBoxProps> = ({
     );
   };
 
-  const locationDate = (n:number | undefined) => {
+  const locationDate = (n: number | undefined) => {
     if (n === 1) {
       return (
         <AppText weight={MEDIUM} type={FOURTEEN}>
@@ -305,15 +308,15 @@ const DoctorBox:FC<DoctorBoxProps> = ({
             item?.Users?.ratings?.average_rating !== undefined
               ? item?.Users?.ratings?.average_rating
               : item?.ratings?.average_rating
-              ? item?.ratings?.average_rating
-              : 0
+                ? item?.ratings?.average_rating
+                : 0
           }
           startingValue={
             item?.Users?.ratings?.average_rating !== undefined
               ? item?.Users?.ratings?.average_rating
               : item?.ratings?.average_rating
-              ? item?.ratings?.average_rating
-              : 0
+                ? item?.ratings?.average_rating
+                : 0
           }
         />
         {featureType == "completed" && (
@@ -416,8 +419,8 @@ const DoctorBox:FC<DoctorBoxProps> = ({
               {item?.name
                 ? item?.name
                 : item?.Users?.name
-                ? item?.Users?.name
-                : "- - -"}
+                  ? item?.Users?.name
+                  : "- - -"}
             </AppText>
             {doctorStatusCheck()}
             {downloadIcon()}
@@ -446,10 +449,10 @@ const DoctorBox:FC<DoctorBoxProps> = ({
                 {item?.spec_detail?.speciality?.specialization
                   ? item?.spec_detail?.speciality?.specialization
                   : item?.Users?.Company?.company_name
-                  ? item?.Users?.Company?.company_name
-                  : item?.speciality
-                  ? item?.speciality
-                  : department}
+                    ? item?.Users?.Company?.company_name
+                    : item?.speciality
+                      ? item?.speciality
+                      : department}
               </AppText>
             </View>
             {rejectReason()}

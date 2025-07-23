@@ -108,7 +108,6 @@ export const drLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
 
     if (response?.code === 200) {
       Toast.show(response?.message, Toast.LONG);
-      dispatch(getAddvertisment());
       dispatch(setLoginData(response?.data));
       appOperation.setCustomerToken(response?.data?.access_token);
       await AsyncStorage.setItem(USER_TOKEN_KEY, response?.data?.access_token);
@@ -117,6 +116,7 @@ export const drLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
         response?.data?.refresh_token
       );
       await AsyncStorage.setItem("id", response?.data?.id?.toString());
+      dispatch(getAddvertisment());
       if (response?.data?.client_id) {
         await AsyncStorage.setItem(
           CLIENT_ID,
@@ -152,7 +152,6 @@ export const mrLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
     const response: LoginApiResponse = await appOperation.guest.mr_login(data);
     if (response?.code === 200) {
       Toast.show(response?.message, Toast.LONG);
-      dispatch(getAddvertisment());
       dispatch(setLoginData(response?.data));
       appOperation.setCustomerToken(response?.data?.access_token);
       await AsyncStorage.setItem(USER_TOKEN_KEY, response?.data?.access_token);
@@ -161,6 +160,7 @@ export const mrLogin = (data: LoginProps) => async (dispatch: AppDispatch) => {
         response?.data?.refresh_token
       );
       await AsyncStorage.setItem("id", response?.data?.id?.toString());
+      dispatch(getAddvertisment());
       if (response?.data?.client_id) {
         await AsyncStorage.setItem(
           CLIENT_ID,

@@ -42,17 +42,39 @@ export const getCameraPermissions = async () => {
   return granted === RESULTS.GRANTED;
 };
 
-export const getGalleryPermissions = async () => {
-  let systemVersion = DeviceInfo.getSystemVersion();
+// export const getGalleryPermissions = async () => {
+//   let systemVersion = DeviceInfo.getSystemVersion();
 
-  const granted = await request(
-    Platform.OS === "android"
-      ? systemVersion <= "12"
-        ? PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-        : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
-      : PERMISSIONS.IOS.PHOTO_LIBRARY
-  );
-  return granted === RESULTS.GRANTED || granted === RESULTS.LIMITED;
+//   const granted = await request(
+//     Platform.OS === "android"
+//       ? systemVersion <= "12"
+//         ? PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+//         : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES
+//       : PERMISSIONS.IOS.PHOTO_LIBRARY
+//   );
+//   return granted === RESULTS.GRANTED || granted === RESULTS.LIMITED;
+// };
+
+export const getGalleryPermissions = async () => {
+  const systemVersion = parseInt(DeviceInfo.getSystemVersion(), 10);
+
+  if (Platform.OS === "ios") {
+    const granted = await request(PERMISSIONS.IOS.PHOTO_LIBRARY);
+    return granted === RESULTS.GRANTED || granted === RESULTS.LIMITED;
+  }
+
+  // if (Platform.OS === "android") {
+  // //   // For Android 12 and below (API 31 and 32), request READ_EXTERNAL_STORAGE
+  // //   if (systemVersion <= 12) {
+  // //     const granted = await request(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
+  // //     return granted === RESULTS.GRANTED;
+  // //   }
+
+  //   // Android 13+ (API 33+) — no permission needed, use Android's Photo Picker
+  //   return true;
+  // }
+
+  return true;
 };
 
 export const createAlert = () =>

@@ -749,14 +749,8 @@ export const stateMadicalCouncil=[
 export const insuranceTypeData = [
   { id: 1, label: "Health Insurance", value: "Health Insurance" },
   { id: 2, label: "Life Insurance", value: "Life Insurance" },
-  { id: 3, label: "Auto Insurance", value: "Auto Insurance" },
-  { id: 4, label: "Homeowners Insurance", value: "Homeowners Insurance" },
-  { id: 5, label: "Renters Insurance", value: "Renters Insurance" },
-  { id: 6, label: "Travel Insurance", value: "Travel Insurance" },
-  { id: 7, label: "Disability Insurance", value: "Disability Insurance" },
-  { id: 8, label: "Dental Insurance", value: "Dental Insurance" },
-  { id: 9, label: "Vision Insurance", value: "Vision Insurance" },
-  { id: 10, label: "Pet Insurance", value: "Pet Insurance" },
+  { id: 3, label: "FD and Bonds", value: "FD and Bonds" },
+  { id: 4, label: "Mutual Funds", value: "Mutual Funds" },
 ];
 
 export const contactTime = [
@@ -764,7 +758,8 @@ export const contactTime = [
   { id: 2, value: "Evening", radio: true },
 ];
 
-export const communicationMode = [
-  { id: 1, value: "Mobile", radio: true },
-  { id: 2, value: "Email", radio: true },
+export const communicationModeData = [
+  { id: 1, value: "Call", radio: true },
+  // { id: 2, value: "Email", radio: true },
+  { id: 3, value: "One to One Meeting", radio: true },
 ];

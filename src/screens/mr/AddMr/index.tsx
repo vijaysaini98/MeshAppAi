@@ -25,7 +25,6 @@ import {
 import DateModal from "../../../common/DateTimePicker";
 import moment from "moment";
 import TouchableOpacityView from "../../../common/TouchableOpacityView";
-;
 import {
   btnTitle,
   GOOGL_API,
@@ -76,6 +75,7 @@ import {
   setEmptyMrRegistration,
   setProfileImage,
   setJoiningDate,
+  setCompanyName,
 } from "../../../slices/mrSlice/mrSlice";
 import { CongratulationsSheet } from "../../../common/CongratulationsSheet";
 
@@ -102,6 +102,7 @@ const AddMr = () => {
     addressState,
     city,
     profileImage,
+    companyName,
     joiningDate,
   } = useAppSelector((state) => {
     return state.mr;
@@ -118,6 +119,7 @@ const AddMr = () => {
   const [referralCode, setReferralCode] = useState("");
 
   const bottomSheetRef = useRef<any>(null);
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
   let company_name_to_find = "Mesh app Ai";
   let result = {};
@@ -128,26 +130,34 @@ const AddMr = () => {
       break;
     }
   }
-  
 
   const submitBtnDissabled =
     fullName &&
     phoneNo &&
     email &&
     profileImage &&
+    companyName &&
     privacyPolicy;
-    // dob &&
-    // address &&
-    // city &&
-    // pinCode &&
-    // addressState &&
-    // maritalStatus &&
-    // joiningDate &&;
+  // dob &&
+  // address &&
+  // city &&
+  // pinCode &&
+  // addressState &&
+  // maritalStatus &&
+  // joiningDate &&;
 
-  const handler = useCallback(
-    (value?: string) => getLocation(value, setSearchLoader, setArrLocation),
-    []
-  );
+  // const handler = useCallback(
+  //   (value?: string) => getLocation(value, setSearchLoader, setArrLocation),
+  //   []
+  // );
+
+  const handler = (text: string) => {
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+    if (text.length < 3) return;
+    debounceTimeout.current = setTimeout(() => {
+      getLocation(text, setSearchLoader, setArrLocation)
+    }, 400);
+  };
 
   const showDatePicker = (type) => {
     if (type === "dob") {
@@ -198,7 +208,7 @@ const AddMr = () => {
         let tempstreetthree = "";
         for (const component of data.result.address_components) {
           const componentType = component.types[0];
-          
+
           switch (componentType) {
             case "premise":
               address = component.short_name;
@@ -286,6 +296,7 @@ const AddMr = () => {
         maritial_status: maritalStatus,
         joining_date: moment(new Date()).format("DD-MMM-YYYY"),
         referral_code: referralCode,
+        company_name: companyName,
       };
 
       data = cleanObject(data);
@@ -301,14 +312,12 @@ const AddMr = () => {
     dispatch(dispatch(setPrivacyPolicy(false)));
   };
 
-  const RenderLocationList = ({ item, index }) => {
+  const RenderLocationList = ({ item, index }:{item:any, index?:number}) => {
     return (
       <TouchableOpacityView
         onPress={() => onSelectAddress(item)}
-        key={index}
-        style={{
-          padding: 10,
-        }}
+        key={item?.place_id}
+        style={styles.locationItemStyle}
       >
         <AppText weight={SEMI_BOLD} type={TEN}>
           {item?.description}
@@ -335,10 +344,7 @@ const AddMr = () => {
                 style={styles.cancelProfileImageBtn}
                 onPress={() => dispatch(setProfileImage(""))}
               >
-                <Image
-                  source={Cross_icon}
-                  style={styles.cancelProfileImage}
-                />
+                <Image source={Cross_icon} style={styles.cancelProfileImage} />
               </TouchableOpacityView>
             </>
           ) : (
@@ -489,7 +495,15 @@ const AddMr = () => {
           maxLength={10}
           icon={phoneNumber_Icon}
         />
-        <View style={{ flexGrow: 1, zIndex: 1 }}>
+        <Input
+          title={"Company Name"}
+          required
+          value={companyName}
+          onChangeText={(value) => dispatch(setCompanyName(value))}
+          placeholder={"Company Name"}
+          // icon={Profile_Icon}
+        />
+        <View style={styles.locationContainerStyle}>
           <Input
             title={label.address}
             // required
@@ -504,7 +518,7 @@ const AddMr = () => {
           {searchLoader ? (
             <ActivityIndicator size={"small"} color={colors.buttonBg} />
           ) : (
-            arrLocation.length > 0 &&
+            address && arrLocation.length > 0 &&
             arrLocation && (
               <View style={styles.locationListContainerStyle}>
                 {arrLocation?.map((item, index) => (
@@ -598,11 +612,11 @@ const AddMr = () => {
       </KeyBoardAware>
       <CameraModal
         KycCamraisModalVisible={modalVisible}
-        setKycCamraisModalVisible={(thing) => {
+        setKycCamraisModalVisible={(thing:any) => {
           setModalVisible(thing);
         }}
         setImage={setProfileImage}
-        handleUpdateProfile={(data) => dispatch(setProfileImage(data))}
+        handleUpdateProfile={(data:any) => dispatch(setProfileImage(data))}
         from={"mrProfile"}
       />
       <CongratulationsSheet sheetRef={bottomSheetRef} />

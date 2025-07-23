@@ -12,6 +12,7 @@ import {
   ADD_LOCATION,
   DOCTOR_PAYMENT_SCREEN,
   DR_APPOINTMENT_SCREEN,
+  EDIT_PROFILE,
   NOTIFICATION_SCREEN,
 } from "../../../navigation/routes";
 import NavigationService from "../../../navigation/NavigationService";
@@ -35,6 +36,7 @@ import {
   DrEditProfile,
   doctorAppointmentList,
   getDoctorLocation,
+  getSpeciality,
 } from "../../../slices/drSlice/drAction";
 import {
   SectionListChangeDrTabScreen,
@@ -48,13 +50,15 @@ import { updateFcmToken } from "../../../slices/authSlice/authAction";
 import RecentRequests from "./components/recentRequest";
 import { UpcomingAndEaringCard } from "./components/upComingCard";
 import { HomeToolBarProps } from "../../../helper/types";
+import { AcceptTypeSheet, RejectionSheet } from "../../common";
 
-const HomeToolBar:FC<HomeToolBarProps> = ({ avatar, name, handleBellPress }) => {
+const HomeToolBar: FC<HomeToolBarProps> = ({ avatar, name, handleBellPress }) => {
   return (
     <View style={styles.homeToolContainer}>
       <Image
         source={avatar ? { uri: `${IMAGE_PATH1}${avatar}` } : DummyDoctor}
         resizeMode="cover"
+        // resizeMode={FastImage.resizeMode.cover}
         style={styles.profileImage}
       />
       <View style={styles.homeToolContainer3}>
@@ -85,6 +89,7 @@ const DoctorHome = () => {
     isLocation,
     upcomingAppointmentList,
     doctorTotalIncome,
+    doctorSpeciality
   } = useAppSelector((state) => {
     return state.doctor;
   });
@@ -101,8 +106,23 @@ const DoctorHome = () => {
       dispatch(DrEditProfile());
       dispatch(SectionListChangeDrTabScreen(0));
       getDoctorCurrentLocation();
+      dispatch(getSpeciality());
     }
   }, [focus]);
+
+  const [reqdata, setReqData] = useState([])
+  useEffect(() => {
+    if (doctorSpeciality?.length) {
+      const data = doctorSpeciality?.map((item) => {
+        return {
+          value: item?.id,
+          label: item?.specialization,
+        };
+      });
+
+      setReqData(data);
+    }
+  }, [doctorSpeciality]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -139,6 +159,28 @@ const DoctorHome = () => {
     }
   }, [isLocation]);
 
+  useEffect(() => {
+    if (drEditProfile?.spec_detail?.length < 1) {
+      const alertTimeout = setTimeout(() => {
+        Alert.alert(
+          "Add Specaility",
+          "Please add at least one Specialty from More => Settings => Edit Profile => Specialty Detail",
+          [
+            { text: "Cancel", style: "cancel" },
+            {
+              text: "Add",
+              onPress: () => NavigationService.navigate(EDIT_PROFILE, { tabIndex: 1, from: 'home' }),
+            },
+          ],
+          { cancelable: true }
+        );
+      }, 2000);
+
+      return () => clearTimeout(alertTimeout);
+    }
+  }, [drEditProfile]);
+
+
   const onRefresh = () => {
     dispatch(doctorAppointmentList(0, 1));
   };
@@ -170,18 +212,42 @@ const DoctorHome = () => {
           showsVerticalScrollIndicator={false}
         >
           <UpcomingAndEaringCard
-            totalEarning={doctorTotalIncome ? doctorTotalIncome : 0}
+            // totalEarning={doctorTotalIncome ? doctorTotalIncome : 0}
             totalUpcoming={upcomingAppointmentList?.length}
-            handleEarning={() =>
-              NavigationService.navigate(DOCTOR_PAYMENT_SCREEN)
-            }
+            // handleEarning={() =>
+            //   NavigationService.navigate(DOCTOR_PAYMENT_SCREEN)
+            // }
             handleUpcoming={() => onPressUpcomming()}
           />
-          <RecentRequests />
+          <RecentRequests 
+          
+          />
+          
         </ScrollView>
       )}
+       {/* <AcceptTypeSheet
+          refSheet={appointmentTypeSheet}
+          id={item?.id}
+          date={item?.date}
+          timeSlotsAvailable={item?.time_slots_available}
+          time={item?.time}
+          locationId={
+            item?.location_id
+              ? item?.location_id
+              : item?.AppointmentTimeSlot?.doctor_location_id
+          }
+          fees={drEditProfile?.doctor_details?.fees}
+          appointmentFeeType={item?.fee_type == "200" ? "Free" : "Paid"}
+        />
+        <RejectionSheet
+          refSheet={rejectionSheet}
+          id={item?.id}
+          date={item?.date}
+        /> */}
     </AppSafeAreaView>
   );
 };
 
 export default DoctorHome;
+
+

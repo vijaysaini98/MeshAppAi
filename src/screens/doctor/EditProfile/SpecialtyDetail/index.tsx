@@ -18,6 +18,7 @@ import TouchableOpacityView from "../../../../common/TouchableOpacityView";
 import { useAppDispatch } from "../../../../store/hooks";
 import {
   AddSpeciality,
+  AddSpecialityVerifiedDoctors,
   DeleteSpecialization,
   DrEditProfile,
   uploadImage,
@@ -29,7 +30,7 @@ import Pdf from "react-native-pdf";
 import { IMAGE_PATH1 } from "../../../../helper/Constants";
 import { PDFModal } from "../../../common/PDFModal";
 
-const SpecialityDetail = () => {
+const SpecialityDetail = ({ from }) => {
   const dispatch = useAppDispatch();
 
   const { doctorSpeciality, drEditProfile, isLoading, uploadImages } =
@@ -47,7 +48,6 @@ const SpecialityDetail = () => {
   const [image, setImage] = useState();
   const [imgUrl, stImgUrl] = useState("");
   const [imageName, setImageName] = useState("");
-  const [pdfDetails, setPdfDetails] = useState("");
   const [APiResponse, setAPiResponse] = useState("");
   const [loader, setLoader] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
@@ -125,7 +125,11 @@ const SpecialityDetail = () => {
       ],
     };
 
-    dispatch(AddSpeciality(data));
+    if (from == 'home') {
+      dispatch(AddSpecialityVerifiedDoctors(data))
+    } else {
+      dispatch(AddSpeciality(data));
+    }
     stImgUrl("");
     setDataValue("");
     setAPiResponse("");
@@ -186,7 +190,7 @@ const SpecialityDetail = () => {
         />
         <View style={{ marginHorizontal: 16 }}>
           <AppText type={EIGHTEEN} weight={MEDIUM}>
-            Add More Specialty
+            {from == 'home' ? "Add Specialty" : "Add More Specialty"}
           </AppText>
           <DropdownComponent
             xyz={dataValue}

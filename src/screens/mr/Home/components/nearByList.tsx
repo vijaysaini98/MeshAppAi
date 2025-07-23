@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import { MrNearByListProps } from "../../../../helper/types";
 import NavigationService from "../../../../navigation/NavigationService";
 import {

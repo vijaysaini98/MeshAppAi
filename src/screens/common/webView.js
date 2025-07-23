@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { Image, StyleSheet } from "react-native";
 import { WebView } from "react-native-webview";
 import { AppSafeAreaView, AppText, THIRTEEN, Toolbar } from "../../common";

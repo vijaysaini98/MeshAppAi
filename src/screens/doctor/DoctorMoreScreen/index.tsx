@@ -1,4 +1,4 @@
-import { View, Alert, Image } from "react-native";
+import { View, Alert, Image, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AppSafeAreaView, AppText, Toolbar } from "../../../common";
 import {
@@ -6,6 +6,7 @@ import {
   clinicIcon,
   clockIcon1,
   DummyDoctor,
+  helpIcon,
   insuranceIcon,
   leftArrow,
   logout,
@@ -29,7 +30,11 @@ import DeleteConfirmationModal from "../../common/deleteConfirmationModal";
 import { setProfileTimeSlot } from "../../../slices/mrSlice/mrSlice";
 import { colors } from "../../../theme/colors";
 import { shareToAny } from "../../../helper/utility";
-import { getSpeciality } from "../../../slices/drSlice/drAction";
+import {
+  getLegalQuestions,
+  getSpeciality,
+} from "../../../slices/drSlice/drAction";
+import FastImage from "react-native-fast-image";
 
 const DoctorMoreScreen = () => {
   const dispatch = useAppDispatch();
@@ -74,25 +79,36 @@ const DoctorMoreScreen = () => {
 
     shareToAny(message);
   };
-  
+
   return (
     <>
       {isLoading && <AnimationSpinner />}
       <AppSafeAreaView style={styles.mainContainer}>
         <Toolbar title="More" noBack />
-        <KeyBoardAware>
+        {/* <KeyBoardAware> */}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.subContainer}>
-            <View>
-              <Image
+            <Image
+              source={
+                drEditProfile?.avatar
+                  ? { uri: `${IMAGE_PATH1}${drEditProfile?.avatar}` }
+                  : DummyDoctor
+              }
+              resizeMode="cover"
+              style={styles.profileImage}
+            />
+            {/* <FastImage
                 source={
                   drEditProfile?.avatar
                     ? { uri: `${IMAGE_PATH1}${drEditProfile?.avatar}` }
                     : DummyDoctor
                 }
-                resizeMode="cover"
+                // resizeMode="cover"
+                resizeMode={FastImage.resizeMode.cover}
                 style={styles.profileImage}
-              />
-            </View>
+              /> */}
             <View style={styles.nameView}>
               <AppText
                 style={styles.mikeStyle}
@@ -112,9 +128,10 @@ const DoctorMoreScreen = () => {
             source={profileEdit}
             title="Edit Profile"
             source2={leftArrow}
-            onPress={() =>{
-               dispatch(getSpeciality());
-              NavigationService.navigate(routes.EDIT_PROFILE)}}
+            onPress={() => {
+              dispatch(getSpeciality());
+              NavigationService.navigate(routes.EDIT_PROFILE);
+            }}
           />
           <MoreTab
             tabStyle={styles.settingStyle}
@@ -128,7 +145,9 @@ const DoctorMoreScreen = () => {
             source={settings}
             title="Settings"
             source2={leftArrow}
-            onPress={() => NavigationService.navigate(routes.DOCTOR_SETTINGS_SCREEN)}
+            onPress={() =>
+              NavigationService.navigate(routes.DOCTOR_SETTINGS_SCREEN)
+            }
           />
           <MoreTab
             tabStyle={styles.settingStyle}
@@ -139,21 +158,24 @@ const DoctorMoreScreen = () => {
               NavigationService.navigate(routes.DOCTOR_AVAILABILITY_SCREEN)
             }
           />
-           {/* <MoreTab
+          <MoreTab
             tabStyle={styles.settingStyle}
             source={insuranceIcon}
             title="Insurance"
             source2={leftArrow}
-            onPress={() =>
-              NavigationService.navigate(routes.INSURANCE_SCREEN)
-            }
-          /> */}
-          {/* <MoreTab
+            onPress={() => NavigationService.navigate(routes.INSURANCE_SCREEN)}
+          />
+          <MoreTab
             tabStyle={styles.settingStyle}
-            source={logout}
+            source={helpIcon}
             title="Legal Help"
-            onPress={() => createAlert()}
-          /> */}
+            source2={leftArrow}
+            onPress={() => {
+              dispatch(getLegalQuestions());
+              NavigationService.navigate(routes.LEAGAL_HELP);
+            }}
+          // label={"Coming Soon"}
+          />
           <MoreTab
             tabStyle={styles.settingStyle}
             source={logout}
@@ -173,7 +195,8 @@ const DoctorMoreScreen = () => {
             title="Share Refer Code"
             onPress={() => handleReferralCodeShare()}
           />
-        </KeyBoardAware>
+          {/* </KeyBoardAware> */}
+        </ScrollView>
       </AppSafeAreaView>
       <DeleteConfirmationModal
         visible={showModal}

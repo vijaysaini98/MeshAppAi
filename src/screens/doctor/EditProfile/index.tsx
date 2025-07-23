@@ -56,10 +56,13 @@ export const RenderTabBar = (props) => {
   );
 };
 
-const EditProfile = () => {
+const EditProfile = ({route}) => {
   const dispatch = useDispatch();
 
-  const [index, setIndex] = React.useState(0);
+  console.log("route",route);
+  const {tabIndex,from} = route?.params ?? 0
+  
+  const [index, setIndex] = React.useState( tabIndex ?? 0);
   const [routes] = React.useState([
     { key: "personalDetail", title: "Personal Detail" },
     { key: "specialtyDetail", title: "Specialty Detail" },
@@ -69,7 +72,7 @@ const EditProfile = () => {
 
   const renderScene = SceneMap({
     personalDetail: () => <PersonalDetail />,
-    specialtyDetail: () => <SpecialityDetail />,
+    specialtyDetail: () => <SpecialityDetail from={from}/>,
     // bankDetail: () => <BankDetail />,
     // panCardDetails: () => <PanCardDetail />,
   });

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { AppSafeAreaView, Toolbar } from "../../common";
 import { FlatList, RefreshControl, View } from "react-native";
 import { styles } from "../../styles/styles";
-import { DoctorBox } from "../mr/Home/Home";
 import { ListEmptyComponent } from "./Appointment";
 import { commonStyles } from "../../theme/commonStyles";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { mrAppointmentType } from "../../slices/mrSlice/mrAction";
 import { AnimationSpinner } from "../../animation";
+import { DoctorBox } from "./Home/components/doctorBox";
 
 const UpcomingAppointment = () => {
   const dispatch = useAppDispatch();

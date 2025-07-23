@@ -1,8 +1,9 @@
-import { Image, StyleSheet, View, ViewStyle } from "react-native";
+import { Image, StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import React from "react";
 import { colors } from "../../theme/colors";
-import { AppText, EIGHTEEN } from "../../common";
+import { AppText, BOLD, EIGHTEEN, TWELVE, WHITE } from "../../common";
 import TouchableOpacityView from "../../common/TouchableOpacityView";
+import Shimmer from "react-native-shimmer";
 
 interface MoreTabProps {
   source?: string | undefined;
@@ -12,6 +13,9 @@ interface MoreTabProps {
   onPress?: () => void | undefined;
   source2Style?: ViewStyle | undefined;
   tintColor?: string | undefined;
+  label?: string | undefined;
+  titleStyle?:TextStyle,
+  titleType?:string
 }
 
 const MoreTab: React.FC<MoreTabProps> = ({
@@ -22,6 +26,9 @@ const MoreTab: React.FC<MoreTabProps> = ({
   onPress,
   source2Style,
   tintColor,
+  label,
+  titleStyle,
+  titleType,
   ...props
 }) => {
   return (
@@ -38,7 +45,7 @@ const MoreTab: React.FC<MoreTabProps> = ({
             tintColor={tintColor}
           />
         )}
-        <AppText style={styles.titleStyle} type={EIGHTEEN}>
+        <AppText style={[styles.titleStyle,titleStyle]} type={titleType ? titleType : EIGHTEEN}>
           {title}
         </AppText>
       </View>
@@ -50,6 +57,26 @@ const MoreTab: React.FC<MoreTabProps> = ({
             style={[styles.IconStyle2, source2Style]}
             tintColor={tintColor}
           />
+        )}
+        {label && (
+          <View style={styles.shimmerContainer}>
+            <Shimmer
+              opacity={1}
+              duration={500}
+              pauseDuration={200}
+              animating={true}
+              animationOpacity={0.5}
+            >
+              <AppText
+                type={TWELVE}
+                weight={BOLD}
+                color={WHITE}
+                style={styles.labelStyle}
+              >
+                {label}
+              </AppText>
+            </Shimmer>
+          </View>
         )}
       </View>
     </TouchableOpacityView>
@@ -70,8 +97,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     alignItems: "center",
   },
-  titleStyle: { 
-    paddingLeft: 16 
+  titleStyle: {
+    paddingLeft: 16,
   },
   IconStyle1: {
     width: 20,
@@ -83,5 +110,17 @@ const styles = StyleSheet.create({
   IconStyle2: {
     width: 6,
     height: 14,
+  },
+  shimmerContainer: {
+    alignItems: "flex-end",
+    // marginTop: -4,
+    paddingHorizontal: 10,
+  },
+  labelStyle: {
+    backgroundColor: colors.buttonBg, // Helps shimmer look
+    borderRadius: 6,
+    overflow: "hidden",
+    paddingHorizontal: 12,
+    paddingVertical: 4,
   },
 });

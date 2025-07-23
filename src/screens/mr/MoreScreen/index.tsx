@@ -4,6 +4,7 @@ import { AppSafeAreaView, AppText, Toolbar } from "../../../common";
 import styles from "./style";
 import {
   DummyMr,
+  insuranceIcon,
   leftArrow,
   logout,
   profileEdit,
@@ -14,6 +15,7 @@ import { MEDIUM, TWELVE, TWENTY_SIX, FOURTEEN } from "../../../common/AppText";
 import MoreTab from "../../common/MoreTab";
 import NavigationService from "../../../navigation/NavigationService";
 import {
+  INSURANCE_SCREEN,
   PRODUCTS,
   SETTINGS_SCREEN,
 } from "../../../navigation/routes";
@@ -136,7 +138,6 @@ const MoreScreen = () => {
                 </AppText>
                 <View style={styles.divisionStyle}>
                   <AppText type={TWELVE} style={styles.divisionText}>
-                    {/* {mrProfiledata?.division_details?.name.toUpperCase()} */}
                     {capitalizeFirst(mrProfiledata?.division_details?.name)}
                   </AppText>
                 </View>
@@ -144,13 +145,6 @@ const MoreScreen = () => {
             )}
           </View>
         </View>
-        {/* <MoreTab
-          tabStyle={styles.paymentStyle}
-          source={payment}
-          title="Payment History"
-          source2={leftArrow}
-          onPress={() => NavigationService.navigate(PAYMENT_HISTORY)}
-        /> */}
         <MoreTab
           tabStyle={styles.settingStyle}
           source={settings}
@@ -165,6 +159,15 @@ const MoreScreen = () => {
           source2={leftArrow}
           onPress={() => NavigationService.navigate(PRODUCTS)}
         />
+        {/* <MoreTab
+          tabStyle={styles.settingStyle}
+          source={insuranceIcon}
+          title="Insurance"
+          source2={leftArrow}
+          onPress={() =>
+            NavigationService.navigate(INSURANCE_SCREEN)
+          }
+        /> */}
         <MoreTab
           tabStyle={styles.settingStyle}
           source={logout}
@@ -181,11 +184,11 @@ const MoreScreen = () => {
       </AppSafeAreaView>
       <CameraModal
         KycCamraisModalVisible={isCameraModalVisible}
-        setKycCamraisModalVisible={(thing) => {
+        setKycCamraisModalVisible={(thing: boolean) => {
           setIsCameraModalVisible(thing);
         }}
         from={"mrProfile"}
-        handleUpdateProfile={(data) => updateProfileImage(data)}
+        handleUpdateProfile={(data: any) => updateProfileImage(data)}
       />
     </>
   );

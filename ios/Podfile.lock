@@ -549,7 +549,7 @@ PODS:
     - React-Core
   - react-native-blob-util (0.19.11):
     - React-Core
-  - react-native-date-picker (5.0.12):
+  - react-native-date-picker (5.0.13):
     - React-Core
   - react-native-document-picker (10.1.3):
     - RCT-Folly (= 2021.07.22.00)
@@ -570,6 +570,9 @@ PODS:
     - React-Core
   - react-native-safe-area-context (4.14.1):
     - React-Core
+  - react-native-shimmer (0.6.0):
+    - React (>= 0.45.1)
+    - Shimmer (~> 1)
   - react-native-simple-toast (3.3.2):
     - React-Core
     - Toast (~> 4)
@@ -584,7 +587,7 @@ PODS:
   - react-native-video/Video (6.13.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
-  - react-native-webview (13.13.5):
+  - react-native-webview (13.15.0):
     - RCT-Folly (= 2021.07.22.00)
     - React-Core
   - React-NativeModulesApple (0.72.5):
@@ -740,6 +743,7 @@ PODS:
   - SDWebImageWebPCoder (0.8.5):
     - libwebp (~> 1.0)
     - SDWebImage/Core (~> 5.10)
+  - Shimmer (1.0.2)
   - SocketRocket (0.6.1)
   - SSZipArchive (2.2.3)
   - Toast (4.1.1)
@@ -813,6 +817,7 @@ DEPENDENCIES:
   - react-native-pager-view (from `../node_modules/react-native-pager-view`)
   - react-native-pdf (from `../node_modules/react-native-pdf`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-shimmer (from `../node_modules/react-native-shimmer`)
   - react-native-simple-toast (from `../node_modules/react-native-simple-toast`)
   - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - react-native-version-info (from `../node_modules/react-native-version-info`)
@@ -886,6 +891,7 @@ SPEC REPOS:
     - PromisesObjC
     - SDWebImage
     - SDWebImageWebPCoder
+    - Shimmer
     - SocketRocket
     - SSZipArchive
     - Toast
@@ -969,6 +975,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-pdf"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-shimmer:
+    :path: "../node_modules/react-native-shimmer"
   react-native-simple-toast:
     :path: "../node_modules/react-native-simple-toast"
   react-native-splash-screen:
@@ -1105,7 +1113,7 @@ SPEC CHECKSUMS:
   React-logger: 984811296d6ce8fb1c1619cc8752c1029916d917
   react-native-agora: 7815eb853b90aea99f6d10bae4da9f23908f94ea
   react-native-blob-util: f7234c91ad0e3faeee51b3edee80b61553f74993
-  react-native-date-picker: 2eb0ed05ab9dcb4f337deda77deaa779807c4c61
+  react-native-date-picker: 2eca217a8fb09c517f5bb6b23978718c6cec59ec
   react-native-document-picker: 0753a61c58423e94293d62e61a463eb0643e999f
   react-native-geolocation-service: 32b2c2a3b91e70ce2a8d0c684801aaeb0a07e0ec
   react-native-get-random-values: d16467cf726c618e9c7a8c3c39c31faa2244bbba
@@ -1114,11 +1122,12 @@ SPEC CHECKSUMS:
   react-native-pager-view: 133c83c04d27ae21a73079a176465bd885ec052b
   react-native-pdf: c089a365d5d3b9614cce4a1cca429a71eb037a55
   react-native-safe-area-context: 758e894ca5a9bd1868d2a9cfbca7326a2b6bf9dc
+  react-native-shimmer: 2fdba9953215a29106febc9d147caa31a0080a8a
   react-native-simple-toast: 4c9cc976cb92b6e5fb555e7c57fce38b90a56d07
   react-native-splash-screen: 95994222cc95c236bd3cdc59fe45ed5f27969594
   react-native-version-info: f0b04e16111c4016749235ff6d9a757039189141
   react-native-video: dec8cd83438513ab9dc924f9c2a1953d05aad674
-  react-native-webview: 9b7ecf838e9f09396fa75dfa8811a858289fdba8
+  react-native-webview: 3a78bae62f1c206cc9861e7a2a06f18040a1f27f
   React-NativeModulesApple: d57608e52c875d2b952b68afd0d8f0543d690c3d
   React-perflogger: cd8886513f68e1c135a1e79d20575c6489641597
   React-RCTActionSheet: 726d2615ca62a77ce3e2c13d87f65379cdc73498
@@ -1152,12 +1161,13 @@ SPEC CHECKSUMS:
   RNScreens: 4f2dbf88d1ba333a4455a29833e30510b21f14c5
   SDWebImage: a7f831e1a65eb5e285e3fb046a23fcfbf08e696d
   SDWebImageWebPCoder: 908b83b6adda48effe7667cd2b7f78c897e5111d
+  Shimmer: c5374be1c2b0c9e292fb05b339a513cf291cac86
   SocketRocket: f32cd54efbe0f095c4d7594881e52619cfe80b17
   SSZipArchive: 62d4947b08730e4cda640473b0066d209ff033c9
   Toast: 1f5ea13423a1e6674c4abdac5be53587ae481c4e
   Yoga: 86fed2e4d425ee4c6eab3813ba1791101ee153c6
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: 852c541dffe5330d65eacafb0e155628f5343871
+PODFILE CHECKSUM: d16d96c222253d40e7007cc4283ba704ed442af1
 
 COCOAPODS: 1.16.2

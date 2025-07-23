@@ -90,27 +90,27 @@ export async function getCameraPermissions() {
   return granted === RESULTS.GRANTED;
 }
 
-export async function getGalleryPermissions() {
-  let systemVersion = DeviceInfo.getSystemVersion();
+// export async function getGalleryPermissions() {
+//   let systemVersion = DeviceInfo.getSystemVersion();
 
-  const granted = await request(
-    Platform.select({
-      android:
-        systemVersion < 12
-          ? PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
-          : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
-      ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
-    }),
-    {
-      title: "App required Library permission",
-      message:
-        "We required Library permission in order to use access media library" +
-        "Please grant us.",
-    }
-  );
+//   const granted = await request(
+//     Platform.select({
+//       android:
+//         systemVersion < 12
+//           ? PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE
+//           : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES,
+//       ios: PERMISSIONS.IOS.PHOTO_LIBRARY,
+//     }),
+//     {
+//       title: "App required Library permission",
+//       message:
+//         "We required Library permission in order to use access media library" +
+//         "Please grant us.",
+//     }
+//   );
 
-  return granted === RESULTS.GRANTED;
-}
+//   return granted === RESULTS.GRANTED;
+// }
 
 export function getNext7Days(num) {
   const daysOfWeek = [

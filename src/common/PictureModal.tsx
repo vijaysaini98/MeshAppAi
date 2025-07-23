@@ -4,11 +4,13 @@ import Modal from 'react-native-modal';
 import {colors} from '../theme/colors';
 import {borderWidth} from '../theme/dimens';
 import TouchableOpacityView from './TouchableOpacityView';
-import {camera_ic_big, gallery_ic} from '../helper/ImageAssets';
+import {camera, gallery_ic} from '../helper/ImageAssets';
 import {AppText} from './AppText';
-import {getCameraPermissions, getGalleryPermissions} from '../helper/utility';
+// import {getCameraPermissions, getGalleryPermissions} from '../helper/utility';
 import {showError} from '../helper/logger';
 import {errorText} from '../helper/Constants';
+import { getCameraPermissions } from '../helper/utility';
+import { getGalleryPermissions } from '../screens/common/cameraModal';
 
 type PictureModalProps = {
   isVisible: boolean;
@@ -47,7 +49,7 @@ const PictureModal = ({
           }}
           style={styles.singleContainer}>
           <Image
-            source={camera_ic_big}
+            source={camera}
             resizeMode="contain"
             style={styles.icon}
           />

@@ -74,3 +74,5 @@ export const CALLING_SCREEN: string = "CALLING_SCREEN";
 
 export const CLINIC: string = "CLINIC";
 export const CLINIC_REQUST: string = "CLINIC_REQUST";
+
+export const LEAGAL_HELP: string = "LEAGAL_HELP";

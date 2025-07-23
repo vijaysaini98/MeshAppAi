@@ -24,6 +24,7 @@ import {
   setDrEditProfile,
   setEmail,
   setEmptyDrProfileData,
+  setLegalQuestions,
   setLoading,
   setName,
   setOngoingAppointmentType,
@@ -458,6 +459,25 @@ export const AddSpeciality = (data: any) => async (dispatch: Dispatch<any>) => {
   }
 };
 
+export const AddSpecialityVerifiedDoctors= (data: any) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch(setLoading(true));
+    const response: any = await appOperation.customer.add_speciality_verified_doctors(data);
+    
+    if (response?.code === 200) {
+      dispatch(DrEditProfile());
+      Toast.show(response?.message, Toast.LONG);
+      setTimeout(()=>{
+        NavigationService.goBack()
+      },1000)
+    }
+  } catch (e: any) {
+    Toast.show(e?.message, Toast.LONG);
+  } finally {
+    dispatch(setLoading(false));
+  }
+};
+
 export const addLocation =
   (data?: any, userId?: any) => async (dispatch: Dispatch<any>) => {
     try {
@@ -739,6 +759,62 @@ export const pdfUpload =
       const response: any = await appOperation.customer.pdf_upload(data);
       if (response?.success) {
         successCallBack(response);
+      } else {
+        Toast.show(response?.message, Toast.LONG);
+      }
+    } catch (e: any) {
+      Toast.show(e?.message, Toast.LONG);
+      console.log("error===>>>", e);
+    } finally {
+      dispatch(setBtnLoading(false));
+    }
+  };
+
+  export const insurance =
+  (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(setBtnLoading(true));
+      const response: any = await appOperation.customer.post_insurance(data);
+      if (response?.success) {
+        successCallBack && successCallBack(response);
+         Toast.show(response?.message, Toast.LONG);
+      } else {
+        Toast.show(response?.message, Toast.LONG);
+      }
+    } catch (e: any) {
+      Toast.show(e?.message, Toast.LONG);
+      console.log("error===>>>", e);
+    } finally {
+      dispatch(setBtnLoading(false));
+    }
+  };
+
+  export const getLegalQuestions =
+  (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(setLoading(true));
+      const response: any = await appOperation.customer.get_legal_questions();
+      if (response?.success) {
+        dispatch(setLegalQuestions(response?.data));
+      } else {
+        Toast.show(response?.message, Toast.LONG);
+      }
+    } catch (e: any) {
+      Toast.show(e?.message, Toast.LONG);
+      console.log("error===>>>", e);
+    } finally {
+      dispatch(setLoading(false));
+    }
+  };
+
+  export const postLegalQuestions =
+  (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch(setBtnLoading(true));
+      const response: any = await appOperation.customer.post_legal_questions(data);
+      if (response?.success) {
+        successCallBack && successCallBack(response);
+         Toast.show(response?.message, Toast.LONG);
       } else {
         Toast.show(response?.message, Toast.LONG);
       }

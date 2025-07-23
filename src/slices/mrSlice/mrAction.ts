@@ -1,5 +1,24 @@
 import { Dispatch } from "redux";
+import RNFetchBlob from "react-native-blob-util";
+import { Alert, PermissionsAndroid, Platform } from "react-native";
+import DeviceInfo from "react-native-device-info";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Toast from "react-native-simple-toast";
 import { appOperation } from "../../appOperation";
+import { setLoading as setAuthIsLoading } from "../authSlice/authSlice";
+import NavigationService from "../../navigation/NavigationService";
+import {
+  ADD_MR,
+  MR_APPOINTMENT_SCREEN,
+  MR_HOME_SCREEN,
+  PAYMENT_SUCCESS_SCREEN,
+} from "../../navigation/routes";
+import { USER_TOKEN_KEY } from "../../helper/Constants";
+import { AppDispatch } from "../../store/store";
+import { showError } from "../../helper/logger";
+import { config } from "../../../config/config";
+import { setBtnLoading } from "../authSlice/authSlice";
+import { logOut } from "../authSlice/authAction";
 import {
   SectionListhangeMrTabScreen,
   SetPaymentRecord,
@@ -30,25 +49,6 @@ import {
   setUpdateOngoingAppointmentType,
   setUpdateUpcomingAppointmentType,
 } from "./mrSlice";
-import { setLoading as setAuthIsLoading } from "../authSlice/authSlice";
-import Toast from "react-native-simple-toast";
-import NavigationService from "../../navigation/NavigationService";
-import {
-  ADD_MR,
-  MR_APPOINTMENT_SCREEN,
-  MR_HOME_SCREEN,
-  PAYMENT_SUCCESS_SCREEN,
-} from "../../navigation/routes";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { USER_TOKEN_KEY } from "../../helper/Constants";
-import RNFetchBlob from "react-native-blob-util";
-import { Alert, PermissionsAndroid, Platform } from "react-native";
-import { AppDispatch } from "../../store/store";
-import { showError } from "../../helper/logger";
-import { config } from "../../../config/config";
-import { setBtnLoading } from "../authSlice/authSlice";
-import DeviceInfo from "react-native-device-info";
-import { logOut } from "../authSlice/authAction";
 
 export const mrAppointmentType =
   (value: any, from?: string) => async (dispatch: Dispatch<any>) => {
@@ -111,15 +111,15 @@ export const mrNearByDoctor =
   (value: any, search?: string | undefined) =>
   async (dispatch: Dispatch<any>) => {
     try {
-      console.log("value", value);
-      console.log("search", search);
-      
+      // console.log("value", value);
+      // console.log("search", search);
+
       dispatch(setLoading(true));
       const response: any = await appOperation.customer.mr_near_by_doctor(
         value,
         search
       );
-      
+
       if (response?.code === 200) {
         dispatch(setNearByDoctor(response?.data[0]?.near_by_doctor));
         dispatch(setNearByProfile(response?.data[0]));
@@ -151,33 +151,14 @@ export const drProfileTimeSlot =
   (value: any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setLoading(true));
-      const response = await appOperation.customer.dr_profile_timeSlot(value)
-      console.log("drProfileTimeSlotresponse",response);
-      
-      if(response.success){
+      const response = await appOperation.customer.dr_profile_timeSlot(value);
+      console.log("drProfileTimeSlotresponse", response);
+
+      if (response.success) {
         dispatch(setProfileTimeSlot(response?.data));
-      }else{
+      } else {
         Toast.show(response?.message, Toast.LONG);
       }
-      // const token = await AsyncStorage.getItem(USER_TOKEN_KEY);
-      // fetch(
-      //   `${config.WEBSITE_URL}appointment/get-time-slots?doctor_id=${value}`,
-      //   {
-      //     method: "GET",
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   }
-      // )
-      //   .then((response) => {
-      //     return response.json();
-      //   })
-      //   .then((data) => {
-      //     dispatch(setProfileTimeSlot(data?.data));
-      //   })
-      //   .catch((error) => {
-      //     console.error("There was a problem with the fetch operation:", error);
-      //   });
     } catch (e: any) {
       console.log("Error of dr profile timeSlot", e);
     } finally {
@@ -244,31 +225,30 @@ export const MrProfileData =
         dispatch(setMrProfileData(response?.data));
         dispatch(setMrBankDetails(response?.data?.user_bank_details));
       }
-      // else{
-      //   dispatch(logOut())
-      // }
     } catch (e: any) {
       console.log("Mr Profile Error =>>", e);
       if (e.code == 401) {
-        dispatch(logOut())
-        }
+        dispatch(logOut());
+      }
     } finally {
       dispatch(setLoading(false));
     }
   };
 
 export const updateMrProfile =
-  (data: string) => async (dispatch: Dispatch<any>) => {
+  (data: string,successCallBack?:any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setBtnLoading(true));
       const response: any = await appOperation.customer.mr_update_profile(data);
       if (response?.code === 200) {
         showError(response?.message);
         dispatch(MrProfileData());
+        if(successCallBack){
+          successCallBack()
+        }
       }
     } catch (e: any) {
-      console.log("Error===>>>",e);
-      
+      console.log("Error===>>>", e);
     } finally {
       dispatch(setBtnLoading(false));
     }
@@ -302,14 +282,12 @@ export const EndMeeting =
       const response: any = await appOperation.customer.end_meeting(data);
       if (response?.code === 200) {
         dispatch(setBtnLoading(false));
-        // dispatch(setNearByDoctor(response?.data[0]?.near_by_doctor));
-        // dispatch(setNearByProfile(response?.data[0]));
         if (successCallBack) {
           successCallBack();
         }
       }
     } catch (e: any) {
-      console.log("Mr EndMeeting Error===>>",e);
+      console.log("Mr EndMeeting Error===>>", e);
       Toast.show(e?.message, Toast.LONG);
     } finally {
       dispatch(setBtnLoading(false));
@@ -326,8 +304,6 @@ export const requestRefund =
       const response: any = await appOperation.customer.request_refund(data);
       if (response?.code === 200) {
         dispatch(setBtnLoading(false));
-        // dispatch(setNearByDoctor(response?.data[0]?.near_by_doctor));
-        // dispatch(setNearByProfile(response?.data[0]));
         if (from == "upcoming") {
           dispatch(setUpdateUpcomingAppointmentType(data));
         } else {
@@ -339,8 +315,8 @@ export const requestRefund =
         showError(response?.message);
       }
     } catch (e: any) {
-      console.log("e==>>",e);
-      
+      console.log("e==>>", e);
+
       Toast.show(e?.message, Toast.LONG);
     } finally {
       dispatch(setBtnLoading(false));
@@ -542,11 +518,9 @@ export const CancelMeeting =
           successCallBack();
         }
         Toast.show(response?.message, Toast.LONG);
-        // dispatch(SectionListhangeMrTabScreen(0));
-        // NavigationService.navigate(MR_APPOINTMENT_SCREEN);
       }
     } catch (e: any) {
-      console.log("e==>>",e);
+      console.log("e==>>", e);
       Toast.show(e?.message, Toast.LONG);
     } finally {
       dispatch(setLoading(false));
@@ -827,7 +801,7 @@ export const addMr =
     }
   };
 
-  export const getProductList =
+export const getProductList =
   (data?: any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setAuthIsLoading(true));
@@ -842,8 +816,7 @@ export const addMr =
     }
   };
 
-
-  export const addProduct =
+export const addProduct =
   (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setLoading(true));
@@ -851,7 +824,7 @@ export const addMr =
       if (response?.success) {
         Toast.show(response?.message, Toast.LONG);
         successCallBack();
-        dispatch(getProductList())
+        dispatch(getProductList());
       } else if (response.success === false) {
         Toast.show(response?.message, Toast.LONG);
       }
@@ -863,17 +836,17 @@ export const addMr =
     }
   };
 
-  export const updateProduct =
+export const updateProduct =
   (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setLoading(true));
       const response = await appOperation.customer.update_Product(data);
       if (response?.success) {
         Toast.show(response?.message, Toast.LONG);
-        if(successCallBack){
+        if (successCallBack) {
           successCallBack();
         }
-        dispatch(getProductList())
+        dispatch(getProductList());
       } else if (response.success === false) {
         Toast.show(response?.message, Toast.LONG);
       }
@@ -885,18 +858,18 @@ export const addMr =
     }
   };
 
-  export const deleteProduct =
-  (data?: any,successCallBack?:any) => async (dispatch: Dispatch<any>) => {
+export const deleteProduct =
+  (data?: any, successCallBack?: any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch(setLoading(true));
       const response = await appOperation.customer.product_Delete(data);
       if (response?.success) {
-        dispatch(removeProduct(data))
-        if(successCallBack){
-          successCallBack()
+        dispatch(removeProduct(data));
+        if (successCallBack) {
+          successCallBack();
         }
         Toast.show(response?.message, Toast.LONG);
-      }else{
+      } else {
         Toast.show(response?.message, Toast.LONG);
       }
     } catch (e: any) {

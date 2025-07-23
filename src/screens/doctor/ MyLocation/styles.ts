@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     containerStyle: {
         flex: 1,
         backgroundColor: colors.white,
-        paddingTop: 40,
+        paddingTop: 20,
         paddingHorizontal: 20,
         paddingBottom: 20
     },
@@ -61,10 +61,10 @@ export const styles = StyleSheet.create({
         fontSize: 35
     },
     addLocationContainerStyle: {
-        paddingHorizontal: 20,
+        paddingHorizontal: 10,
         backgroundColor: colors.white,
         flex: 1,
-        paddingTop: 50
+        justifyContent:'center'
     },
     locationList: {
         flexGrow: 1,
@@ -75,7 +75,8 @@ export const styles = StyleSheet.create({
         overflow: 'hidden',
         borderColor: colors.border,
         position: 'absolute',
-        top: 140,
+        // top: 160,
+        top:90,
         alignSelf: 'center',
         width: '99%',
         zIndex: 1,

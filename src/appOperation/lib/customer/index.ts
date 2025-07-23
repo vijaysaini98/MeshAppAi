@@ -53,7 +53,7 @@ export default (appOperation: AppOperation) => ({
   mr_near_by_doctor: (value: any, search?: string) =>
     appOperation.get(
       search
-        ? `mr/mr-profile?limit=${value ??  null}&search=${search}`
+        ? `mr/mr-profile?limit=${null}&search=${search}`
         : `mr/mr-profile?limit=${value ?? null}`,
       undefined,
       undefined,
@@ -75,15 +75,15 @@ export default (appOperation: AppOperation) => ({
       undefined,
       CUSTOMER_TYPE
     ),
-    
-  dr_profile_timeSlot: (value: any) => 
+
+  dr_profile_timeSlot: (value: any) =>
     appOperation.get(
       `appointment/get-time-slots?doctor_id=${value}`,
       undefined,
       undefined,
       CUSTOMER_TYPE
     ),
-  
+
   request_appointment: (data: any) =>
     appOperation.post("appointment", data, CUSTOMER_TYPE),
 
@@ -162,6 +162,9 @@ export default (appOperation: AppOperation) => ({
   add_speciality: (data: any) =>
     appOperation.post("doctor/add-speciality", data, CUSTOMER_TYPE),
 
+  add_speciality_verified_doctors: (data: any) =>
+    appOperation.post("doctor/add-speciality-verified-doctors", data, CUSTOMER_TYPE),
+
   cancel_meeting: (data: any) =>
     appOperation.patch("mr/cancel-meeting", data, CUSTOMER_TYPE),
 
@@ -201,7 +204,7 @@ export default (appOperation: AppOperation) => ({
   mr_addBank_Details: (data: any) =>
     appOperation.put("users/add_user_bank_details", data, CUSTOMER_TYPE),
 
-  update_fcm: (data:any) =>
+  update_fcm: (data: any) =>
     appOperation.patch("users/update-fcm", data, CUSTOMER_TYPE),
 
   delete_Account: () =>
@@ -294,7 +297,12 @@ export default (appOperation: AppOperation) => ({
     appOperation.patch(`doctor/clinic-requests`, data, CUSTOMER_TYPE),
 
   clinic_request_delete: (data: any) =>
-    appOperation.delete(`doctor/clinic-requests`, undefined, data, CUSTOMER_TYPE),
+    appOperation.delete(
+      `doctor/clinic-requests`,
+      undefined,
+      data,
+      CUSTOMER_TYPE
+    ),
 
   // product/1
   update_Product: (data: any) =>
@@ -303,9 +311,23 @@ export default (appOperation: AppOperation) => ({
   pdf_upload: (data: any) =>
     appOperation.post("upload/pdf", data, CUSTOMER_TYPE),
 
-   get_advertisment: (data?:any)=> appOperation.get("advertisement/ads",undefined,undefined,CUSTOMER_TYPE),
+  get_advertisment: (data?: any) =>
+    appOperation.get("advertisement/ads", undefined, undefined, CUSTOMER_TYPE),
 
-    update_advertisment: (data?: any) =>
-       appOperation.patch("advertisement", data, CUSTOMER_TYPE),
-    // appOperation.patch("advertisement", data, undefined, CUSTOMER_TYPE),
+  update_advertisment: (data?: any) =>
+    appOperation.patch("advertisement", data, CUSTOMER_TYPE),
+
+  post_insurance: (data?: any) =>
+    appOperation.post("insurance", data, CUSTOMER_TYPE),
+
+  get_legal_questions: (data?: any) =>
+    appOperation.get(
+      `questionnaire/active-question`,
+      undefined,
+      undefined,
+      CUSTOMER_TYPE
+    ),
+
+  post_legal_questions: (data?: any) =>
+    appOperation.post("questionnaire/answer", data, CUSTOMER_TYPE),
 });

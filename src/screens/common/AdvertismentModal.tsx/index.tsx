@@ -14,12 +14,12 @@ import {
   Animated,
   Alert,
   ActivityIndicator,
-  Dimensions,
   ScrollView,
+  AppState,
+  AppStateStatus,
 } from "react-native";
 import Video from "react-native-video";
 import LinearGradient from "react-native-linear-gradient";
-import Swiper from "react-native-swiper";
 import { colors } from "../../../theme/colors";
 import {
   AppText,
@@ -84,6 +84,47 @@ export const AdvertismentMediaModal = ({
     }
     return () => clearInterval(timer);
   }, [visible, progress]);
+
+  const [imageSize, setImageSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+  const [isImageReady, setIsImageReady] = useState(false);
+
+  useEffect(() => {
+    let mounted = true;
+
+    if (
+      mediaData?.data?.type === "image" &&
+      Array.isArray(mediaData?.data?.media_path) &&
+      mediaData?.data?.media_path.length > 0 &&
+      !mediaData?.data?.media_path[0].includes(".mp4")
+    ) {
+      const uri = IMAGE_PATH1 + mediaData?.data?.media_path[0];
+      Image.getSize(
+        uri,
+        (width, height) => {
+          if (!mounted) return;
+          const ratio = height / width;
+          const screenWidth = Screen.Width;
+          const screenHeight = screenWidth * ratio;
+
+          setImageSize({ width: screenWidth, height: screenHeight });
+          setIsImageReady(true);
+        },
+        (error) => {
+          console.warn("Failed to get image size:", error);
+          if (!mounted) return;
+          setImageSize({ width: Screen.Width, height: Screen.Width * 0.5625 }); // fallback
+          setIsImageReady(true);
+        }
+      );
+    }
+
+    return () => {
+      mounted = false;
+    };
+  }, [mediaData?.data?.media_path]);
 
   const progressBarWidth = useMemo(
     () =>
@@ -167,9 +208,14 @@ export const AdvertismentMediaModal = ({
               onLoadStart={handleVideoLoadStart}
               onLoad={handleVideoLoad}
               onBuffer={handleBuffer}
+              isImageReady={isImageReady}
+              imageSize={imageSize}
+              handlePress={
+                mediaData?.data?.redirect_url ? handlePress : undefined
+              }
             />
           </TouchableOpacity>
-          {mediaData?.data?.description && (
+          {mediaData?.data?.description && (isVideoReady || isImageReady) && (
             <ScrollView
               style={styles.descriptionContainer}
               contentContainerStyle={{ paddingBottom: 20 }}
@@ -217,6 +263,7 @@ const ExpandableText = ({
         <TouchableOpacity
           onPress={() => setExpanded(!expanded)}
           activeOpacity={0.6}
+          hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
         >
           <AppText
             style={{ color: colors.buttonBg, marginTop: 5 }}
@@ -255,50 +302,44 @@ const MediaContent = ({
   onLoadStart,
   onLoad,
   onBuffer,
+  handlePress,
+  isImageReady,
+  imageSize,
 }: MediaContentProps) => {
-  const [imageSize, setImageSize] = useState<{
-    width: number;
-    height: number;
-  } | null>(null);
-  const [isImageReady, setIsImageReady] = useState(false);
-
-  useEffect(() => {
-    let mounted = true;
-
-    if (
-      data?.type === "image" &&
-      Array.isArray(data.media_path) &&
-      data.media_path.length > 0 &&
-      !data?.media_path[0].includes(".mp4")
-    ) {
-      const uri = IMAGE_PATH1 + data.media_path[0];
-      Image.getSize(
-        uri,
-        (width, height) => {
-          if (!mounted) return;
-          const ratio = height / width;
-          const screenWidth = Screen.Width;
-          const screenHeight = screenWidth * ratio;
-
-          setImageSize({ width: screenWidth, height: screenHeight });
-          setIsImageReady(true);
-        },
-        (error) => {
-          console.warn("Failed to get image size:", error);
-          if (!mounted) return;
-          setImageSize({ width: Screen.Width, height: Screen.Width * 0.5625 }); // fallback
-          setIsImageReady(true);
-        }
-      );
-    }
-
-    return () => {
-      mounted = false;
-    };
-  }, [data?.media_path]);
-
   const videoHeight = Screen.Width * (9 / 16);
   const [currentIndex, setCurrentIndex] = useState(0);
+
+  //  const [videoKey, setVideoKey] = useState(0); // 👈 Force re-render
+  //    const [isAppActive, setIsAppActive] = useState(true);
+
+  // // 👇 Listen to app state change (foreground/background)
+  // useEffect(() => {
+  //   const subscription = AppState.addEventListener('change', (nextAppState: AppStateStatus) => {
+  //     if (nextAppState === 'active') {
+  //       setIsAppActive(true);
+  //       setVideoKey(prev => prev + 1); // Force video re-render
+  //     } else {
+  //       setIsAppActive(false);
+  //     }
+  //   });
+
+  //   return () => {
+  //     subscription.remove();
+  //   };
+  // }, []);
+
+  const renderCarouselItem = useCallback(
+    ({ item }: { item: string }) => (
+      <TouchableOpacity onPress={handlePress} activeOpacity={1}>
+        <FastImage
+          source={{ uri: IMAGE_PATH1 + item }}
+          style={styles.imageStyle({ width: "100%", height: "100%" })}
+          resizeMode={FastImage.resizeMode.contain}
+        />
+      </TouchableOpacity>
+    ),
+    [handlePress, imageSize]
+  );
 
   if (
     data.type === "image" &&
@@ -317,79 +358,25 @@ const MediaContent = ({
         </View>
       );
     }
-
     return (
-      <View style={[styles.carouselContainer, { height: imageSize.height }]}>
+      <View style={styles.carouselContainer}>
         {data.media_path.length > 1 ? (
-          // <Swiper
-          //   loop
-          //   autoplay
-          //   autoplayTimeout={3}
-          //   showsPagination
-          //   dotColor="#ccc"
-          //   activeDotColor={colors.buttonBg}
-          //   paginationStyle={{ bottom: -15 }}
-          //   removeClippedSubviews={false} // important fix for blinking
-          //   loadMinimal
-          //   loadMinimalSize={1}
-          // >
-          //   {data.media_path.map((img, idx) => (
-          //     <FastImage
-          //       key={idx}
-          //       source={{ uri: IMAGE_PATH1 + img }}
-          //       style={styles.imageStyle(imageSize)}
-          //       resizeMode={FastImage.resizeMode.contain}
-          //     />
-          //   ))}
-          // </Swiper>
           <>
             <Carousel
-              width={Screen.Width}
-              height={imageSize.height}
-              autoPlay
-              autoPlayInterval={700}
-              scrollAnimationDuration={500}
               loop
+              autoPlay
               data={data.media_path}
+              width={Screen.Width}
+              height={500}
+              autoPlayInterval={900}
+              scrollAnimationDuration={700}
               onSnapToItem={(index) => setCurrentIndex(index)}
-              renderItem={({ item }) => (
-                <FastImage
-                  source={{ uri: IMAGE_PATH1 + item }}
-                  style={styles.imageStyle(imageSize)}
-                  resizeMode={FastImage.resizeMode.contain}
-                />
-              )}
+              renderItem={renderCarouselItem}
             />
             {/* Pagination Dots */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "center",
-                position: "absolute",
-                bottom: -10,
-                width: "100%",
-              }}
-            >
+            <View style={styles.paginationDots}>
               {data.media_path.map((_, idx) => (
-                <View
-                  key={idx}
-                  style={[
-                    {
-                      width: 8,
-                      height: 8,
-                      borderRadius: 4,
-                      marginHorizontal: 4,
-                    },
-                    currentIndex === idx
-                      ? {
-                          backgroundColor: colors.buttonBg,
-                          paddingHorizontal: 10,
-                        }
-                      : {
-                          backgroundColor: "#ccc",
-                        },
-                  ]}
-                />
+                <View key={idx} style={styles.dot(currentIndex === idx)} />
               ))}
             </View>
           </>
@@ -415,6 +402,7 @@ const MediaContent = ({
           </View>
         )}
         <Video
+        // key={videoKey} // 👈 Force re-render when app state changes
           ref={videoRef}
           source={{ uri: IMAGE_PATH1 + data?.media_path[0] }}
           style={{ width: Screen.Width, height: videoHeight }}

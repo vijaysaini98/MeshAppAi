@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { FlatList, RefreshControl, View } from "react-native";
-import { AppSafeAreaView, Toolbar } from "../../../common";
+import { AppSafeAreaView, AppText, Toolbar } from "../../../common";
 import styles from "./styles";
 import { useIsFocused } from "@react-navigation/native";
 import { doctorAppointmentList } from "../../../slices/drSlice/drAction";

@@ -8,16 +8,7 @@ import {
 } from "react-native";
 import { AppText } from ".";
 import { buttonHeight } from "../theme/dimens";
-import {
-  BLACK,
-  BUTTON_BG,
-  BUTTON_TEXT,
-  EIGHTEEN,
-  PLACEHOLDER,
-  SEMI_BOLD,
-  SIXTEEN,
-  WHITE,
-} from "./AppText";
+import { BUTTON_TEXT, EIGHTEEN, SEMI_BOLD, WHITE } from "./AppText";
 import { colors } from "../theme/colors";
 import TouchableOpacityView from "./TouchableOpacityView";
 
@@ -27,8 +18,9 @@ interface ButtonProps extends TouchableOpacityProps {
   titleStyle?: TextStyle;
   disabled?: boolean;
   isSecond?: boolean;
-  loading?: boolean;
-  onPress?: ()=> void | any;
+  loading?: boolean | any;
+  onPress?: () => void | any;
+  appTextType?:string,
 }
 
 const Button = ({
@@ -39,13 +31,13 @@ const Button = ({
   onPress,
   isSecond,
   loading,
+  appTextType,
   ...rest
 }: ButtonProps) => {
-  
   return (
     <TouchableOpacityView
       style={[
-        styles.buttonStyle(colors),
+        styles.buttonStyle,
         containerStyle,
         disabled || loading ? { backgroundColor: colors.border } : {},
       ]}
@@ -58,8 +50,8 @@ const Button = ({
         <ActivityIndicator size={"small"} color={colors.buttonBg} />
       ) : (
         <AppText
-          type={EIGHTEEN}
-          color={isSecond || disabled ? BUTTON_TEXT : WHITE}
+          type={appTextType ? appTextType:  EIGHTEEN}
+          color={isSecond || disabled ? BUTTON_TEXT : WHITE }
           weight={SEMI_BOLD}
           style={titleStyle}
         >
@@ -70,14 +62,14 @@ const Button = ({
   );
 };
 const styles = StyleSheet.create({
-  buttonStyle: (colors?:string) => ({
+  buttonStyle: {
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     height: buttonHeight,
     borderRadius: 8,
     backgroundColor: colors.buttonBg,
-  }),
+  },
 });
 
 export { Button };

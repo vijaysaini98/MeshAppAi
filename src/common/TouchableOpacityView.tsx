@@ -1,9 +1,9 @@
 import React, {ReactNode} from 'react';
-import {TouchableOpacity as TouchableOpacityBase, Platform, ActivityIndicator, ViewStyle} from 'react-native';
+import {TouchableOpacity as TouchableOpacityBase, Platform, ActivityIndicator, ViewStyle, TouchableOpacityProps} from 'react-native';
 import {TouchableOpacity as TouchableOpacityGesture} from 'react-native-gesture-handler';
 import { colors } from '../theme/colors';
 
-type TouchableOpacityViewProps = {
+type TouchableOpacityViewProps = TouchableOpacityProps  & {
   children: ReactNode;
   isGesture?: boolean;
   onFocus?: () => void;

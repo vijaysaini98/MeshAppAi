@@ -25,7 +25,6 @@ import UpcomingAppointment from "../screens/mr/UpcomingAppointment";
 import RescheduleAppointment from "../screens/mr/RescheduleAppointment";
 import RecoverPassword from "../screens/mr/RecoverPassword";
 import ResetPassword from "../screens/mr/ResetPassword";
-
 import MeetingReport from "../screens/mr/MeetingReport";
 import DoctorHome from "../screens/doctor/Home/Home";
 import MoreScreen from "../screens/mr/MoreScreen";
@@ -64,7 +63,8 @@ import AddProduct from "../screens/mr/Products/addProduct";
 import CallingScreen from "../screens/doctor/CallingScreen";
 import Clinic from "../screens/doctor/Clinic";
 import ClinicRequest from "../screens/doctor/Clinic/clinicRequest";
-import Insurance from "../screens/doctor/Insurance";
+import Insurance from "../screens/common/Insurance";
+import Leagal_Help from "../screens/doctor/Leagal_Help";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -193,6 +193,7 @@ const MyAuthLoadingStack = () => (
     <Stack.Screen name={routes.CLINIC} component={Clinic} />
     <Stack.Screen name={routes.CLINIC_REQUST} component={ClinicRequest} />
      <Stack.Screen name={routes.INSURANCE_SCREEN} component={Insurance} />
+       <Stack.Screen name={routes.LEAGAL_HELP} component={Leagal_Help} />
   </Stack.Navigator>
 );
 
@@ -202,6 +203,7 @@ const AuthStack = () => (
     <Stack.Screen name={routes.LOGIN_SCREEN} component={Login} />
   </Stack.Navigator>
 );
+
 function MrBottomNavigation() {
   return (
     <Tab.Navigator

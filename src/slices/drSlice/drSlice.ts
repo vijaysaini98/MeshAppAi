@@ -1,5 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { DoctorSlice } from "./drTypes";
+// import { DoctorSlice } from "./drTypes";
+
+// export interface DoctorDetails {
+//   name: string
+//   avatar: string
+//   phone: number
+//   email: string
+//   user_details: UserDetails
+//   doctor_details: DrDetails
+//   spec_detail: SpecDetail
+// }
+
+// export interface DoctorSlice{
+//     drEditProfile?:DoctorDetails
+//     uploadAddImages?:any,
+//     agoraDetails?:any
+//     clinicList?:[],
+//     clinicRequsetList:[]
+//   }
 
 export const initialState: DoctorSlice = {
   isLoading: false,
@@ -52,7 +70,8 @@ export const initialState: DoctorSlice = {
   clinicList:[],
   clinicRequsetList:[],
   clinicRequestCount:undefined,
-  medicalCouncil:""
+  medicalCouncil:"",
+  legalQuestions:[]
 };
 
 export const doctorSlice = createSlice({
@@ -263,9 +282,11 @@ export const doctorSlice = createSlice({
       state.clinicRequsetList = state.clinicRequsetList.filter((item)=>(
         item?.id !== payload?.id
       ))
+    },
+
+setLegalQuestions:(state, { payload })=>{
+      state.legalQuestions = payload;
     }
-
-
   },
 });
 
@@ -317,7 +338,8 @@ export const {
   setClinicList,
   removeClinic,
   setClinicRequestList,
-  removeClinicRequest
+  removeClinicRequest,
+  setLegalQuestions
 }: any = doctorSlice.actions;
 
 export const doctorReducer = doctorSlice.reducer;

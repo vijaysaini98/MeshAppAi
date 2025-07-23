@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View, StyleProp, ViewStyle } from "react-native";
+import { StyleSheet, View, StyleProp, ViewStyle, TextStyle } from "react-native";
 import { colors } from "../theme/colors";
 import TouchableOpacityView from "./TouchableOpacityView";
 import { AppText, LIGHT, SIXTEEN } from "./AppText";
@@ -12,7 +12,9 @@ interface RadioButtonProps {
   radioContainerStyle?: StyleProp<ViewStyle>;
   radioStyle?: StyleProp<ViewStyle>;
   appTextType?: string;
-  color?:string
+  color?: string;
+  appTextWeight?: string;
+  messageStyle?:TextStyle;
 }
 
 const RadioButton = ({
@@ -23,7 +25,9 @@ const RadioButton = ({
   radioContainerStyle,
   appTextType,
   radioStyle,
-  color
+  color,
+  appTextWeight,
+  messageStyle,
 }: RadioButtonProps) => {
   return (
     <TouchableOpacityView
@@ -42,9 +46,10 @@ const RadioButton = ({
       </View>
       {message && (
         <AppText
-          style={styles.message}
+          style={[styles.message,messageStyle]}
           type={appTextType ? appTextType : SIXTEEN}
-          weight={LIGHT}
+          weight={appTextWeight ? appTextWeight : LIGHT}
+          numberOfLines={2}
         >
           {message}
         </AppText>
@@ -69,20 +74,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: color? color : colors.buttonBg,
+    borderColor: color ? color : colors.buttonBg,
     flex: 1,
   }),
   selectedUIFilterInner: (color) => ({
     height: 14,
     width: 14,
     borderRadius: 10,
-    backgroundColor:color? color : colors.buttonBg,
+    backgroundColor: color ? color : colors.buttonBg,
   }),
   unchecked: (color) => ({
     borderRadius: 20,
     flex: 1,
     borderWidth: 1,
-    borderColor: color? color : colors.buttonBg,
+    borderColor: color ? color : colors.buttonBg,
   }),
   message: {
     // left: 10,
