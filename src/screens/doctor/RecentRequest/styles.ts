@@ -25,19 +25,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "space-between",
     flexDirection: "row",
-    padding: universalPaddingHorizontalMedium,
+    paddingTop: universalPaddingHorizontalMedium,
+    paddingHorizontal:5,
     backgroundColor: colors.white,
     gap: 10,
   },
   profileImageContainer: {
-    flex: 0.5,
+    flex: 0.3,
     alignItems: "center",
     // justifyContent: 'center',
     borderRadius: 8,
   },
   profileImageStyle: {
-    height: 135,
-    width: 110,
+    height: 100,
+    width: 100,
     borderRadius: 8,
   },
   detailsContainer: {
@@ -49,8 +50,17 @@ const styles = StyleSheet.create({
     gap: 5,
   },
   locationContainerStyle: {
+    // flex:1,
+    width:'100%',
     flexDirection: "row",
     gap: 5,
+    overflow:'hidden',
+    paddingTop:5,
+    paddingBottom:10,
+    paddingHorizontal:universalPaddingHorizontal
+    // flexWrap:'wrap',
+    // backgroundColor:'red'
+
   },
   locationIconStyle: {
     height: 18,
@@ -95,14 +105,11 @@ const styles = StyleSheet.create({
     height: 50,
   },
   showTextStyle: {
-    textAlign: "left",
+    // textAlign: "",
+    // textAlignVertical:'bottom',
     alignSelf: "flex-end",
     color: colors.buttonBg,
-    flex: 0.2,
-  },
-  addressContainer: {
-    flex: 1,
-    flexDirection: "row",
+    // flex: 0.2,
   },
   companyNameContainer: {
     backgroundColor: colors.buttonBg,

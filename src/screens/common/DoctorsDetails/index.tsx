@@ -471,7 +471,7 @@ const DoctorsDetails = ({ route }) => {
           </AppText>
         </View>
         {temAdress?.pincode && (
-          <View style={styles.homeToolContainer4}>
+          <View style={[styles.homeToolContainer4,]}>
             <Image
               source={locationIcon}
               resizeMode="contain"

@@ -80,7 +80,8 @@ export const styles = StyleSheet.create({
   },
   homeToolContainer5: {
     flexDirection: "row",
-    padding: universalPaddingHorizontalMedium,
+    paddingHorizontal: universalPaddingHorizontalMedium,
+    paddingTop: universalPaddingHorizontalMedium,
     backgroundColor: colors.white,
     gap: 10,
   },
@@ -157,8 +158,10 @@ export const styles = StyleSheet.create({
     marginTop: 10,
   },
   doctorImage: {
-    height: 115,
-    width: 110,
+    // height: 115,
+    // width: 110,
+    height: 100,
+    width: 100,
     borderRadius: 8,
   },
   department: {

@@ -9,6 +9,7 @@ import {
   gstICon,
   profileEdit,
   DummyDoctor,
+  registrationIcon,
 } from "../../../../helper/ImageAssets";
 import styles from "./styles";
 import { AppSafeAreaView, Button, Input } from "../../../../common";
@@ -56,6 +57,7 @@ const PersonalDetail = () => {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phoneNo, setPhoneNo] = useState();
+  const [rn_number,setRn_number] = useState(drEditProfile?.doctor_details?.rn_number || "");
   const [address, setAddress] = useState();
   const [city, setCity] = useState();
   const [state, setState] = useState();
@@ -146,6 +148,7 @@ const PersonalDetail = () => {
       setMedia([...media, APiResponse?.data[0]?.path]);
     }
   }, [APiResponse]);
+console.log("drEditProfile",drEditProfile?.doctor_details?.rn_number);
 
   useEffect(() => {
     if (drEditProfile) {
@@ -191,15 +194,15 @@ const PersonalDetail = () => {
   }, [drEditProfile]);
 
   const updateApiCall = () => {
-    if (fee <= 0) {
-      return Toast.show(
-        "Please enter a valid fee amount greater than zero.",
-        Toast.LONG
-      );
-    }
+    // if (fee <= 0) {
+    //   return Toast.show(
+    //     "Please enter a valid fee amount greater than zero.",
+    //     Toast.LONG
+    //   );
+    // }
 
     let data = {
-      fees: fee,
+      // fees: fee,
       city: city,
       state: state,
       address: address,
@@ -212,6 +215,7 @@ const PersonalDetail = () => {
       supporting_documents_hcpi_number: uploadHcpiImage?.path
         ? uploadHcpiImage?.path
         : hcpiDocument,
+        rn_number:rn_number? rn_number : drEditProfile?.doctor_details?.rn_number,
     };
     if (gstNo) {
       data.gst_in = gstNo;
@@ -413,6 +417,15 @@ const PersonalDetail = () => {
                 editable={false}
               />
             </View>
+
+             <Input
+              placeholder="Registration Number"
+              icon={registrationIcon}
+              value={rn_number}
+              onChangeText={(val) => setRn_number(val)}
+              editable={!drEditProfile?.doctor_details?.rn_number}
+            />
+
             <Input
               placeholder="Hcpi Number"
               // icon={emailId_Icon}

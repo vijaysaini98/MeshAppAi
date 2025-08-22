@@ -94,6 +94,9 @@ const DoctorHome = () => {
     return state.doctor;
   });
 
+  console.log("drEditProfile=====>>>",drEditProfile?.doctor_details?.rn_number);
+  
+
   const getDoctorCurrentLocation = useCallback(async () => {
     let currentLocation = await getMrLocation();
     dispatch(updateFcmToken(currentLocation));
@@ -158,13 +161,35 @@ const DoctorHome = () => {
       return () => clearTimeout(alertTimeout);
     }
   }, [isLocation]);
+console.log("drEditProfile?.doctor_details?.rn_number",drEditProfile?.doctor_details?.rn_number);
+
+ useEffect(() => {
+    if (drEditProfile?.doctor_details?.rn_number == undefined) {
+      const alertTimeout = setTimeout(() => {
+        Alert.alert(
+          "Add Registration Number",
+          "Please add Registration Number from More => Settings => Edit Profile.",
+          [
+            // { text: "Cancel", style: "cancel" },
+            {
+              text: "Add",
+              onPress: () => NavigationService.navigate(EDIT_PROFILE, { tabIndex: 0, from: 'home' }),
+            },
+          ],
+          { cancelable: true }
+        );
+      }, 2000);
+
+      return () => clearTimeout(alertTimeout);
+    }
+  }, [drEditProfile]);
 
   useEffect(() => {
-    if (drEditProfile?.spec_detail?.length < 1) {
+    if (drEditProfile?.spec_detail?.length < 1 && drEditProfile?.doctor_details?.rn_number) {
       const alertTimeout = setTimeout(() => {
         Alert.alert(
           "Add Specaility",
-          "Please add at least one Specialty from More => Settings => Edit Profile => Specialty Detail",
+          "Please add at least one Specialty from More => Settings => Edit Profile => Specialty Detail.",
           [
             { text: "Cancel", style: "cancel" },
             {

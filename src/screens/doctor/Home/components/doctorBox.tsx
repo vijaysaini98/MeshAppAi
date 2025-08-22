@@ -226,12 +226,15 @@ const DoctorBox: FC<DoctorBoxProps> = ({
 
     const appointmentAddress = `${temAdress?.name},${temAdress?.address},${temAdress?.city},${temAdress?.state},${temAdress?.pincode}`;
     return (
-      <View style={{ flex: 1, flexDirection: "row" }}>
+      <View style={{
+        flex: 1,
+        flexDirection: "row",
+      }}>
         <AppText
           weight={MEDIUM}
           type={FOURTEEN}
-          style={{ flex: 1 }}
-          numberOfLines={showFullAddress ? 0 : 2}
+          style={{ width: "80%" }}
+          numberOfLines={showFullAddress ? 0 : 1}
         >
           {appointmentAddress ? appointmentAddress : "- - -"}
         </AppText>
@@ -242,7 +245,7 @@ const DoctorBox: FC<DoctorBoxProps> = ({
               textAlign: "left",
               alignSelf: "flex-end",
               color: colors.buttonBg,
-              flex: 0.3,
+              // flex: 0.3,
             }}
             onPress={() => setShowFullAddress(!showFullAddress)}
           >
@@ -390,7 +393,7 @@ const DoctorBox: FC<DoctorBoxProps> = ({
     <View style={[styles.doctorBoxContainer]}>
       <TouchableOpacityView
         onPress={onNavigation}
-        style={[styles.homeToolContainer5, { backgorundColor: "red" }]}
+        style={[styles.homeToolContainer5]}
         disabled={onNavigation ? false : true}
       >
         {item?.Users?.avatar != null && item?.Users?.avatar ? (
@@ -458,14 +461,15 @@ const DoctorBox: FC<DoctorBoxProps> = ({
             {rejectReason()}
             {rnoCheck()}
           </View>
-          <View style={[styles.homeToolContainer4, { paddingHorizontal: 0 }]}>
-            <>
-              {imageSelect(num)}
-              {locationDate(location)}
-            </>
-          </View>
+
         </View>
       </TouchableOpacityView>
+      <View style={[styles.homeToolContainer4, { paddingLeft: 20, paddingVertical: 5, marginTop: 0 }]}>
+        <>
+          {imageSelect(num)}
+          {locationDate(location)}
+        </>
+      </View>
       {/* {featureValidation()} */}
       {renderFeatureComponent()}
     </View>

@@ -5,6 +5,8 @@ import styles from "./styles";
 import { DummyMr, locationIcon } from "../../../helper/ImageAssets";
 import StarRating from "../../../common/StarRating";
 import { colors } from "../../../theme/colors";
+import { universalPaddingHorizontal } from "../../../theme/dimens";
+import FastImage from "react-native-fast-image";
 
 interface RecentRequestCardProps {
   item?: any;
@@ -43,28 +45,29 @@ const RecentRequestCard = ({ item,
   mobaileNo
 }: RecentRequestCardProps) => {
   const [showFullAddress, setShowFullAddress] = useState(false);
+  // const address = "absdcjkbakbsjkdbjkbcbajksabkbcdjkabbcajkjcjkbakskbcbjabsjsabjsdbcbkajbadsjbcajbskdcjkakbsjkcjkbakjbbbabsdkjbjbdbcbuabsuidbbckbaksjbkdbkjcbakjbkjdbcjkbajksbjkbcbakbsdbcbakjsbckjabdjbjkcakjbs"
   return (
     <View
       key={item?.id}
-      style={styles.recentRequestCardContainer}>
+      style={[styles.recentRequestCardContainer,]}>
       <View
-        style={styles.uperContainerStyle}
+        style={[styles.uperContainerStyle,]}
       >
-        <View style={styles.profileImageContainer}>
+        {/* <View style={styles.profileImageContainer}> */}
           {(avatar != null &&  avatar) ? (
-            <Image
+            <FastImage
               source={avatar}
               resizeMode="cover"
               style={styles.profileImageStyle}
             />
           ) : (
-            <Image
+            <FastImage
               source={DummyMr}
               resizeMode="contain"
               style={styles.profileImageStyle}
             />
           )}
-        </View>
+        {/* </View> */}
         <View style={styles.detailsContainer}>
           <AppText
             type={TWENTY}
@@ -91,24 +94,25 @@ const RecentRequestCard = ({ item,
               </AppText>
             </View>
           </View>
-          {location &&
+        </View>
+      </View>
+      {location &&
             (
-              <View style={styles.locationContainerStyle}>
+              <View style={[styles.locationContainerStyle,]}>
               <Image
                 source={locationIcon}
                 resizeMode="contain"
                 style={styles.locationIconStyle}
               />
-              <View style={styles.addressContainer}>
                 <AppText
                   weight={MEDIUM}
                   type={FOURTEEN}
-                  numberOfLines={showFullAddress ? 0 : 2}
-                  style={{ flex: 0.8 }}
+                  numberOfLines={showFullAddress ? 0 : 1}
+                  style={{ width: '80%' }}
                 >
                   {address}
                 </AppText>
-                {address.length >= 42 && (
+               {address.length >= 50 && (
                   <AppText
                     weight={BOLD}
                     style={styles.showTextStyle}
@@ -117,11 +121,8 @@ const RecentRequestCard = ({ item,
                     {showFullAddress ? "less" : "more"}
                   </AppText>
                 )}
-              </View>
             </View>
-            )}
-        </View>
-      </View>
+            )}  
       <View style={styles.appointmentDateTimeContainerStyle}>
         <View>
           <AppText type={TWELVE}>Appointment </AppText>
